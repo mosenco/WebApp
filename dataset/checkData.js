@@ -341,7 +341,7 @@ function writeAdditionalRegs() {
 			continue;
 
 		/*
-		 * Computation of priorities for the additional reistrations
+		 * Computation of priorities for the additional reistrations f
 		 */
 		let dataInt = interventi[i].DataIntervento.getTime();
 		let priority = 1;
