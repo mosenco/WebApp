@@ -3,7 +3,7 @@ const csv = require("csv-parser");
 
 const pathIN = ".\\dataset\\input\\";
 const pathOUT = ".\\dataset\\output\\";
-//test asd
+//test asd ciao
 const files = ["INTERVENTI.csv", 
 			   "LISTA_OP.csv", 
 			   "RICOV_PASTWEEK.csv", 
