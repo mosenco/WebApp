@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang = "en">
+	<head>
+		<meta charset = "utf-8">
+		<title>Data Visualization - ASL 1</title>
+		<script src = "https://d3js.org/d3.v7.min.js"></script>
+		<link href = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel = "stylesheet" integrity = "sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin = "anonymous">
+		<link rel = "stylesheet" href = "style.css?version=1">
+	</head>
+	<body>
+		<div id = "titolo" class = "padding">
+			<img id = "logo" src="immagini/logoASL1.png" alt = "ASL 1 Liguria">
+		</div>
+
+		<div id = "corpo" class = "padding">
+			<div class = "row padding select">
+				<div id = "schede" class = "col-10">
+					<nav>
+						<div class = "nav nav-tabs" id = "nav-tab" role = "tablist">
+							<button onClick = "display('nav-sale-tab', 'nav-letti-tab')" class = "nav-link active" id = "nav-sale-tab" data-bs-toggle = "tab" data-bs-target = "#sale" type = "button" role = "tab" aria-controls = "sale" aria-selected = "true">ORs</button>
+							<button onClick = "display('nav-letti-tab', 'nav-sale-tab')" class = "nav-link disabled" id = "nav-letti-tab" data-bs-toggle = "tab" data-bs-target = "#letti" type = "button" role = "tab" aria-controls = "letti" aria-selected = "false">Beds</button>
+						</div>
+					</nav>
+				</div>
+				<div id = "places" class = "col-2">
+					<select id = "selection" onchange = "selectPlace(this.options[this.selectedIndex].value)" class = "form-select" aria-label = "Default select example">
+						<option value = "1">Bordighera</option>
+						<option value = "2">Sanremo</option>
+						<option value = "4">Imperia</option>
+					</select>
+				</div>
+			</div>
+			<div id = "sale" class = "tab-content hide padding" aria-labelledby = "nav-home-tab">
+				<div class = "row select">
+					<div class = "col-5">
+						<h6>Monday</h6>
+						<svg id = "svg1" class = "dim">
+							<g id = "asseXsvg1"></g>
+							<g id = "asseYsvg1"></g>
+							<g id = "svg1bars"></g>
+						</svg>
+					</div>
+					<div class = "col-5">
+						<h6>Tuesday</h6>
+						<svg id = "svg2" class = "dim">
+							<g id = "asseXsvg2"></g>
+							<g id = "asseYsvg2"></g>
+							<g id = "svg2bars"></g>
+						</svg>
+					</div>
+					<div id = "info" class = "col-2">
+						<h6>INFO</h6>
+						<div id = "optimization" class = "form-check">
+							<input class = "form-check-input" type = "checkbox" onclick = "optimization()" id = "optim">
+							<label class = "form-check-label" for = "flexCheckDefault">
+								Optimization
+							</label>
+						</div>
+						<div id = "moreDetails" class = "form-check">
+							<input class = "form-check-input" type = "checkbox" onclick = "drawORsCharts()" id = "details">
+							<label class = "form-check-label" for = "flexCheckDefault">
+								More details
+							</label>
+						</div>
+						<svg id = "svgInfo" width = "350" height = "50">
+							<g id = "ors">
+								<rect class = "or-used" x = "0" y = "5" width = "15" height = "15"></rect>
+								<text id = "legend" x = "25" y = "18">OR usage time (minutes)</text>
+								<rect class = "or-idle" x = "0" y = "30" width = "15" height = "15"></rect>
+								<text id = "legend" x = "25" y = "43">OR idle time (minutes)</text>
+							</g>
+							<g id = "beds" class = "hide">
+								<rect class = "bed-unused" x = "0" y = "5" width = "15" height = "15"></rect>
+								<text id = "legend" x = "25" y = "18">Beds unused</text>
+
+								<rect class = "bed-occupied" x = "0" y = "30" width = "15" height = "15"></rect>
+								<text id = "legend" x = "25" y = "43">Beds occupied</text>
+							</g>
+						</svg>
+					</div>
+				</div>
+				<br>
+				<div class = "wrapper">
+					<div class = "center-div margin">
+						<h6>Wednesday</h6>
+						<svg id = "svg3" class = "dim">
+							<g id = "asseXsvg3"></g>
+							<g id = "asseYsvg3"></g>
+							<g id = "svg3bars"></g>
+						</svg>
+					</div>
+					<div class = "center-div margin">
+						<h6>Thursday</h6>
+						<svg id = "svg4" class = "dim">
+							<g id = "asseXsvg4"></g>
+							<g id = "asseYsvg4"></g>
+							<g id = "svg4bars"></g>
+						</svg>
+					</div>
+					<div class = "center-div">
+						<h6>Friday</h6>
+						<svg id = "svg5" class = "dim">
+							<g id = "asseXsvg5"></g>
+							<g id = "asseYsvg5"></g>
+							<g id = "svg5bars"></g>
+						</svg>
+					</div>
+				</div>
+			</div>
+
+			<div id = "spinner" class = "row padding">
+				<div class = "col-1"></div>
+				<div class = "col-10">
+					<div class="spinner-grow spin-dim text-primary" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+					<div class="spinner-grow spin-dim text-primary" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+					<div class="spinner-grow spin-dim text-primary" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+				<div class = "col-1"></div>
+			</div>
+		</div>
+		<script src = "scripts/scriptsForVis/preProcessing.js"></script>
+		<script src = "scripts/scriptsForVis/scriptD3.js"></script>
+	</body>
+</html>

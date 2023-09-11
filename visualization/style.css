@@ -1,0 +1,72 @@
+#titolo {
+	text-align: center;
+	border-bottom: 1px solid grey;
+	width: 90%;
+	margin: auto;
+}
+
+.select {
+	margin: auto;
+	width: 90%;
+}
+
+#logo {
+	height: 80px;
+}
+
+#info {
+	text-align: left;
+}
+
+body {
+	background-color: rgb(247, 247, 247);
+	text-align: center;
+}
+
+.padding {
+	padding : 1%;
+}
+
+.hide {
+	display: none;
+}
+
+.dim {
+	width : 350px;
+	height : 250px;
+}
+
+.wrapper {
+	margin: auto;
+	text-align: center;
+	width : 90%;
+	padding-top : 50px;
+}
+
+.center-div {
+	display: inline-block;
+}
+
+.margin {
+	margin-right: 100px;
+}
+
+.hovered {
+	fill : orange;
+}
+
+.or-used {
+	fill : steelblue;
+}
+
+.or-idle {
+	fill : #B5E0CD;
+}
+
+.bed-unused {
+	fill : #B5E0CD;
+}
+
+.bed-occupied {
+	fill : #FF6868;
+}
