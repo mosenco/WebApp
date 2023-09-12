@@ -7,6 +7,10 @@ const fs = require("fs");
  * @param {string} output The path where store the files containing the parsed data.
  */
 function parseClingoSolution(input, output) {
+	let obj={
+		clingoOUT:[],
+		beds:[]
+	}
 	try {
 		let solution = fs.readFileSync(input, "utf8").split("\n");
 		let atomi = solution[4].split(" ");
@@ -45,6 +49,7 @@ function parseClingoSolution(input, output) {
 				}
 				string += temp[j] + ",";
 			}
+			obj.clingoOUT=[...obj.clingoOUT,string]
 			fs.writeFileSync(output, string + "\n", 
 						{ flag: 'a' }, err => {console.error(err)});
 		}
@@ -81,13 +86,14 @@ function parseClingoSolution(input, output) {
 			}
 
 			let stringa = temp1[1] + "," + temp1[2].replace(")", "") + "," + temp1[0] + "," + count;
-
+			obj.beds=[...obj.beds,stringa]
 			fs.writeFileSync(output, stringa + "\n", 
 						{ flag: 'a' }, err => {console.error(err)});
 		}
 	} catch (err) {
 		console.error(err);
 	}
+	return obj
 }
 
 module.exports = { parseClingoSolution };

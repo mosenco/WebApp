@@ -30,10 +30,12 @@ async function runWebAPP() {
 	const files = await clingoFiles.getFiles(pathIN, pathClingoFilesOPT, true);
 	const encoding = files.Encoding;
 	const db = files.DB;
-
+	const data = files.DATA;
 	console.log(encoding);
 	console.log("\n");
 	console.log(db);
+
+
 
 	const app = express();
 	app.use(express.static(path.join(__dirname, "..\\visualization")));
@@ -52,7 +54,7 @@ async function runWebAPP() {
 					//input = "..\\encodingASP\\newAssignments\\input\\inBordighera.db";
 					output += "bordighera.txt";
 					bordighera = false;
-					runClingo(encoding, input, output, res);
+					console.log("QUI   :",runClingo(encoding, input, output, res))
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
 					res.end();
@@ -98,12 +100,15 @@ async function runWebAPP() {
 				res.redirect('/home.html');
 				break;
 		}
-		ComputeNextWeeks(value,db);
+		//ComputeNextWeeks(value,db);
 		
 		 
 	});
 
 	http.createServer(app).listen(3000);
+}
+function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss){
+
 }
 
 function ComputeNextWeeks(value,db){
@@ -222,9 +227,10 @@ function runClingo(encoding, input, output, res) {
 			fileOUT += "imperiaOPT.csv";
 		}
 
-		parser.parseClingoSolution(fileIN, fileOUT);
-
+		let parserOUT=parser.parseClingoSolution(fileIN, fileOUT);
+		console.log("dentro: ",parserOUT)
 		res.writeHead(200, {"Content-type": "text/html"});
 		res.end();
+		return parserOUT
 	});
 }

@@ -11,9 +11,25 @@ const csv = require("csv-parser");
  */
 function getFiles(pathIN, pathClingoFiles, OPT) {
 	return new Promise((resolve) => {
+		//save the value of regs here to return it to webApp.js
+		//values from additionalreg. the one not taken for the computation
+		let bordigheraOP=[]
+		let imperiaOP=[]
+		let sanremoOP=[]
+		
+		//values taken for the computation of .db files
+		let bordigheraDB = []
+		let imperiaDB = []
+		let sanremoDB = []
+
+		let bmss=[""]
+		let imss=[""]
+		let smss=[""]
+		let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss]
 		let obj = {
 				"Encoding" : "",
-				"DB" : ""
+				"DB" : "",
+				"DATA":myobj,
 		};
 
 		fs.readdir(pathClingoFiles, (err, content) => {
@@ -33,7 +49,7 @@ function getFiles(pathIN, pathClingoFiles, OPT) {
 					if (element.includes(".asp"))
 						obj.Encoding = pathClingoFiles + element;
 					else
-						obj.DB = createOptimClingoDB(pathIN, pathClingoFiles + element + "\\");
+						obj.DB = createOptimClingoDB(pathIN, pathClingoFiles + element + "\\",myobj);
 				});
 			}
 
@@ -168,7 +184,8 @@ function createClingoDB(pathIN, pathDB) {
  * @param {string} pathDB The db files path.
  * @returns An object containing the db paths for all the ASL 1 locations.
  */
-function createOptimClingoDB(pathIN, pathDB) {
+function createOptimClingoDB(pathIN, pathDB, myobj) {
+	
 	fs.readdir(pathIN, (err, files) => {
 		if (err) {
 			return console.error("Unable to scan directory: " + err);
@@ -223,7 +240,7 @@ function createOptimClingoDB(pathIN, pathDB) {
 				case "additionalRegs" : {
 					const read = readCSV(temp, pathIN + file);
 					read.on("end", () => {
-
+						myaddreg=temp
 						//dalla lunga lista, vuole dividere per priorita'. 
 						//percio il regs[0] ci andra le additionalregs con priorita 2 e cosi via
 						//e qui viene utilizzato l'array pr definito sopra
@@ -257,8 +274,15 @@ function createOptimClingoDB(pathIN, pathDB) {
 								countPriorities(value.Priority, 2);
 							}
 						});
-
+						for(let k=0;k<10;k++){
+							console.log(regs[0][k])
+						}
+						
 						console.log("priority: ",pr);
+
+						myobj[0]=[...regs[0]]
+						myobj[1]=[...regs[1]]
+						myobj[2]=[...regs[2]]
 
 						//ora iniziamo a dividere le additionalregs, dentro regs, in subarray per tipo
 						//ovvero per priorita 2,3,4
@@ -291,6 +315,7 @@ function createOptimClingoDB(pathIN, pathDB) {
 								let DIM = (REGS - array2.length);
 								//qui sta aggiungendo a vector tutte le priorita2
 								array2.forEach(el => {
+								
 									vector.push(el);
 								});
 
@@ -301,6 +326,7 @@ function createOptimClingoDB(pathIN, pathDB) {
 									DIM = DIM - array3.length;
 									//inserisce le priorita 3 dentro il nostro array vector
 									array3.forEach(el => {
+										
 										vector.push(el);
 									});
 									
@@ -312,11 +338,13 @@ function createOptimClingoDB(pathIN, pathDB) {
 									//solo che in uno gli elementi son ordinati e in un altro rimescolati
 									if ((DIM - array4.length) > 0) {
 										array4.forEach(el => {
+											
 											vector.push(el);
 										});
 									} else {
 										shuffle(array4);
 										for (let i = 0; i < DIM; i++) {
+											
 											vector.push(array4[i]);
 										}
 									}
@@ -326,10 +354,12 @@ function createOptimClingoDB(pathIN, pathDB) {
 								} else {
 									shuffle(array3);
 									for (let i = 0; i < DIM; i++) {
+										
 										vector.push(array3[i]);
 									}
 								}
 							}
+							
 
 							//in pri conta quante priroita abbiamo dentro vector.
 							//vector ha prenotazioni inferiori, perche tiene conto
@@ -340,6 +370,8 @@ function createOptimClingoDB(pathIN, pathDB) {
 							//dopo aver contato aggiunge il resto delle prenotazioni dentro lo stesso file
 							//per esempio in inbordighera.db
 							for (let i = 0; i < vector.length; i++) {
+								//checkadd=[...checkadd,myaddreg.shift()]
+								myobj[index+3]=myobj[index].shift()
 								if (vector[i].Priority == "2")
 									pri[index].count2++;
 
@@ -356,6 +388,7 @@ function createOptimClingoDB(pathIN, pathDB) {
 								fs.writeFileSync(pathDB + selectFile(vector[i].Sede), 
 									content, {'flag': 'a'}, err => {console.error(err)});
 							}
+							
 							
 
 						}
@@ -475,6 +508,7 @@ function createOptimClingoDB(pathIN, pathDB) {
 									content += 'mss("' + temp[i].Sala + '", ' + spec + ", " + temp[i].Thursday + "). ";
 									content += 'mss("' + temp[i].Sala + '", ' + spec + ", " + temp[i].Friday + "). ";
 								}
+								myobj[6][0]+=content
 							}
 
 							if (temp[i].Sede == "SANREMO") {
@@ -506,6 +540,7 @@ function createOptimClingoDB(pathIN, pathDB) {
 									content = '\nmss("' + temp[i].Sala + '", ' + 4 + ", " + temp[i].Monday + "). ";
 									content += 'mss("' + temp[i].Sala + '", ' + 4 + ", " + temp[i].Friday + "). ";
 								}
+								myobj[8][0]+=content
 							}
 
 							if (temp[i].Sede == "IMPERIA") {
@@ -533,6 +568,7 @@ function createOptimClingoDB(pathIN, pathDB) {
 										content += 'mss("' + temp[i].Sala + '", ' + spec + ", " + temp[i].Friday + "). ";
 									}
 								}
+								myobj[7][0]+=content
 							}
 
 							fs.writeFileSync(pathDB + selectFile(temp[i].Sede), 
