@@ -28,10 +28,8 @@ function getFiles(pathIN, pathClingoFiles, OPT) {
 		let btime=[""]
 		let itime=[""]
 		let stime=[""]
-		let bbed=[""]
-		let ibed=[""]
-		let sbed=[""]
-		let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime,bbed,ibed,sbed]
+
+		let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime]
 		let obj = {
 				"Encoding" : "",
 				"DB" : "",
@@ -500,9 +498,7 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 
 							let content = "beds(" + value.Posti + ", " 
 									+ value.Specialty + ", " + value.Day + "). ";
-							if(value.Sede=="BORDIGHERA"){
-								
-							}else if(value.S)
+							
 							fs.writeFileSync(pathDB + selectFile(value.Sede), 
 								content, {'flag': 'a'}, err => {console.error(err)});
 						});

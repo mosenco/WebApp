@@ -83,7 +83,15 @@ async function runWebAPP() {
 						input += "inputSanremo.db";
 					output += "sanremo.txt";
 					sanremo = false;
-					runClingo(encoding, input, output, res);
+					runClingo(encoding, input, output, res).then((result) => {
+						console.log("Valore ritornato:", result);
+						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
+						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11])
+					  })
+					  .catch((error) => {
+						console.error("Errore:", error);
+						// Gestisci eventuali errori qui
+					  });
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
 					res.end();
@@ -137,6 +145,15 @@ function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time){
 	//fill the remain with new person till i reach the length of the original .db length
 	while(remain.length <= clingoIn.length || rawIn.length > 0){
 		remain=[...remain,rawIn.shift()]
+	}
+
+	//edit beds that coming out from ASP encoding, to be similar to the beds in input inside .db files
+	if (bedsOut.length > 0){
+		let newbeds = bedsOut.map(el=>{
+			let ar = el.split(",")
+			
+		})
+
 	}
 	
 	console.log(clingoIn.length," ",clingoOut.length," ",remain.length)
