@@ -25,7 +25,13 @@ function getFiles(pathIN, pathClingoFiles, OPT) {
 		let bmss=[""]
 		let imss=[""]
 		let smss=[""]
-		let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss]
+		let btime=[""]
+		let itime=[""]
+		let stime=[""]
+		let bbed=[""]
+		let ibed=[""]
+		let sbed=[""]
+		let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime,bbed,ibed,sbed]
 		let obj = {
 				"Encoding" : "",
 				"DB" : "",
@@ -223,7 +229,13 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 					const read = readCSV(temp, pathIN + file);
 					read.on("end", () => {
 						temp.forEach(value => {
-
+							if(value.Sede == "BORDIGHERA"){
+								myobj[3]=[...myobj[3],value]
+							}else if(value.Sede == "IMPERIA"){
+								myobj[5]=[...myobj[5],value]
+							}else if(value.Sede == "SANREMO"){
+								myobj[4]=[...myobj[4],value]
+							}
 							let content = "\nregistration(" + value.Nosologico + ", " 
 									+ priority + ", " + value.Specialty + ", " + '"' + value.RegRicov + '", ' 
 									+ value.Time + ", " + value.Ricov + ", " + value.In + ", " + value.Out + ").";
@@ -371,7 +383,7 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 							//per esempio in inbordighera.db
 							for (let i = 0; i < vector.length; i++) {
 								//checkadd=[...checkadd,myaddreg.shift()]
-								myobj[index+3]=myobj[index].shift()
+								myobj[index+3]=[...myobj[index+3],myobj[index].shift()]
 								if (vector[i].Priority == "2")
 									pri[index].count2++;
 
@@ -450,7 +462,14 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 								content += "\n#const totRegsP2 = " + value.RegsP2 + ".";
 								content += "\n#const totRegsP3 = " + value.RegsP3 + ".";
 								content += "\n#const totRegsP4 = " + value.RegsP4 + ".";
-
+								if(value.Sede == "BORDIGHERA"){
+									myobj[9]+=content
+								}else if(value.Sede == "IMPERIA"){
+									myobj[10]+=content
+								}else if(value.Sede == "SANREMO"){
+									myobj[11]+=content
+								}
+								
 								fs.writeFileSync(pathDB + selectFile(value.Sede), 
 									content, {'flag': 'a'}, err => {console.error(err)});
 							});
@@ -481,7 +500,9 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 
 							let content = "beds(" + value.Posti + ", " 
 									+ value.Specialty + ", " + value.Day + "). ";
-
+							if(value.Sede=="BORDIGHERA"){
+								
+							}else if(value.S)
 							fs.writeFileSync(pathDB + selectFile(value.Sede), 
 								content, {'flag': 'a'}, err => {console.error(err)});
 						});
