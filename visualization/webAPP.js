@@ -31,7 +31,7 @@ async function runWebAPP() {
 	const encoding = files.Encoding;
 	const db = files.DB;
 	// data sarebbe myobj
-	//let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss]
+	//let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime]
 	const data = files.DATA;
 	console.log(encoding);
 	console.log("\n");
@@ -59,7 +59,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res).then((result) => {
 						console.log("Valore ritornato:", result);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9])
+						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db")
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -86,7 +86,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res).then((result) => {
 						console.log("Valore ritornato:", result);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11])
+						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db")
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -108,7 +108,15 @@ async function runWebAPP() {
 						input += "inputImperia.db";
 					output += "imperia.txt";
 					imperia = false;
-					runClingo(encoding, input, output, res);
+					runClingo(encoding, input, output, res).then((result) => {
+						console.log("Valore ritornato:", result);
+						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
+						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db")
+					  })
+					  .catch((error) => {
+						console.error("Errore:", error);
+						// Gestisci eventuali errori qui
+					  });
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
 					res.end();
@@ -127,8 +135,9 @@ async function runWebAPP() {
 
 	http.createServer(app).listen(3000);
 }
-function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time){
-
+function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location){
+	fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+	"\nINIZIO\n", {'flag': 'a'}, err => {console.error(err)});
 	clingoOut = clingoOut.map(el=>el.substring(0,10))
 	/*
 	clingoIn.forEach(el=>{
@@ -143,19 +152,45 @@ function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time){
 	)
 
 	//fill the remain with new person till i reach the length of the original .db length
-	while(remain.length <= clingoIn.length || rawIn.length > 0){
+	while(remain.length <= clingoIn.length && rawIn.length > 0){
 		remain=[...remain,rawIn.shift()]
 	}
 
-	//edit beds that coming out from ASP encoding, to be similar to the beds in input inside .db files
+	//START WRITING INSIDE THE FILE 
+	console.log("remain: ",remain.length," ",clingoIn.length)
+	//write Registration
+	for(let i=0;i<remain.length;i++){
+		let content = "\nregistration(" + remain[i].Nosologico + ", " 
+										+ remain[i].Priority + ", " + remain[i].Specialty + ", " + '"' + remain[i].RegRicov + '", ' 
+										+ remain[i].Time + ", " + remain[i].Ricov + ", " + remain[i].In + ", " + remain[i].Out + ").";
+		
+		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+		content, {'flag': 'a'}, err => {console.error(err)});
+	}
+	
+
+	//write beds if present
 	if (bedsOut.length > 0){
-		let newbeds = bedsOut.map(el=>{
-			let ar = el.split(",")
-			
+		bedsOut.forEach(el=>{
+			let content = "beds(" + el.BedsAvailable + ", " 
+									+ el.Specialty + ", " + el.Day + "). ";
+							
+			fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+				content, {'flag': 'a'}, err => {console.error(err)});
 		})
 
 	}
+
+	console.log(typeof mss," ",mss)
+	console.log(typeof time," ",time)
+	//write mss
+	fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+				mss[0], {'flag': 'a'}, err => {console.error(err)});
 	
+			
+	//write time
+	fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+				time, {'flag': 'a'}, err => {console.error(err)});
 	console.log(clingoIn.length," ",clingoOut.length," ",remain.length)
 }
 

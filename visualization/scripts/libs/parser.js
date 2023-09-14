@@ -86,7 +86,11 @@ function parseClingoSolution(input, output) {
 			}
 
 			let stringa = temp1[1] + "," + temp1[2].replace(")", "") + "," + temp1[0] + "," + count;
-			obj.beds=[...obj.beds,stringa]
+
+			//i create an array of object to better pick up the column that im interested with
+			let onebed ={Specialty:temp1[1], Day:temp1[2].replace(")", ""), BedsAvailable: temp1[0], BedsUsed:count}
+			obj.beds=[...obj.beds,onebed]
+
 			fs.writeFileSync(output, stringa + "\n", 
 						{ flag: 'a' }, err => {console.error(err)});
 		}
