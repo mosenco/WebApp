@@ -94,6 +94,7 @@ function parseClingoSolution(input, output,currentWeek) {
 			fs.writeFileSync(output, stringa + "\n", 
 						{ flag: 'a' }, err => {console.error(err)});
 		}
+		console.log("after parser")
 	} catch (err) {
 		console.error(err);
 	}

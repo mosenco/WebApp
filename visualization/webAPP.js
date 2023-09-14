@@ -333,7 +333,7 @@ function runClingo(encoding, input, output, res, currentWeek) {
 		if (input.includes("Imperia")) {
 			fileOUT += "imperiaOPT.csv";
 		}
-
+		console.log("prima di parser")
 		parserOUT=parser.parseClingoSolution(fileIN, fileOUT,currentWeek);
 		resolve(parserOUT);
 		res.writeHead(200, {"Content-type": "text/html"});
