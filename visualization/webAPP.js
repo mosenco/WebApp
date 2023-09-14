@@ -144,54 +144,69 @@ function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, locatio
 		console.log("b: ",el.Nosologico)
 	})
 	*/
-	// remaining person from .db files not in the output of ASP encoding
-	let remain = clingoIn.filter(el=>{
-		console.log(clingoOut.includes(el.Nosologico)," ",el.Nosologico)
-		return !clingoOut.includes(el.Nosologico)
-		}
-	)
 
-	//fill the remain with new person till i reach the length of the original .db length
-	while(remain.length <= clingoIn.length && rawIn.length > 0){
-		remain=[...remain,rawIn.shift()]
-	}
+	let currentBeds=bedsOut
+	let currentOut = clingoOut
+	let remain = clingoIn
+	//while rawIn=patients not scheduled still present, keep looping
+	while(rawIn.length>0){
 
-	//START WRITING INSIDE THE FILE 
-	console.log("remain: ",remain.length," ",clingoIn.length)
-	//write Registration
-	for(let i=0;i<remain.length;i++){
-		let content = "\nregistration(" + remain[i].Nosologico + ", " 
-										+ remain[i].Priority + ", " + remain[i].Specialty + ", " + '"' + remain[i].RegRicov + '", ' 
-										+ remain[i].Time + ", " + remain[i].Ricov + ", " + remain[i].In + ", " + remain[i].Out + ").";
+		// remaining person from .db files not in the output of ASP encoding
+		remain = remain.filter(el=>{
+			console.log(currentOut.includes(el.Nosologico)," ",el.Nosologico)
+			return !currentOut.includes(el.Nosologico)
+			}
+		)
 		
-		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
-		content, {'flag': 'a'}, err => {console.error(err)});
-	}
-	
+		//fill the remain with new person till i reach the length of the original .db length
+		while(remain.length <= clingoIn.length && rawIn.length > 0){
+			remain=[...remain,rawIn.shift()]
+		}
 
-	//write beds if present
-	if (bedsOut.length > 0){
-		bedsOut.forEach(el=>{
-			let content = "beds(" + el.BedsAvailable + ", " 
-									+ el.Specialty + ", " + el.Day + "). ";
-							
-			fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
-				content, {'flag': 'a'}, err => {console.error(err)});
-		})
-
-	}
-
-	console.log(typeof mss," ",mss)
-	console.log(typeof time," ",time)
-	//write mss
-	fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
-				mss[0], {'flag': 'a'}, err => {console.error(err)});
-	
+		//START WRITING INSIDE THE FILE 
+		console.log("remain: ",remain.length," ",clingoIn.length)
+		//write Registration
+		for(let i=0;i<remain.length;i++){
+			let content = "\nregistration(" + remain[i].Nosologico + ", " 
+											+ remain[i].Priority + ", " + remain[i].Specialty + ", " + '"' + remain[i].RegRicov + '", ' 
+											+ remain[i].Time + ", " + remain[i].Ricov + ", " + remain[i].In + ", " + remain[i].Out + ").";
 			
-	//write time
-	fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
-				time, {'flag': 'a'}, err => {console.error(err)});
-	console.log(clingoIn.length," ",clingoOut.length," ",remain.length)
+			fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+			content, {'flag': 'a'}, err => {console.error(err)});
+		}
+		
+
+		//write beds if present
+		if (currentBeds.length > 0){
+			currentBeds.forEach(el=>{
+				let content = "beds(" + el.BedsAvailable + ", " 
+										+ el.Specialty + ", " + el.Day + "). ";
+								
+				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+					content, {'flag': 'a'}, err => {console.error(err)});
+			})
+
+		}
+
+		console.log(typeof mss," ",mss)
+		console.log(typeof time," ",time)
+		//write mss
+		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+					mss[0], {'flag': 'a'}, err => {console.error(err)});
+		
+				
+		//write time
+		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
+					time, {'flag': 'a'}, err => {console.error(err)});
+		console.log(clingoIn.length," ",clingoOut.length," ",remain.length)
+
+		runClingo(encoding, input, output, res).then((result) => {
+			console.log("Valore ritornato:", result);
+			currentBeds = result.beds
+			currentOut = result.clingoOUT
+			
+		})
+	}
 }
 
 function ComputeNextWeeks(value,db){
