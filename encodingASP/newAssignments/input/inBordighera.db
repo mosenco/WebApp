@@ -3,6 +3,34 @@ mss("SALA_B", 1, 1). mss("SALA_B", 1, 2). mss("SALA_B", 1, 3). mss("SALA_B", 1, 
 mss("SALA_B", 2, 1). mss("SALA_B", 2, 2). mss("SALA_B", 2, 3). mss("SALA_B", 2, 4). mss("SALA_B", 2, 5). 
 mss("SALA_B", 3, 1). mss("SALA_B", 3, 2). mss("SALA_B", 3, 3). mss("SALA_B", 3, 4). mss("SALA_B", 3, 5). 
 mss("SALA_B", 4, 1). mss("SALA_B", 4, 2). mss("SALA_B", 4, 3). mss("SALA_B", 4, 4). mss("SALA_B", 4, 5). 
+registration(2018452616, 1, 1, "DaySurgery", 27, 0, 0, 0).
+registration(2019116080, 1, 2, "DaySurgery", 37, 0, 0, 0).
+registration(2019073015, 1, 2, "DaySurgery", 33, 0, 0, 0).
+registration(2018296297, 1, 1, "DaySurgery", 23, 0, 0, 0).
+registration(2019055548, 1, 1, "DaySurgery", 27, 0, 0, 0).
+registration(2019116115, 1, 2, "DaySurgery", 41, 0, 0, 0).
+registration(2018402496, 1, 1, "DaySurgery", 34, 0, 0, 0).
+registration(2019099479, 1, 3, "DaySurgery", 55, 0, 0, 0).
+registration(2019085926, 1, 3, "DaySurgery", 57, 0, 0, 0).
+registration(2019061836, 1, 3, "DaySurgery", 70, 0, 0, 0).
+registration(2019099463, 1, 3, "DaySurgery", 48, 0, 0, 0).
+registration(2019118358, 1, 4, "DaySurgery", 45, 0, 0, 0).
+registration(2019118362, 1, 4, "DaySurgery", 40, 0, 0, 0).
+registration(2019099169, 1, 4, "DaySurgery", 45, 0, 0, 0).
+registration(2019112116, 1, 4, "DaySurgery", 69, 0, 0, 0).
+registration(2019092487, 1, 4, "DaySurgery", 32, 0, 0, 0).
+registration(2019122535, 1, 1, "DaySurgery", 34, 0, 0, 0).
+registration(2019079729, 1, 1, "DaySurgery", 37, 0, 0, 0).
+registration(2019116199, 1, 1, "DaySurgery", 48, 0, 0, 0).
+registration(2019124750, 1, 1, "DaySurgery", 30, 0, 0, 0).
+registration(2018448000, 1, 1, "DaySurgery", 42, 0, 0, 0).
+registration(2019098815, 1, 1, "DaySurgery", 54, 0, 0, 0).
+registration(2019114385, 1, 4, "DaySurgery", 65, 0, 0, 0).
+registration(2019098861, 1, 4, "DaySurgery", 32, 0, 0, 0).
+registration(2019098867, 1, 4, "DaySurgery", 65, 0, 0, 0).
+registration(2019103598, 1, 4, "DaySurgery", 22, 0, 0, 0).
+registration(2019118348, 1, 4, "DaySurgery", 20, 0, 0, 0).
+registration(2018493795, 1, 4, "DaySurgery", 60, 0, 0, 0).
 registration(2018454115, 2, 1, "DaySurgery", 28, 0, 0, 0).
 registration(2019072632, 2, 1, "DaySurgery", 45, 0, 0, 0).
 registration(2019059969, 2, 1, "DaySurgery", 52, 0, 0, 0).
@@ -60,22 +88,23 @@ registration(2019143495, 3, 1, "DaySurgery", 56, 0, 0, 0).
 registration(2019063719, 3, 4, "DaySurgery", 85, 0, 0, 0).
 registration(2019114107, 3, 4, "DaySurgery", 75, 0, 0, 0).
 registration(2019063815, 3, 4, "DaySurgery", 35, 0, 0, 0).
-registration(2019285637, 4, 1, "DaySurgery", 54, 0, 0, 0).
-registration(2019234042, 4, 4, "DaySurgery", 55, 0, 0, 0).
-registration(2019326755, 4, 1, "DaySurgery", 50, 0, 0, 0).
-registration(2019217689, 4, 4, "DaySurgery", 37, 0, 0, 0).
-registration(2019390300, 4, 1, "DaySurgery", 30, 0, 0, 0).
-registration(2019397434, 4, 1, "DaySurgery", 26, 0, 0, 0).
-registration(2019242257, 4, 4, "DaySurgery", 30, 0, 0, 0).
-registration(2019147434, 4, 3, "DaySurgery", 76, 0, 0, 0).
-registration(2019138575, 4, 3, "DaySurgery", 40, 0, 0, 0).
-registration(2019416605, 4, 1, "DaySurgery", 25, 0, 0, 0).
-registration(2019374833, 4, 4, "DaySurgery", 65, 0, 0, 0).
-registration(2019251637, 4, 1, "DaySurgery", 43, 0, 0, 0).
-registration(2019304448, 4, 2, "DaySurgery", 56, 0, 0, 0).
+registration(2019409025, 4, 3, "DaySurgery", 60, 0, 0, 0).
+registration(2019141554, 4, 1, "DaySurgery", 35, 0, 0, 0).
+registration(2019243773, 4, 2, "DaySurgery", 58, 0, 0, 0).
+registration(2019406891, 4, 1, "DaySurgery", 27, 0, 0, 0).
+registration(2019496106, 4, 1, "DaySurgery", 35, 0, 0, 0).
+registration(2019400922, 4, 3, "DaySurgery", 75, 0, 0, 0).
+registration(2019235941, 4, 4, "DaySurgery", 25, 0, 0, 0).
+registration(2019281962, 4, 1, "DaySurgery", 20, 0, 0, 0).
+registration(2019161984, 4, 4, "DaySurgery", 59, 0, 0, 0).
+registration(2019332031, 4, 1, "Ambulatoriale", 28, 0, 0, 0).
+registration(2019234013, 4, 1, "DaySurgery", 35, 0, 0, 0).
+registration(2019421941, 4, 1, "DaySurgery", 25, 0, 0, 0).
+registration(2019251649, 4, 4, "DaySurgery", 25, 0, 0, 0).
 #const week_days = 5.
 #const timeDisp = 330.
 #const totRegsP1 = 28.
 #const totRegsP2 = 29.
 #const totRegsP3 = 28.
 #const totRegsP4 = 13.
+INIZIO

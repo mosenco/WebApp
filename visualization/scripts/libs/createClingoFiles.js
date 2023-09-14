@@ -269,6 +269,9 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 						//percio se in value.priority ce priorita2, aggiunge
 						//al array pr definito sopra, un +1 per contarli
 						temp.forEach(value => {
+							if(value.Priority > 4){
+								value.Priority = 4
+							}
 							if (value.Sede == "BORDIGHERA") {
 								regs[0].push(value);
 								countPriorities(value.Priority, 0);

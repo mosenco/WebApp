@@ -59,7 +59,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "1").then((result) => {
 						console.log("Valore ritornato:", result);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						//ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res)
+						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res,input)
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -109,6 +109,7 @@ async function runWebAPP() {
 						input += "inputImperia.db";
 					output += "imperia.txt";
 					imperia = false;
+					console.log("FIRST INTOPU: ",input)
 					runClingo(encoding, input, output, res, "1").then((result) => {
 						console.log("Valore ritornato:", result);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
@@ -137,7 +138,7 @@ async function runWebAPP() {
 
 	http.createServer(app).listen(3000);
 }
-async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res){
+async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res,input){
 	fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
 	"\nINIZIO\n", {'flag': 'a'}, err => {console.error(err)});
 	clingoOut = clingoOut.map(el=>el.substring(0,10))
@@ -154,8 +155,11 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	let currentWeek = 2 //week counter
 
 	//while rawIn=patients not scheduled still present, keep looping
-	while(rawIn.length>0){
-
+	//while(rawIn.length>0){
+	while(currentWeek<4){
+//..\encodingASP\newAssignments\input\inBordighera.db
+//..\encodingASP\newAssignments\input\2inBordighera.db
+	
 		// remaining person from .db files not in the output of ASP encoding
 		remain = remain.filter(el=>{
 			
@@ -168,6 +172,21 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			remain=[...remain,rawIn.shift()]
 		}
 
+		//encoding ASP works if only if priority1 exists.
+		//after we finished all prioirty 1, only priority 2 or higher remains
+		//we need to scale down to 1 the remaining prioirty
+		
+		let diffP = remain[0].Priority-1
+		remain.forEach(el=>{
+			if(el.Priority-diffP > 4){
+				el.Priority=4
+			}else{
+				el.Priority = el.Priority-diffP
+			}
+			
+		
+		})
+	
 		//START WRITING INSIDE THE FILE 
 		//console.log("remain: ",remain.length," ",clingoIn.length)
 		//write Registration
@@ -206,7 +225,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 
 		let newinput = "..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location
 		console.log("newinput: ",newinput)
-		await runClingo(encoding, newinput, output, res,currentWeek).then((result) => {
+		await runClingo(encoding, input, output, res,currentWeek).then((result) => {
 			console.log("Valore ritornato:", result);
 			currentBeds = result.beds
 			currentOut = result.clingoOUT
