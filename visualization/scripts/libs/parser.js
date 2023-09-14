@@ -6,7 +6,7 @@ const fs = require("fs");
  * @param {string} input The path where are located the files to be parsed.
  * @param {string} output The path where store the files containing the parsed data.
  */
-function parseClingoSolution(input, output) {
+function parseClingoSolution(input, output,currentWeek) {
 	let obj={
 		clingoOUT:[],
 		beds:[]
