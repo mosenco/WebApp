@@ -59,12 +59,13 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "1").then((result) => {
 						console.log("Valore ritornato:", result);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res)
+						//ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res)
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
 						// Gestisci eventuali errori qui
 					  });
+					console.log("after first runclingo")
 						
 					
 				} else {
@@ -112,7 +113,8 @@ async function runWebAPP() {
 						console.log("Valore ritornato:", result);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
 						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encoding,output, res)
-					  })
+						
+					})
 					  .catch((error) => {
 						console.error("Errore:", error);
 						// Gestisci eventuali errori qui
@@ -135,7 +137,7 @@ async function runWebAPP() {
 
 	http.createServer(app).listen(3000);
 }
-function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res){
+async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res){
 	fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
 	"\nINIZIO\n", {'flag': 'a'}, err => {console.error(err)});
 	clingoOut = clingoOut.map(el=>el.substring(0,10))
@@ -160,7 +162,7 @@ function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, locatio
 			return !currentOut.includes(el.Nosologico)
 			}
 		)
-		
+		console.log(currentOut," ",remain.length)
 		//fill the remain with new person till i reach the length of the original .db length
 		while(remain.length <= clingoIn.length && rawIn.length > 0){
 			remain=[...remain,rawIn.shift()]
@@ -200,10 +202,11 @@ function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, locatio
 		//write time
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 					time, {'flag': 'a'}, err => {console.error(err)});
-		console.log(clingoIn.length," ",clingoOut.length," ",remain.length)
+		
 
 		let newinput = "..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location
-		runClingo(encoding, newinput, output, res,currentWeek).then((result) => {
+		console.log("newinput: ",newinput)
+		await runClingo(encoding, newinput, output, res,currentWeek).then((result) => {
 			console.log("Valore ritornato:", result);
 			currentBeds = result.beds
 			currentOut = result.clingoOUT
@@ -213,6 +216,8 @@ function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, locatio
 		
 	}
 	console.log("exit loop: ",remain.length)
+	res.writeHead(200, {"Content-type": "text/html"});
+	res.end();
 }
 
 function ComputeNextWeeks(value,db){
@@ -306,7 +311,7 @@ function ComputeNextWeeks(value,db){
 function runClingo(encoding, input, output, res, currentWeek) {
 	return new Promise((resolve,reject)=>{
 
-	console.log("started  runclingo")
+	console.log("started  runclingo: ",currentWeek)
 	const spawn = require("child_process").spawn;
 	const shell = spawn("powershell.exe", 
 			[clingo + clingoArgs + encoding + " " + input]);
@@ -336,8 +341,8 @@ function runClingo(encoding, input, output, res, currentWeek) {
 		console.log("prima di parser")
 		parserOUT=parser.parseClingoSolution(fileIN, fileOUT,currentWeek);
 		resolve(parserOUT);
-		res.writeHead(200, {"Content-type": "text/html"});
-		res.end();
+		//res.writeHead(200, {"Content-type": "text/html"});
+		//res.end();
 
 		
 	});

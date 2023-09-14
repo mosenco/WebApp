@@ -343,6 +343,7 @@ function writeAdditionalRegs() {
 		/*
 		 * Computation of priorities for the additional reistrations f
 		 */
+		const date4 = new Date(2019, 2, 24).getTime(); // 24 febbraio 2019
 		let dataInt = interventi[i].DataIntervento.getTime();
 		let priority = 1;
 
@@ -354,9 +355,15 @@ function writeAdditionalRegs() {
 				dataInt <= new Date(2019, 2, 24).getTime())
 			priority = 3;
 
-		if (dataInt >= new Date(2019, 2, 25).getTime())
-			priority = 4;
+		//if (dataInt >= new Date(2019, 2, 25).getTime())
+		//	priority = 4;
 
+		if (dataInt >= new Date(2019, 2, 25).getTime()){
+			let weeksPassed = Math.floor((dataInt - date4) / (7 * 24 * 60 * 60 * 1000)); // Calcola il numero di settimane trascorse dopo il 24 febbraio 2019
+			priority= Math.max(4, 4 + weeksPassed); // La priorità sarà almeno 4 e aumenta con il passare delle settimane.
+		  }
+		  //this code check that the priority is defined for the whole week perfectly.
+		console.log("CHECK: ",interventi[i].Nosologico," ",priority," ",interventi[i].DataIntervento)
 		content = interventi[i].Nosologico + "," + priority + "," + array[0] + "," + array[1] 
 					+ "," + reg + "," + time + "," + ricov + "," + dayIN + "," + dayOUT + "\n";
 		fs.writeFileSync(pathOUT + "additionalRegs.csv", content, {'flag': 'a'}, err => {console.error(err)});
