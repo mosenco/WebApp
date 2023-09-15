@@ -1,25 +1,25 @@
 
 registration(2019271059, 1, 1, "DaySurgery", 50, 0, 0, 0).
-registration(2019332296, 1, 1, "DaySurgery", 42, 0, 0, 0).
 registration(2019326755, 1, 1, "DaySurgery", 50, 0, 0, 0).
+registration(2019294894, 1, 4, "DaySurgery", 28, 0, 0, 0).
 registration(2019366289, 1, 4, "DaySurgery", 39, 0, 0, 0).
-registration(2019339281, 1, 1, "DaySurgery", 41, 0, 0, 0).
 registration(2019326936, 1, 1, "DaySurgery", 50, 0, 0, 0).
+registration(2019306048, 1, 1, "DaySurgery", 53, 0, 0, 0).
 registration(2019325310, 1, 1, "DaySurgery", 91, 0, 0, 0).
 registration(2019339296, 1, 1, "DaySurgery", 45, 0, 0, 0).
 registration(2019094554, 1, 1, "DaySurgery", 60, 0, 0, 0).
-registration(2019314985, 1, 1, "DaySurgery", 45, 0, 0, 0).
 registration(2019371181, 1, 2, "DaySurgery", 50, 0, 0, 0).
 registration(2019328264, 1, 2, "DaySurgery", 60, 0, 0, 0).
 registration(2019371251, 1, 2, "DaySurgery", 55, 0, 0, 0).
 registration(2019283527, 1, 2, "DaySurgery", 90, 0, 0, 0).
-registration(2019324785, 1, 1, "DaySurgery", 40, 0, 0, 0).
+registration(2019371174, 1, 1, "DaySurgery", 35, 0, 0, 0).
 registration(2019365841, 1, 1, "DaySurgery", 40, 0, 0, 0).
 registration(2019386193, 1, 1, "DaySurgery", 45, 0, 0, 0).
+registration(2019334270, 1, 1, "DaySurgery", 35, 0, 0, 0).
 registration(2019327107, 1, 1, "DaySurgery", 45, 0, 0, 0).
 registration(2019309632, 1, 1, "DaySurgery", 45, 0, 0, 0).
-registration(2019332316, 1, 1, "DaySurgery", 40, 0, 0, 0).
-registration(2019338035, 2, 4, "DaySurgery", 40, 0, 0, 0).
+registration(2019377157, 1, 4, "DaySurgery", 50, 0, 0, 0).
+registration(2019338035, 1, 4, "DaySurgery", 40, 0, 0, 0).
 registration(2019377173, 2, 4, "DaySurgery", 35, 0, 0, 0).
 registration(2019332351, 2, 4, "DaySurgery", 28, 0, 0, 0).
 registration(2019371501, 2, 4, "DaySurgery", 25, 0, 0, 0).
@@ -104,7 +104,7 @@ mss("SALA_B", 3, 1). mss("SALA_B", 3, 2). mss("SALA_B", 3, 3). mss("SALA_B", 3, 
 mss("SALA_B", 4, 1). mss("SALA_B", 4, 2). mss("SALA_B", 4, 3). mss("SALA_B", 4, 4). mss("SALA_B", 4, 5). 
 #const week_days = 5.
 #const timeDisp = 330.
-#const totRegsP1 = 20.
-#const totRegsP2 = 38.
+#const totRegsP1 = 21.
+#const totRegsP2 = 37.
 #const totRegsP3 = 41.
 #const totRegsP4 = 0.

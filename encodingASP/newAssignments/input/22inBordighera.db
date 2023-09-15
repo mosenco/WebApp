@@ -1,21 +1,20 @@
 
-registration(2019135163, 1, 1, "DaySurgery", 42, 0, 0, 0).
+registration(2019301811, 1, 1, "DaySurgery", 54, 0, 0, 0).
 registration(2019384510, 1, 1, "DaySurgery", 70, 0, 0, 0).
 registration(2019324788, 1, 1, "DaySurgery", 74, 0, 0, 0).
+registration(2019416580, 1, 1, "DaySurgery", 37, 0, 0, 0).
 registration(2019419705, 1, 3, "DaySurgery", 71, 0, 0, 0).
-registration(2019400973, 1, 3, "DaySurgery", 55, 0, 0, 0).
 registration(2019301890, 1, 3, "DaySurgery", 49, 0, 0, 0).
-registration(2019425865, 1, 4, "DaySurgery", 30, 0, 0, 0).
-registration(2019425791, 1, 4, "DaySurgery", 54, 0, 0, 0).
+registration(2019414660, 1, 4, "DaySurgery", 48, 0, 0, 0).
 registration(2019403125, 1, 4, "DaySurgery", 27, 0, 0, 0).
 registration(2019390304, 1, 1, "DaySurgery", 40, 0, 0, 0).
 registration(2019424589, 1, 1, "DaySurgery", 45, 0, 0, 0).
-registration(2019406891, 1, 1, "DaySurgery", 27, 0, 0, 0).
-registration(2019307876, 1, 1, "DaySurgery", 45, 0, 0, 0).
 registration(2019406855, 1, 1, "DaySurgery", 55, 0, 0, 0).
 registration(2019410497, 1, 1, "DaySurgery", 50, 0, 0, 0).
+registration(2019376899, 1, 1, "DaySurgery", 40, 0, 0, 0).
 registration(2019386172, 1, 1, "DaySurgery", 60, 0, 0, 0).
 registration(2019377154, 1, 1, "DaySurgery", 45, 0, 0, 0).
+registration(2019302003, 1, 1, "DaySurgery", 39, 0, 0, 0).
 registration(2019438700, 1, 3, "DaySurgery", 68, 0, 0, 0).
 registration(2019419700, 1, 3, "DaySurgery", 58, 0, 0, 0).
 registration(2019438683, 1, 3, "DaySurgery", 65, 0, 0, 0).
@@ -24,6 +23,7 @@ registration(2019418051, 1, 4, "DaySurgery", 70, 0, 0, 0).
 registration(2019377204, 2, 4, "DaySurgery", 40, 0, 0, 0).
 registration(2019425686, 2, 4, "DaySurgery", 35, 0, 0, 0).
 registration(2019387971, 2, 1, "DaySurgery", 47, 0, 0, 0).
+registration(2019438872, 2, 1, "DaySurgery", 18, 0, 0, 0).
 registration(2019251605, 2, 1, "DaySurgery", 53, 0, 0, 0).
 registration(2017441353, 2, 1, "DaySurgery", 63, 0, 0, 0).
 registration(2019399290, 2, 1, "DaySurgery", 34, 0, 0, 0).
@@ -104,7 +104,7 @@ mss("SALA_B", 3, 1). mss("SALA_B", 3, 2). mss("SALA_B", 3, 3). mss("SALA_B", 3, 
 mss("SALA_B", 4, 1). mss("SALA_B", 4, 2). mss("SALA_B", 4, 3). mss("SALA_B", 4, 4). mss("SALA_B", 4, 5). 
 #const week_days = 5.
 #const timeDisp = 330.
-#const totRegsP1 = 22.
-#const totRegsP2 = 38.
+#const totRegsP1 = 21.
+#const totRegsP2 = 39.
 #const totRegsP3 = 39.
 #const totRegsP4 = 0.
