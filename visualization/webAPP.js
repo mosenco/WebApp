@@ -159,7 +159,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	//while(currentWeek<4){
 //..\encodingASP\newAssignments\input\inBordighera.db
 //..\encodingASP\newAssignments\input\2inBordighera.db
-	
+		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, "", {"flag": "w"});
 		// remaining person from .db files not in the output of ASP encoding
 		remain = remain.filter(el=>{
 			
