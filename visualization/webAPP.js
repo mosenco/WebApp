@@ -139,8 +139,31 @@ async function runWebAPP() {
 	http.createServer(app).listen(3000);
 }
 async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res,input){
-	//fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" + location, 
-	//"\nINIZIO\n", {'flag': 'a'}, err => {console.error(err)});
+	
+	//if next weeks already computed, dont execute it again
+	if((fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inBordighera.db") && location=="inBordighera.db") ||
+	(fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inImperia.db") && location=="inImperia.db") ||
+	(fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inSanremo.db") && location=="inSanremo.db")){
+		let countFiles=0
+		fs.readdir("..\\encodingASP\\newAssignments\\input\\", (err, files) => {
+			files.forEach((file) => {
+
+				if(file.includes(location)){
+					countFiles++
+				}
+			})
+	
+			res.writeHead(200, {"Content-type": "text/html"});
+			res.end(countFiles.toString());
+			console.log("already computed for: ",location)
+			return;
+
+		})
+		
+	}
+
+
+
 	clingoOut = clingoOut.map(el=>el.substring(0,10))
 	/*
 	clingoIn.forEach(el=>{
@@ -266,7 +289,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	}
 	console.log("exit loop: ",remain.length)
 	res.writeHead(200, {"Content-type": "text/html"});
-	res.end();
+	res.end(currentWeek.toString());
 }
 
 function ComputeNextWeeks(value,db){

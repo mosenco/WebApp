@@ -44,6 +44,7 @@ xmlhttp.onreadystatechange = () => {
 		//console.log(xmlhttp.status);
 
 		if (xmlhttp.status == 200) {
+			console.log("RESPOSTA XML: ",xmlhttp.responseText)
 			xmlResponse = xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
 			let file = "";
 			let fileB = "";
