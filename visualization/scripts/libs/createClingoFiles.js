@@ -391,7 +391,7 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 								if (vector[i].Priority == "3")
 									pri[index].count3++;
 
-								if (vector[i].Priority == "4")
+								if (vector[i].Priority >= "4")
 									pri[index].count4++;
 
 								let content = "\nregistration(" + vector[i].Nosologico + ", " 
@@ -451,7 +451,15 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 						r.on("end", () => {
 							let i = 0;
 							console.log("pri: ",pri);
+							
 							time.forEach(value => {
+								if(value.Sede == "BORDIGHERA"){
+									myobj[9]=value
+								}else if(value.Sede == "IMPERIA"){
+									myobj[10]=value
+								}else if(value.Sede == "SANREMO"){
+									myobj[11]=value
+								}
 								value.RegsP2 = pri[i].count2;
 								value.RegsP3 = pri[i].count3;
 								value.RegsP4 = pri[i].count4;
@@ -463,13 +471,7 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 								content += "\n#const totRegsP2 = " + value.RegsP2 + ".";
 								content += "\n#const totRegsP3 = " + value.RegsP3 + ".";
 								content += "\n#const totRegsP4 = " + value.RegsP4 + ".";
-								if(value.Sede == "BORDIGHERA"){
-									myobj[9]+=content
-								}else if(value.Sede == "IMPERIA"){
-									myobj[10]+=content
-								}else if(value.Sede == "SANREMO"){
-									myobj[11]+=content
-								}
+								
 								
 								fs.writeFileSync(pathDB + selectFile(value.Sede), 
 									content, {'flag': 'a'}, err => {console.error(err)});
