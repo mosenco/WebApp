@@ -31,6 +31,11 @@ let xScale = d3.scaleBand()
 let yScale = d3.scaleLinear()
 				.range([(height - padY), 0]);
 
+let bpagesOPT=1
+let ipagesOPT=1
+let spagesOPT=1
+let currentPage=1
+
 let xmlResponse;
 let xmlhttp = new XMLHttpRequest();
 xmlhttp.open("GET", "1");
@@ -44,7 +49,26 @@ xmlhttp.onreadystatechange = () => {
 		//console.log(xmlhttp.status);
 
 		if (xmlhttp.status == 200) {
-			console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
+			//console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
+			let myobj = JSON.parse(xmlhttp.responseText);
+			if(myobj.type != "null"){
+				if(myobj.type == "optimized"){
+					switch(myobj.place){
+						case "inBordighera.db":
+							bpagesOPT = myobj.num
+							break;
+						case "inImperia.db":
+							ipagesOPT = myobj.num
+							break;
+						case "inSanremo.db":
+							spagesOPT = myobj.num
+							break;
+						default:
+							console.log("ISSUE IN READING RESPONSE TYPE: ",myobj.place)
+							break;
+					}	
+				}
+			}
 			xmlResponse = xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
 			let file = "";
 			let fileB = "";
@@ -920,7 +944,7 @@ function selectPlace(value) {
 function optimization() {
 	const select = document.getElementById("selection");
 	const value = select.options[select.selectedIndex].value;
-
+	console.log("optimization: ",value)
 	xmlhttp.open("GET", value);
 	xmlhttp.send();
 }

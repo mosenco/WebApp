@@ -71,7 +71,7 @@ async function runWebAPP() {
 					
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
-					res.end();
+					res.end(JSON.stringify({type:"null"}));
 				}
 				break;
 
@@ -142,21 +142,21 @@ async function runWebAPP() {
 async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res,input){
 	
 	//if next weeks already computed, dont execute it again
-	if((fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inBordighera.db") && location=="inBordighera.db") ||
-	(fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inImperia.db") && location=="inImperia.db") ||
-	(fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inSanremo.db") && location=="inSanremo.db")){
+	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
+	(fs.existsSync(".\\dati\\2ImperiaOPT.db") && location=="inImperia.db") ||
+	(fs.existsSync(".\\dati\\2SanremoOPT.db") && location=="inSanremo.db")){
 		let countFiles=0
 		
-		let files = await fsp.readdir("..\\encodingASP\\newAssignments\\input\\")
+		let files = await fsp.readdir(".\\dati\\")
 		files.forEach((file) => {
 
-			if(file.includes(location)){
+			if(file.includes("bordigheraOPT.csv")){
 				countFiles++
 			}
 		})
 
 		res.writeHead(200, {"Content-type": "text/html"});
-		res.end(JSON.stringify({[location]:countFiles.toString()}));
+		res.end(JSON.stringify({type:"optimized",place:location,num:countFiles.toString()}));
 		console.log("already computed for: ",location)
 		return;
 	}
@@ -288,7 +288,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	}
 	console.log("exit loop: ",remain.length)
 	res.writeHead(200, {"Content-type": "text/html"});
-	res.end(currentWeek.toString());
+	res.end(JSON.stringify({type:"optimized",place:location,num:currentWeek.toString()}));
 }
 
 function ComputeNextWeeks(value,db){
