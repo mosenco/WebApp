@@ -1,17 +1,17 @@
 
+registration(2019217765, 1, 1, "DaySurgery", 42, 0, 0, 0).
+registration(2019222001, 1, 1, "DaySurgery", 46, 0, 0, 0).
 registration(2019217768, 1, 1, "DaySurgery", 56, 0, 0, 0).
 registration(2019217907, 1, 1, "DaySurgery", 42, 0, 0, 0).
 registration(2019213530, 1, 1, "DaySurgery", 45, 0, 0, 0).
-registration(2019209578, 1, 1, "DaySurgery", 46, 0, 0, 0).
 registration(2019185886, 1, 1, "DaySurgery", 55, 0, 0, 0).
 registration(2019133221, 1, 1, "DaySurgery", 48, 0, 0, 0).
-registration(2019166252, 1, 1, "DaySurgery", 35, 0, 0, 0).
 registration(2019194109, 1, 4, "DaySurgery", 40, 0, 0, 0).
 registration(2019116229, 1, 1, "DaySurgery", 83, 0, 0, 0).
-registration(2019157799, 1, 4, "DaySurgery", 50, 0, 0, 0).
+registration(2019195810, 1, 4, "DaySurgery", 37, 0, 0, 0).
 registration(2019151825, 1, 4, "DaySurgery", 57, 0, 0, 0).
-registration(2019230166, 1, 2, "DaySurgery", 45, 0, 0, 0).
-registration(2019180639, 1, 1, "DaySurgery", 45, 0, 0, 0).
+registration(2019194054, 1, 4, "DaySurgery", 58, 0, 0, 0).
+registration(2019221458, 1, 2, "DaySurgery", 40, 0, 0, 0).
 registration(2019209851, 1, 1, "DaySurgery", 45, 0, 0, 0).
 registration(2019194053, 1, 1, "DaySurgery", 80, 0, 0, 0).
 registration(2019235955, 1, 3, "DaySurgery", 70, 0, 0, 0).
@@ -20,7 +20,8 @@ registration(2019158147, 1, 3, "DaySurgery", 57, 0, 0, 0).
 registration(2019170052, 1, 3, "DaySurgery", 70, 0, 0, 0).
 registration(2019193973, 1, 4, "DaySurgery", 45, 0, 0, 0).
 registration(2019141025, 1, 4, "DaySurgery", 67, 0, 0, 0).
-registration(2019141621, 1, 4, "DaySurgery", 42, 0, 0, 0).
+registration(2019176851, 1, 4, "DaySurgery", 30, 0, 0, 0).
+registration(2019141621, 2, 4, "DaySurgery", 42, 0, 0, 0).
 registration(2019193990, 2, 4, "DaySurgery", 35, 0, 0, 0).
 registration(2019223440, 2, 1, "DaySurgery", 30, 0, 0, 0).
 registration(2019193933, 2, 1, "DaySurgery", 59, 0, 0, 0).
@@ -60,7 +61,6 @@ registration(2019183750, 2, 1, "DaySurgery", 34, 0, 0, 0).
 registration(2019239979, 2, 4, "DaySurgery", 42, 0, 0, 0).
 registration(2019084018, 2, 1, "DaySurgery", 48, 0, 0, 0).
 registration(2019225712, 2, 4, "DaySurgery", 49, 0, 0, 0).
-registration(2019232219, 2, 4, "DaySurgery", 22, 0, 0, 0).
 registration(2019162679, 2, 4, "DaySurgery", 42, 0, 0, 0).
 registration(2018501955, 2, 1, "DaySurgery", 28, 0, 0, 0).
 registration(2019172654, 2, 4, "DaySurgery", 60, 0, 0, 0).

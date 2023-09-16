@@ -4,6 +4,7 @@ const url = require("url");
 const express = require("express");
 
 const fs = require("fs");
+const fsp = fs.promises;
 
 const clingoFiles = require(".\\scripts\\libs\\createClingoFiles.js");
 const parser = require(".\\scripts\\libs\\parser.js");
@@ -145,24 +146,22 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	(fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inImperia.db") && location=="inImperia.db") ||
 	(fs.existsSync("..\\encodingASP\\newAssignments\\input\\2inSanremo.db") && location=="inSanremo.db")){
 		let countFiles=0
-		fs.readdir("..\\encodingASP\\newAssignments\\input\\", (err, files) => {
-			files.forEach((file) => {
-
-				if(file.includes(location)){
-					countFiles++
-				}
-			})
-	
-			res.writeHead(200, {"Content-type": "text/html"});
-			res.end(countFiles.toString());
-			console.log("already computed for: ",location)
-			return;
-
-		})
 		
+		let files = await fsp.readdir("..\\encodingASP\\newAssignments\\input\\")
+		files.forEach((file) => {
+
+			if(file.includes(location)){
+				countFiles++
+			}
+		})
+
+		res.writeHead(200, {"Content-type": "text/html"});
+		res.end(JSON.stringify({[location]:countFiles.toString()}));
+		console.log("already computed for: ",location)
+		return;
 	}
 
-
+	console.log("/// start computing loop for next weeks ///")
 
 	clingoOut = clingoOut.map(el=>el.substring(0,10))
 	/*
