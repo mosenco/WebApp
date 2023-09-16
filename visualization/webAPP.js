@@ -96,7 +96,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "").then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encoding, output, res)
+						//ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encoding, output, res)
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -215,6 +215,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 
 		//also during this shift, we count the number of registration based on priority
 		//because its used by the time.csv 
+
+		//SETTARE PRIORITA A 4
 		let pri1=0
 		let pri2=0
 		let pri3=0

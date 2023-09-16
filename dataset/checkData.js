@@ -363,7 +363,7 @@ function writeAdditionalRegs() {
 			priority= Math.max(4, 4 + weeksPassed); // La priorità sarà almeno 4 e aumenta con il passare delle settimane.
 		  }
 		  //this code check that the priority is defined for the whole week perfectly.
-		console.log("CHECK: ",interventi[i].Nosologico," ",priority," ",interventi[i].DataIntervento)
+		
 		content = interventi[i].Nosologico + "," + priority + "," + array[0] + "," + array[1] 
 					+ "," + reg + "," + time + "," + ricov + "," + dayIN + "," + dayOUT + "\n";
 		fs.writeFileSync(pathOUT + "additionalRegs.csv", content, {'flag': 'a'}, err => {console.error(err)});
@@ -418,6 +418,7 @@ function writeBeds() {
 	let content = "Sede,Specialty,Posti,Day\n";
 	fs.writeFileSync(pathOUT + "beds.csv", content, {'flag': 'w'});
 
+	/*
 	let date = [new Date(2019, 1, 25)];
 	let day1 = 26
 	let day2 = 1;
@@ -425,7 +426,7 @@ function writeBeds() {
 	while (true) {
 
 		if (date[d].getTime() 
-				== new Date(2019, 2, 8).getTime())
+				== new Date(2019, 2, 10).getTime())
 			break;
 
 		if (date[d].getTime() 
@@ -436,7 +437,16 @@ function writeBeds() {
 
 		d++
 	}
-	
+	*/
+	let date = [new Date(2019,1,25)];
+	let currentDate = new Date(2019,1,25)
+
+	while(currentDate < new Date(2019,2,23)){
+		currentDate.setDate(currentDate.getDate()+1)
+		date.push(currentDate)
+	}
+	console.log("all dates: ",date)
+
 	for (let i = 0; i < beds.length; i++) {
 		let posti = beds[i].PostiLetto;
 		let day = -8;
@@ -444,6 +454,7 @@ function writeBeds() {
 			let count1 = 0;
 			let count2 = 0;
 			for (let j = 0; j < hospitalized.length; j++) {
+				
 				if (beds[i].Specialty == hospitalized[j].Specialty) {
 					if (hospitalized[j].DataIngresso.getTime() == date[d].getTime())
 						count1++;

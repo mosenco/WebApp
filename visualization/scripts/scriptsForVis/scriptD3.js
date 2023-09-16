@@ -58,6 +58,7 @@ xmlhttp.onreadystatechange = () => {
 
 		if (xmlhttp.status == 200) {
 			//console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
+			/*
 			let myobj = JSON.parse(xmlhttp.responseText);
 			switch(myobj[0].place){
 				case "inBordighera.db":
@@ -75,7 +76,7 @@ xmlhttp.onreadystatechange = () => {
 				default:
 					console.log("ISSUE IN READING RESPONSE TYPE: ",myobj.place)
 					break;
-			}	
+			}	*/
 
 		
 			xmlResponse = xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);

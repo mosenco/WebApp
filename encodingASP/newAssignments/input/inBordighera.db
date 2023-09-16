@@ -88,19 +88,19 @@ registration(2019143495, 3, 1, "DaySurgery", 56, 0, 0, 0).
 registration(2019063719, 3, 4, "DaySurgery", 85, 0, 0, 0).
 registration(2019114107, 3, 4, "DaySurgery", 75, 0, 0, 0).
 registration(2019063815, 3, 4, "DaySurgery", 35, 0, 0, 0).
-registration(2019403095, 4, 1, "DaySurgery", 22, 0, 0, 0).
-registration(2019289773, 4, 1, "DaySurgery", 65, 0, 0, 0).
-registration(2019374877, 4, 1, "DaySurgery", 47, 0, 0, 0).
-registration(2019225399, 4, 1, "DaySurgery", 31, 0, 0, 0).
-registration(2019291379, 4, 2, "Ambulatoriale", 46, 0, 0, 0).
-registration(2019223516, 4, 4, "DaySurgery", 75, 0, 0, 0).
-registration(2019107422, 4, 1, "DaySurgery", 40, 0, 0, 0).
-registration(2019332333, 4, 4, "DaySurgery", 27, 0, 0, 0).
+registration(2019180896, 4, 1, "DaySurgery", 25, 0, 0, 0).
+registration(2019288182, 4, 4, "DaySurgery", 55, 0, 0, 0).
+registration(2019474022, 4, 1, "DaySurgery", 40, 0, 0, 0).
+registration(2019147470, 4, 3, "DaySurgery", 61, 0, 0, 0).
+registration(2019225695, 4, 2, "DaySurgery", 30, 0, 0, 0).
+registration(2018501823, 4, 1, "DaySurgery", 41, 0, 0, 0).
+registration(2019294885, 4, 1, "DaySurgery", 24, 0, 0, 0).
+registration(2019372888, 4, 1, "DaySurgery", 35, 0, 0, 0).
 registration(2019278723, 4, 1, "DaySurgery", 30, 0, 0, 0).
-registration(2019259283, 4, 1, "DaySurgery", 32, 0, 0, 0).
-registration(2019269230, 4, 1, "DaySurgery", 23, 0, 0, 0).
-registration(2019317053, 4, 1, "DaySurgery", 45, 0, 0, 0).
-registration(2019247821, 4, 1, "DaySurgery", 43, 0, 0, 0).
+registration(2019400922, 4, 3, "DaySurgery", 75, 0, 0, 0).
+registration(2019297025, 4, 4, "DaySurgery", 35, 0, 0, 0).
+registration(2019259680, 4, 1, "DaySurgery", 35, 0, 0, 0).
+registration(2019374916, 4, 1, "DaySurgery", 60, 0, 0, 0).
 #const week_days = 5.
 #const timeDisp = 330.
 #const totRegsP1 = 28.
