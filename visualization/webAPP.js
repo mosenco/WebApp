@@ -40,8 +40,9 @@ async function runWebAPP() {
 	const encoding = files.Encoding;
 	const db = files.DB;
 	// data sarebbe myobj
-	//let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime]
+	//let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime,ibed,sbed]
 	const data = files.DATA;
+
 	console.log(encoding);
 	console.log("\n");
 	console.log(db);
@@ -68,7 +69,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "").then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res,input)
+						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res,["null"])
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -96,7 +97,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "").then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						//ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encoding, output, res)
+						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encoding, output, res, data[13])
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -122,7 +123,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "").then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encoding,output, res)
+						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encoding,output, res,data[12])
 						
 					})
 					  .catch((error) => {
@@ -147,7 +148,7 @@ async function runWebAPP() {
 
 	http.createServer(app).listen(3000);
 }
-async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res,input){
+async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res, beds){
 	
 	//if next weeks already computed, dont execute it again
 	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
@@ -265,6 +266,33 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		console.log("beds:",currentBeds.length," ",bedsOut.length," w:",currentWeek)
 		//write beds if present
 		if (currentBeds.length > 0){
+			currentBeds = currentBeds.filter(el=>el.Day > -1)
+			console.log("currentbeds solo positivo:",currentBeds)
+			currentBeds.forEach(el=>{
+				//i subtract -8 ti set the day 1 to 7 --> -7 to -1
+				//because the current week computed is the previous week for the next week
+				let content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
+										+ el.Specialty + ", " + (parseInt(el.Day)-8) + "). ";
+				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+				content, {'flag': 'a'}, err => {console.error(err)});
+			})
+			beds.forEach(el=>{
+				//after the first week that goes from 1 to 7 from the beds.csv 
+				//the second week goes from 8 to 14
+				//the third week goes from 15 to 21
+				//so i just substract 7 multiply per number of weeks passed from the first week
+				if(el.Day-(7*currentWeek)>0 && el.Day-(7*currentWeek)<8){
+					let content = "beds(" + el.Posti + ", " 
+										+ el.Specialty + ", " + (el.Day-(7*currentWeek)) + "). ";
+					fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+					content, {'flag': 'a'}, err => {console.error(err)});
+
+				}
+				
+			})
+
+
+
 			currentBeds.forEach(el=>{
 				let content = "beds(" + el.BedsAvailable + ", " 
 										+ el.Specialty + ", " + el.Day + "). ";

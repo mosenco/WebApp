@@ -29,7 +29,10 @@ function getFiles(pathIN, pathClingoFiles, OPT) {
 		let itime=[""]
 		let stime=[""]
 
-		let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime]
+		let ibed=[]
+		let sbed=[]
+
+		let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime,ibed,sbed]
 		let obj = {
 				"Encoding" : "",
 				"DB" : "",
@@ -500,12 +503,27 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 					const read = readCSV(temp, pathIN + file);
 					read.on("end", () => {
 						temp.forEach(value => {
+							//break doesnt exist in foreach so i just run through it..
+							if(value.Day < 8){
+								console.log("lower: ",value)
+								let content = "beds(" + value.Posti + ", " 
+										+ value.Specialty + ", " + value.Day + "). ";
+								
+								fs.writeFileSync(pathDB + selectFile(value.Sede), 
+									content, {'flag': 'a'}, err => {console.error(err)});
+							}else{
+								console.log("higher: ",value)
+								if(value.Sede == "SANREMO"){
+									myobj[13]=[...myobj[13],value]
+									console.log(myobj[13])
+								}else if(value.Sede == "IMPERIA"){
+									myobj[12]=[...myobj[12],value]
+								}else{
+									console.log("ERRORE LETTURA SEDE PER LETTI")
+								}
 
-							let content = "beds(" + value.Posti + ", " 
-									+ value.Specialty + ", " + value.Day + "). ";
-							
-							fs.writeFileSync(pathDB + selectFile(value.Sede), 
-								content, {'flag': 'a'}, err => {console.error(err)});
+								
+							}
 						});
 					});
 
