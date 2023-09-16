@@ -8,6 +8,7 @@ const fsp = fs.promises;
 
 const clingoFiles = require(".\\scripts\\libs\\createClingoFiles.js");
 const parser = require(".\\scripts\\libs\\parser.js");
+const { count } = require("console");
 const clingo = "..\\encodingASP\\clingo.exe";
 const clingoArgs = " --time-limit=10 --quiet=1 ";
 
@@ -20,6 +21,13 @@ let sanremo = true;
 let imperia = true;
 
 const RICOV = true;
+
+let bpagesOPT=1
+let bpages=1
+let ipagesOPT=1
+let ipages=1
+let spagesOPT=1
+let spages=1
 
 runWebAPP();
 
@@ -58,7 +66,7 @@ async function runWebAPP() {
 					output += "bordighera.txt";
 					bordighera = false;
 					runClingo(encoding, input, output, res, "").then((result) => {
-						console.log("Valore ritornato:", result);
+						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
 						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res,input)
 					  })
@@ -71,7 +79,7 @@ async function runWebAPP() {
 					
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
-					res.end(JSON.stringify({type:"null"}));
+					res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
 				}
 				break;
 
@@ -86,7 +94,7 @@ async function runWebAPP() {
 					output += "sanremo.txt";
 					sanremo = false;
 					runClingo(encoding, input, output, res, "").then((result) => {
-						console.log("Valore ritornato:", result);
+						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
 						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encoding, output, res)
 					  })
@@ -96,7 +104,7 @@ async function runWebAPP() {
 					  });
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
-					res.end();
+					res.end(JSON.stringify([{type:"classic",place:"inSanremo.db",num:spages.toString()},{type:"optimized",place:"inSanremo.db",num:spagesOPT.toString()}]));
 				}
 				break;
 
@@ -112,7 +120,7 @@ async function runWebAPP() {
 					imperia = false;
 					console.log("FIRST INTOPU: ",input)
 					runClingo(encoding, input, output, res, "").then((result) => {
-						console.log("Valore ritornato:", result);
+						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
 						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encoding,output, res)
 						
@@ -123,7 +131,7 @@ async function runWebAPP() {
 					  });
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
-					res.end();
+					res.end(JSON.stringify([{type:"classic",place:"inImperia.db",num:ipages.toString()},{type:"optimized",place:"inImperia.db",num:ipagesOPT.toString()}]));
 				}
 				break;
 
@@ -144,19 +152,26 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	//if next weeks already computed, dont execute it again
 	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
 	(fs.existsSync(".\\dati\\2ImperiaOPT.db") && location=="inImperia.db") ||
-	(fs.existsSync(".\\dati\\2SanremoOPT.db") && location=="inSanremo.db")){
+	(fs.existsSync(".\\dati\\2pSanremoOPT.db") && location=="inSanremo.db")){
 		let countFiles=0
 		
 		let files = await fsp.readdir(".\\dati\\")
 		files.forEach((file) => {
-
 			if(file.includes("bordigheraOPT.csv")){
 				countFiles++
 			}
 		})
 
+		if(location=="inBordighera.db"){
+			bpagesOPT=countFiles
+		}else if(location=="inImperia.db"){
+			ipagesOPT=countFiles
+		}else if(location=="inSanremo.db"){
+			spagesOPT=countFiles
+		}
+
 		res.writeHead(200, {"Content-type": "text/html"});
-		res.end(JSON.stringify({type:"optimized",place:location,num:countFiles.toString()}));
+		res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
 		console.log("already computed for: ",location)
 		return;
 	}
@@ -188,7 +203,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			return !currentOut.includes(el.Nosologico)
 			}
 		)
-		console.log(currentOut," ",remain.length)
+		//console.log(currentOut," ",remain.length)
 		//fill the remain with new person till i reach the length of the original .db length
 		while(remain.length <= clingoIn.length && rawIn.length > 0){
 			remain=[...remain,rawIn.shift()]
@@ -205,6 +220,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		let pri3=0
 		let pri4=0
 		let diffP = remain[0].Priority-1
+		console.log("prima di shift: ",remain[0].Priority)
 		remain.forEach(el=>{
 			if(el.Priority-diffP > 4){
 				el.Priority=4
@@ -230,7 +246,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		
 		})
 		
-		
+		console.log("dopo di shift: ",remain[0].Priority)
 	
 		//START WRITING INSIDE THE FILE 
 		//console.log("remain: ",remain.length," ",clingoIn.length)
@@ -244,7 +260,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			content, {'flag': 'a'}, err => {console.error(err)});
 		}
 		
-
+		console.log("beds:",currentBeds.length," ",bedsOut.length," w:",currentWeek)
 		//write beds if present
 		if (currentBeds.length > 0){
 			currentBeds.forEach(el=>{
@@ -277,7 +293,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		let newinput = "..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location
 		console.log("newinput: ",newinput)
 		await runClingo(encoding, newinput, output, res,currentWeek).then((result) => {
-			console.log("Valore ritornato:", result);
+			console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 			currentBeds = result.beds
 			currentOut = result.clingoOUT
 			currentOut = currentOut.map(el=>el.substring(0,10))
@@ -287,8 +303,15 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		
 	}
 	console.log("exit loop: ",remain.length)
+	if(location=="inBordighera.db"){
+		bpagesOPT=currentWeek
+	}else if(location=="inImperia.db"){
+		ipagesOPT=currentWeek
+	}else if(location=="inSanremo.db"){
+		spagesOPT=currentWeek
+	}
 	res.writeHead(200, {"Content-type": "text/html"});
-	res.end(JSON.stringify({type:"optimized",place:location,num:currentWeek.toString()}));
+	res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
 }
 
 function ComputeNextWeeks(value,db){

@@ -5,7 +5,7 @@ let x = 0;
 let temp = 0;
 const padX = 50;
 const padY = 20;
-
+const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const tempo = 500;
 
 let beds;
@@ -32,9 +32,17 @@ let yScale = d3.scaleLinear()
 				.range([(height - padY), 0]);
 
 let bpagesOPT=1
+let bpages=1
 let ipagesOPT=1
+let ipages=1
 let spagesOPT=1
-let currentPage=1
+let spages=1
+let currentPageb=1
+let currentPagebOPT=1
+let currentPagei=1
+let currentPageiOPT=1
+let currentPages=1
+let currentPagesOPT=1
 
 let xmlResponse;
 let xmlhttp = new XMLHttpRequest();
@@ -51,24 +59,25 @@ xmlhttp.onreadystatechange = () => {
 		if (xmlhttp.status == 200) {
 			//console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
 			let myobj = JSON.parse(xmlhttp.responseText);
-			if(myobj.type != "null"){
-				if(myobj.type == "optimized"){
-					switch(myobj.place){
-						case "inBordighera.db":
-							bpagesOPT = myobj.num
-							break;
-						case "inImperia.db":
-							ipagesOPT = myobj.num
-							break;
-						case "inSanremo.db":
-							spagesOPT = myobj.num
-							break;
-						default:
-							console.log("ISSUE IN READING RESPONSE TYPE: ",myobj.place)
-							break;
-					}	
-				}
-			}
+			switch(myobj[0].place){
+				case "inBordighera.db":
+					bpages = parseInt(myobj[0].num)
+					bpagesOPT = parseInt(myobj[1].num)
+					break;
+				case "inImperia.db":
+					ipages = parseInt(myobj[0].num)
+					ipagesOPT = parseInt(myobj[1].num)
+					break;
+				case "inSanremo.db":
+					spages = parseInt(myobj[0].num)
+					spagesOPT = parseint(myobj[1].num)
+					break;
+				default:
+					console.log("ISSUE IN READING RESPONSE TYPE: ",myobj.place)
+					break;
+			}	
+
+		
 			xmlResponse = xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
 			let file = "";
 			let fileB = "";
@@ -101,6 +110,57 @@ xmlhttp.onreadystatechange = () => {
 			if (document.getElementById("optim").checked) {
 				file = fileOPT;
 				fileB = fileB_OPT;
+
+				let selectElement = document.getElementById("selectedWeek");
+				while (selectElement.firstChild) {
+					selectElement.removeChild(selectElement.firstChild);
+				}
+				//i set the hours otherwise when i get the UTC time, it's 1 hour behind so it return me
+				//the day before
+				let startDay = new Date("2019,3,4 06:06:00") 
+				lastDay=new Date(startDay)
+				lastDay.setDate(lastDay.getDate()+6)
+				let optionEl = document.createElement("option");
+				optionEl.value = 1
+				optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
+				selectElement.appendChild(optionEl)
+
+				for(let i=2; i<bpagesOPT+1;i++){
+
+					startDay.setDate(startDay.getDate()+7)
+					lastDay=new Date(startDay)
+					lastDay.setDate(lastDay.getDate()+6)
+					let optionEl = document.createElement("option");
+					optionEl.value = i.toString();
+					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
+					selectElement.appendChild(optionEl)
+				}
+				
+			}else{
+				let selectElement = document.getElementById("selectedWeek");
+				while (selectElement.firstChild) {
+					selectElement.removeChild(selectElement.firstChild);
+				}
+				//i set the hours otherwise when i get the UTC time, it's 1 hour behind so it return me
+				//the day before
+				let startDay = new Date("2019,3,4 06:06:00") 
+				lastDay=new Date(startDay)
+				lastDay.setDate(lastDay.getDate()+6)
+				let optionEl = document.createElement("option");
+				optionEl.value = 1
+				optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
+				selectElement.appendChild(optionEl)
+
+				for(let i=2; i<bpages+1;i++){
+
+					startDay.setDate(startDay.getDate()+7)
+					lastDay=new Date(startDay)
+					lastDay.setDate(lastDay.getDate()+6)
+					let optionEl = document.createElement("option");
+					optionEl.value = i.toString();
+					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
+					selectElement.appendChild(optionEl)
+				}
 			}
 
 			d3.csv(file)

@@ -343,22 +343,22 @@ function writeAdditionalRegs() {
 		/*
 		 * Computation of priorities for the additional reistrations f
 		 */
-		const date4 = new Date(2019, 1, 24).getTime(); // 24 febbraio 2019
+		const date4 = new Date(2019, 2, 24).getTime(); // 24 marzo 2019
 		let dataInt = interventi[i].DataIntervento.getTime();
 		let priority = 1;
 
-		if (dataInt >= new Date(2019, 1, 9).getTime() && 
-				dataInt <= new Date(2019, 1, 17).getTime())
+		if (dataInt >= new Date(2019, 2, 9).getTime() && 
+				dataInt <= new Date(2019, 2, 17).getTime())
 			priority = 2;
 
-		if (dataInt >= new Date(2019, 1, 18).getTime() && 
-				dataInt <= new Date(2019, 1, 24).getTime())
+		if (dataInt >= new Date(2019, 2, 18).getTime() && 
+				dataInt <= new Date(2019, 2, 24).getTime())
 			priority = 3;
 
 		//if (dataInt >= new Date(2019, 2, 25).getTime())
 		//	priority = 4;
 
-		if (dataInt >= new Date(2019, 1, 25).getTime()){
+		if (dataInt >= new Date(2019, 2, 25).getTime()){
 			let weeksPassed = Math.floor((dataInt - date4) / (7 * 24 * 60 * 60 * 1000)); // Calcola il numero di settimane trascorse dopo il 24 febbraio 2019
 			priority= Math.max(4, 4 + weeksPassed); // La priorità sarà almeno 4 e aumenta con il passare delle settimane.
 		  }
