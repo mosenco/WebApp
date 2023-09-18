@@ -505,14 +505,14 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 						temp.forEach(value => {
 							//break doesnt exist in foreach so i just run through it..
 							if(value.Day < 8){
-								console.log("lower: ",value)
+								//console.log("lower: ",value)
 								let content = "beds(" + value.Posti + ", " 
 										+ value.Specialty + ", " + value.Day + "). ";
 								
 								fs.writeFileSync(pathDB + selectFile(value.Sede), 
 									content, {'flag': 'a'}, err => {console.error(err)});
 							}else{
-								console.log("higher: ",value)
+								//console.log("higher: ",value)
 								if(value.Sede == "SANREMO"){
 									myobj[13]=[...myobj[13],value]
 									console.log(myobj[13])

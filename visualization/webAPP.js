@@ -254,7 +254,6 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		//console.log("dopo di shift: ",remain[0].Priority)
 	
 		//START WRITING INSIDE THE FILE 
-		//console.log("remain: ",remain.length," ",clingoIn.length)
 		//write Registration
 		for(let i=0;i<remain.length;i++){
 			let content = "\nregistration(" + remain[i].Nosologico + ", " 
@@ -264,8 +263,11 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 			content, {'flag': 'a'}, err => {console.error(err)});
 		}
-		
-		console.log("beds:",currentBeds.length," ",bedsOut.length," w:",currentWeek)
+		//BUG ON BEDS
+		// quando finisce i letti, per esempio ce ne sono 6, invece di andare a scrivere il 7, si interrompe
+		// bisogna fare il collegamento tra i pastweek beds con i posti totali
+		console.log("INIZIO LETTI. week: ",currentWeek)
+		console.log("currentbeds: ",currentBeds)
 		//write beds if present
 		if (currentBeds.length > 0){
 			//i consider only the previous week so from 1 to 7 that will become my new -7 to -1
@@ -276,6 +278,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				//because the current week computed is the previous week for the next week
 				let content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
 										+ el.Specialty + ", " + (parseInt(el.Day)-8) + "). ";
+				console.log("writing beds -7 to -1: ",content," original:",el)
 				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 				content, {'flag': 'a'}, err => {console.error(err)});
 			})
@@ -289,19 +292,21 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					//the second week goes from 8 to 14
 					//the third week goes from 15 to 21
 					//so i just substract 7 multiply per number of weeks passed from the first week
-					if(el.Day-(7*currentWeek)>0 && el.Day-(7*currentWeek)<8 && el.Sede == location.substring(2,location.length-3).toUpperCase()){
+					if(el.Day-(7*(currentWeek-1))>0 && el.Day-(7*(currentWeek-1))<8 && el.Sede == location.substring(2,location.length-3).toUpperCase()){
 						selectedBed=[...selectedBed, el]
 						let content = "beds(" + el.Posti + ", " 
-											+ el.Specialty + ", " + (el.Day-(7*currentWeek)) + "). ";
+											+ el.Specialty + ", " + (el.Day-(7*(currentWeek-1))) + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
-
+						console.log("writing beds 1 to 7: ",content," ",el.Day," ",el.Day-(7*(currentWeek-1)))
 					}
 					
-				})
-				beds.filter(el=>{
+				})	
+				console.log("pastweek beds before: ",beds)
+				beds = beds.filter(el=>{
 					return !selectedBed.includes(el)
 				})
+				console.log("pastweek beds after: ",beds)
 			}else{
 				if(location.substring(2,location.length-3).toUpperCase()=="SANREMO"){
 					//SANREMO O.R.L.;5
@@ -443,7 +448,7 @@ function runClingo(encoding, input, output, res, currentWeek) {
 
 	fs.writeFileSync(output, "", { flag: 'w' }, err => {console.error(err)});
 	shell.stdout.on("data", (data) => {
-		console.log(data.toString());
+		//console.log(data.toString());
 		fs.writeFileSync(output, data.toString(), 
 				{ flag: 'a' }, err => {console.error(err)});
 	});
