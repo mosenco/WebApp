@@ -266,6 +266,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		//BUG ON BEDS
 		// quando finisce i letti, per esempio ce ne sono 6, invece di andare a scrivere il 7, si interrompe
 		// bisogna fare il collegamento tra i pastweek beds con i posti totali
+
+		// altro bug, per i giorni positivi lo riscrive due volte
 		console.log("INIZIO LETTI. week: ",currentWeek)
 		console.log("currentbeds: ",currentBeds)
 		//write beds if present
@@ -287,7 +289,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			
 				//we create an array to hold the selected beds so after we substract to it to let beds hold only not selected ones
 				selectedBed=[]
-				beds.forEach(el=>{
+				let checkBeds=0
+				beds.forEach((el,idx)=>{
 					//after the first week that goes from 1 to 7 from the beds.csv 
 					//the second week goes from 8 to 14
 					//the third week goes from 15 to 21
@@ -300,8 +303,81 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 						content, {'flag': 'a'}, err => {console.error(err)});
 						console.log("writing beds 1 to 7: ",content," ",el.Day," ",el.Day-(7*(currentWeek-1)))
 					}
-					
+					checkBeds=idx
 				})	
+
+				if(checkBeds<7){
+					while(checkBeds<7){
+						
+						if(location.substring(2,location.length-3).toUpperCase()=="SANREMO"){
+							//SANREMO O.R.L.;5
+							
+							let content = "beds(" + 5 + ", " 
+												+ 2 + ", " + checkBeds + "). ";
+							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+							content, {'flag': 'a'}, err => {console.error(err)});
+							console.log("writing beds 1 to 7: ",5," ",2," ",checkBeds)
+		
+							//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
+							
+							content = "beds(" + 28 + ", " 
+												+ 3 + ", " + checkBeds + "). ";
+							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+							content, {'flag': 'a'}, err => {console.error(err)});
+							console.log("writing beds 1 to 7: ",28," ",3," ",checkBeds)
+		
+							//SANREMO CHIRURGIA GENERALE;15
+							
+								content = "beds(" + 15 + ", " 
+												+ 1 + ", " + checkBeds + "). ";
+							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+							content, {'flag': 'a'}, err => {console.error(err)});
+							console.log("writing beds 1 to 7: ",15," ",1," ",checkBeds)
+		
+							//SANREMO OSTETRICIA GINECOLOGIA;20
+							
+								 content = "beds(" + 20 + ", " 
+													+ 4 + ", " + checkBeds + "). ";
+								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+								content, {'flag': 'a'}, err => {console.error(err)});
+								console.log("writing beds 1 to 7: ",20," ",4," ",checkBeds)
+						}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
+							//IMPERIA UROLOGIA;15
+							
+								 content = "beds(" + 15 + ", " 
+													+ 1 + ", " + checkBeds + "). ";
+								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+								content, {'flag': 'a'}, err => {console.error(err)});
+							
+		
+							//IMPERIA CHIRURGIA GENERALE;13
+							
+								 content = "beds(" + 13 + ", " 
+													+ 3 + ", " + checkBeds + "). ";
+								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+								content, {'flag': 'a'}, err => {console.error(err)});
+							
+		
+							//IMPERIA CHIRURGIA VASCOLARE;12
+							
+								 content = "beds(" + 12 + ", " 
+													+ 5 + ", " + checkBeds + "). ";
+								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+								content, {'flag': 'a'}, err => {console.error(err)});
+							
+		
+							//IMPERIA OSTETRICIA GINECOLOGIA;18
+							
+								content = "beds(" + 18 + ", " 
+													+ 7 + ", " + checkBeds + "). ";
+								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+								content, {'flag': 'a'}, err => {console.error(err)});
+							
+						}
+
+						checkBeds++;
+					}
+				}
 				console.log("pastweek beds before: ",beds)
 				beds = beds.filter(el=>{
 					return !selectedBed.includes(el)

@@ -442,6 +442,7 @@ function writeBeds() {
 	let currentDate = new Date(2019,1,25)
 
 	while(currentDate < new Date(2019,2,23)){
+		let newDate = 
 		currentDate.setDate(currentDate.getDate()+1)
 		date.push(currentDate)
 	}
@@ -472,8 +473,9 @@ function writeBeds() {
 			let array = mapSpecialties(getSede(beds[i].Specialty), beds[i].Specialty);
 			
 			posti = (posti - count1 + count2);
-
+			
 			content = array[0] + "," + array[1] + "," + posti + "," + day + "\n";
+			console.log(array[0]," ",array[1]," tot post:",beds[i].PostiLetto," ",count1," ",count2)
 			fs.writeFileSync(pathOUT + "beds.csv", content, {'flag': 'a'}, err => {console.error(err)});
 		}
 	}
