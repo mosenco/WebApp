@@ -1,16 +1,12 @@
 
-registration(2018388776, 1, 2, "Ordinario", 105, 0, 2, 7).
-registration(2019148520, 2, 3, "Ordinario", 90, 0, 3, 7).
+registration(2019128385, 1, 2, "Ordinario", 117, 0, 2, 7).
 registration(2019120905, 2, 4, "Ordinario", 305, 0, 6, 7).
-registration(2019149948, 2, 3, "Ordinario", 140, 0, 3, 7).
 registration(2019082249, 2, 2, "Ordinario", 157, 0, 2, 7).
 registration(2019114129, 2, 2, "Ordinario", 75, 0, 2, 7).
 registration(2018041995, 2, 2, "Ordinario", 120, 0, 2, 7).
 registration(2019105520, 2, 2, "Ordinario", 42, 0, 2, 7).
 registration(2018307241, 2, 2, "Ordinario", 35, 0, 2, 7).
 registration(2019099163, 2, 4, "Ordinario", 170, 0, 6, 7).
-registration(2019154521, 2, 3, "Ordinario", 85, 0, 3, 7).
-registration(2019147675, 2, 3, "Ordinario", 80, 0, 3, 7).
 registration(2019161191, 3, 3, "Ordinario", 80, 0, 3, 7).
 registration(2019131139, 3, 4, "Ordinario", 70, 0, 6, 7).
 registration(2019066991, 3, 4, "Ordinario", 100, 0, 6, 7).
@@ -22,6 +18,7 @@ registration(2019160334, 3, 3, "Ordinario", 100, 0, 3, 7).
 registration(2019126359, 3, 4, "Ordinario", 90, 0, 6, 7).
 registration(2019116190, 3, 4, "Ordinario", 85, 0, 6, 7).
 registration(2019162118, 3, 3, "Ordinario", 85, 0, 3, 7).
+registration(2019148558, 3, 1, "Ordinario", 60, 0, 1, 7).
 registration(2019148559, 3, 1, "Ordinario", 45, 0, 1, 7).
 registration(2019085792, 3, 3, "Ordinario", 120, 0, 3, 7).
 registration(2019143419, 3, 3, "Ordinario", 45, 0, 3, 7).
@@ -150,7 +147,10 @@ registration(2019206214, 3, 3, "Ordinario", 44, 0, 3, 7).
 registration(2019206173, 3, 3, "Ordinario", 45, 0, 3, 7).
 registration(2019204639, 3, 3, "Ordinario", 195, 0, 3, 7).
 registration(2019208923, 3, 3, "Ordinario", 95, 0, 3, 7).
-registration(2019100913, 3, 1, "Ordinario", 100, 0, 1, 7).beds(0, 2, -7). beds(0, 2, -6). beds(0, 2, -5). beds(0, 2, -4). beds(0, 2, -3). beds(0, 2, -2). beds(0, 2, -1). beds(26, 3, -7). beds(16, 3, -6). beds(13, 3, -5). beds(11, 3, -4). beds(11, 3, -3). beds(11, 3, -2). beds(11, 3, -1). beds(18, 1, -7). beds(18, 1, -6). beds(18, 1, -5). beds(11, 1, -4). beds(11, 1, -3). beds(11, 1, -2). beds(11, 1, -1). beds(4, 4, -7). beds(1, 4, -6). beds(0, 4, -5). beds(0, 4, -4). beds(0, 4, -3). beds(0, 4, -2). beds(0, 4, -1). beds(10, 2, 1). beds(10, 2, 2). beds(10, 2, 3). beds(10, 2, 4). beds(10, 2, 5). beds(10, 2, 6). beds(46, 3, 1). beds(46, 3, 2). beds(46, 3, 3). beds(46, 3, 4). beds(46, 3, 5). beds(46, 3, 6). beds(32, 1, 1). beds(32, 1, 2). beds(32, 1, 3). beds(32, 1, 4). beds(32, 1, 5). beds(32, 1, 6). beds(25, 4, 1). beds(25, 4, 2). beds(25, 4, 3). beds(25, 4, 4). beds(25, 4, 5). beds(25, 4, 6). beds(10, 2, 1). beds(10, 2, 2). beds(10, 2, 3). beds(10, 2, 4). beds(10, 2, 5). beds(10, 2, 6). beds(10, 2, 7). beds(46, 3, 1). beds(46, 3, 2). beds(46, 3, 3). beds(46, 3, 4). beds(46, 3, 5). beds(46, 3, 6). beds(46, 3, 7). beds(32, 1, 1). beds(32, 1, 2). beds(32, 1, 3). beds(32, 1, 4). beds(32, 1, 5). beds(32, 1, 6). beds(32, 1, 7). beds(25, 4, 1). beds(25, 4, 2). beds(25, 4, 3). beds(25, 4, 4). beds(25, 4, 5). beds(25, 4, 6). beds(25, 4, 7). 
+registration(2019100913, 3, 1, "Ordinario", 100, 0, 1, 7).
+registration(2019185977, 3, 4, "Ordinario", 140, 0, 6, 7).
+registration(2018374758, 3, 1, "Ordinario", 100, 0, 1, 7).
+registration(2019207005, 3, 3, "Ordinario", 150, 0, 3, 7).beds(0, 2, -7). beds(0, 2, -6). beds(0, 2, -5). beds(0, 2, -4). beds(0, 2, -3). beds(0, 2, -2). beds(0, 2, -1). beds(26, 3, -7). beds(17, 3, -6). beds(16, 3, -5). beds(15, 3, -4). beds(14, 3, -3). beds(14, 3, -2). beds(14, 3, -1). beds(20, 1, -7). beds(20, 1, -6). beds(20, 1, -5). beds(14, 1, -4). beds(13, 1, -3). beds(13, 1, -2). beds(13, 1, -1). beds(3, 4, -7). beds(1, 4, -6). beds(0, 4, -5). beds(0, 4, -4). beds(0, 4, -3). beds(0, 4, -2). beds(0, 4, -1). beds(10, 2, 1). beds(10, 2, 2). beds(10, 2, 3). beds(10, 2, 4). beds(10, 2, 5). beds(10, 2, 6). beds(46, 3, 1). beds(46, 3, 2). beds(46, 3, 3). beds(46, 3, 4). beds(46, 3, 5). beds(46, 3, 6). beds(32, 1, 1). beds(32, 1, 2). beds(32, 1, 3). beds(32, 1, 4). beds(32, 1, 5). beds(32, 1, 6). beds(25, 4, 1). beds(25, 4, 2). beds(25, 4, 3). beds(25, 4, 4). beds(25, 4, 5). beds(25, 4, 6). beds(10, 2, 1). beds(10, 2, 2). beds(10, 2, 3). beds(10, 2, 4). beds(10, 2, 5). beds(10, 2, 6). beds(10, 2, 7). beds(46, 3, 1). beds(46, 3, 2). beds(46, 3, 3). beds(46, 3, 4). beds(46, 3, 5). beds(46, 3, 6). beds(46, 3, 7). beds(32, 1, 1). beds(32, 1, 2). beds(32, 1, 3). beds(32, 1, 4). beds(32, 1, 5). beds(32, 1, 6). beds(32, 1, 7). beds(25, 4, 1). beds(25, 4, 2). beds(25, 4, 3). beds(25, 4, 4). beds(25, 4, 5). beds(25, 4, 6). beds(25, 4, 7). 
 mss("SALA-1-(ORTOPEDIA)", 3, 1). mss("SALA-1-(ORTOPEDIA)", 3, 2). mss("SALA-1-(ORTOPEDIA)", 3, 3). mss("SALA-1-(ORTOPEDIA)", 3, 4). mss("SALA-1-(ORTOPEDIA)", 3, 5). 
 mss("SALA-2-(O.R.L.)", 2, 2). mss("SALA-2-(O.R.L.)", 2, 3). 
 mss("SALA-3-(CHIRURGIA)", 1, 1). mss("SALA-3-(CHIRURGIA)", 1, 2). mss("SALA-3-(CHIRURGIA)", 1, 5). 
@@ -159,6 +159,6 @@ mss("SALA-C-II-PIANO-(OSTETRICIA)", 4, 1). mss("SALA-C-II-PIANO-(OSTETRICIA)", 4
 #const week_days = 5.
 #const timeDisp = 750.
 #const totRegsP1 = 1.
-#const totRegsP2 = 11.
-#const totRegsP3 = 140.
+#const totRegsP2 = 7.
+#const totRegsP3 = 144.
 #const totRegsP4 = 0.

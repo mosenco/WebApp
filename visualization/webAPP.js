@@ -217,13 +217,12 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		//also during this shift, we count the number of registration based on priority
 		//because its used by the time.csv 
 
-		//SETTARE PRIORITA A 4
 		let pri1=0
 		let pri2=0
 		let pri3=0
 		let pri4=0
 		let diffP = remain[0].Priority-1
-		console.log("prima di shift: ",remain[0].Priority)
+		//console.log("prima di shift: ",remain[0].Priority)
 		remain.forEach(el=>{
 			if(el.Priority-diffP > 4){
 				el.Priority=4
@@ -240,6 +239,9 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					case 3:
 						pri3++;
 						break;
+					case 4:
+						pri4++;
+						break;
 					default:
 						console.log("ERROR COUNTING TIME");
 						break;
@@ -249,7 +251,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		
 		})
 		
-		console.log("dopo di shift: ",remain[0].Priority)
+		//console.log("dopo di shift: ",remain[0].Priority)
 	
 		//START WRITING INSIDE THE FILE 
 		//console.log("remain: ",remain.length," ",clingoIn.length)
@@ -266,8 +268,9 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		console.log("beds:",currentBeds.length," ",bedsOut.length," w:",currentWeek)
 		//write beds if present
 		if (currentBeds.length > 0){
+			//i consider only the previous week so from 1 to 7 that will become my new -7 to -1
 			currentBeds = currentBeds.filter(el=>el.Day > -1)
-			console.log("currentbeds solo positivo:",currentBeds)
+			//console.log("currentbeds solo positivo:",currentBeds)
 			currentBeds.forEach(el=>{
 				//i subtract -8 ti set the day 1 to 7 --> -7 to -1
 				//because the current week computed is the previous week for the next week
@@ -276,20 +279,96 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 				content, {'flag': 'a'}, err => {console.error(err)});
 			})
-			beds.forEach(el=>{
-				//after the first week that goes from 1 to 7 from the beds.csv 
-				//the second week goes from 8 to 14
-				//the third week goes from 15 to 21
-				//so i just substract 7 multiply per number of weeks passed from the first week
-				if(el.Day-(7*currentWeek)>0 && el.Day-(7*currentWeek)<8){
-					let content = "beds(" + el.Posti + ", " 
-										+ el.Specialty + ", " + (el.Day-(7*currentWeek)) + "). ";
-					fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
-					content, {'flag': 'a'}, err => {console.error(err)});
+			if(beds.length>0){
 
+			
+				//we create an array to hold the selected beds so after we substract to it to let beds hold only not selected ones
+				selectedBed=[]
+				beds.forEach(el=>{
+					//after the first week that goes from 1 to 7 from the beds.csv 
+					//the second week goes from 8 to 14
+					//the third week goes from 15 to 21
+					//so i just substract 7 multiply per number of weeks passed from the first week
+					if(el.Day-(7*currentWeek)>0 && el.Day-(7*currentWeek)<8 && el.Sede == location.substring(2,location.length-3).toUpperCase()){
+						selectedBed=[...selectedBed, el]
+						let content = "beds(" + el.Posti + ", " 
+											+ el.Specialty + ", " + (el.Day-(7*currentWeek)) + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+
+					}
+					
+				})
+				beds.filter(el=>{
+					return !selectedBed.includes(el)
+				})
+			}else{
+				if(location.substring(2,location.length-3).toUpperCase()=="SANREMO"){
+					//SANREMO O.R.L.;5
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 5 + ", " 
+											+ 2 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
+
+					//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 28 + ", " 
+											+ 3 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
+
+					//SANREMO CHIRURGIA GENERALE;15
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 15 + ", " 
+											+ 1 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
+
+					//SANREMO OSTETRICIA GINECOLOGIA;20
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 20 + ", " 
+											+ 4 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
+				}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
+					//IMPERIA UROLOGIA;15
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 15 + ", " 
+											+ 1 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
+
+					//IMPERIA CHIRURGIA GENERALE;13
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 13 + ", " 
+											+ 3 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
+
+					//IMPERIA CHIRURGIA VASCOLARE;12
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 12 + ", " 
+											+ 5 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
+
+					//IMPERIA OSTETRICIA GINECOLOGIA;18
+					for(let i=1;i<8;i++){
+						let content = "beds(" + 18 + ", " 
+											+ 7 + ", " + i + "). ";
+						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+						content, {'flag': 'a'}, err => {console.error(err)});
+					}
 				}
-				
-			})
+			}
 
 
 
@@ -344,85 +423,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
 }
 
-function ComputeNextWeeks(value,db){
-	console.log("START NEXT WEEKS: ",value," ",db)
-	let input="null"
-	let name = "null"
-	let output="null"
-	let inputarray=""
-	let outputarray=""
-	let remainarray=""
-	switch(value){
-		case "/1":
-			console.log("case1")
-			input = db.Bordighera;
-			output='.\\dati\\bordigheraOPT.csv'
-			name="bordighera"
-			break;
-		case "/2":
-			console.log("case2")
-			input = db.Sanremo;
-			output='.\\dati\\sanremoOPT.csv'
-			name="sanremo"
-			break;
-		case "/4":
-			console.log("case4")
-			input = db.Imperia;
-			output='.\\dati\\imperiaOPT.csv'
-			name="imperia"
-			break;
-		default:
-			console.log("default case")
-			return
-	}
-	console.log("start reading")
-	fs.readFile(input, 'utf8', (err, data) => {
-		if (err) {
-		  console.error(err);
-		  return;
-		}
-		console.log("reading .db ",value)
-		let newdata = data.replace(/(\r\n|\n|\r)/gm, "");
-		newdata = newdata.replaceAll(' ','');
-		newdata=newdata.split(".")
-		//let xnewdata = newdata.slice(20,newdata.length-7)
-		let xnewdata = newdata.filter(el => el.includes("registration"))
-		xnewdata = xnewdata.map(el=>{
-			return el.substring(13,23)
-		})
-		inputarray = xnewdata
-		console.log("from ",name,".db: ",xnewdata);
-		console.log("length: ",xnewdata.length)
 
-		fs.readFile(output, 'utf8', (err, data) => {
-			if (err) {
-				console.error(err);
-				return;
-			}
-			console.log("reading .csv ",value)
-			let newdata = data.split("\n")
-			xnewdata = newdata.slice(1,newdata.length)
-			xnewdata = xnewdata.map(el=>{
-				return el.substring(0,10)
-			})
-			outputarray=xnewdata
-			console.log("from",name,".csv: ",xnewdata);
-			console.log("length: ",xnewdata.length)
-
-			remainarray = inputarray.filter(el=>{
-				console.log("filtering: ",el," ",!outputarray.includes(el))
-				return !outputarray.includes(el);
-			})
-			console.log("REMAINING: ",remainarray)
-			console.log("length: ",remainarray.length)
-
-			console.log("END NEXT WEEKS")
-		});
-	});
-
-	
-	
-}
 
 /**
  * This function runs the AI engine.
