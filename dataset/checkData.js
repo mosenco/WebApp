@@ -442,9 +442,8 @@ function writeBeds() {
 	let currentDate = new Date(2019,1,25)
 
 	while(currentDate < new Date(2019,2,23)){
-		let newDate = 
 		currentDate.setDate(currentDate.getDate()+1)
-		date.push(currentDate)
+		date.push(new Date(currentDate))
 	}
 	console.log("all dates: ",date)
 

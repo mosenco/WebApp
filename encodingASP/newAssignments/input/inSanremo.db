@@ -1,4 +1,11 @@
-beds(5, 2, -7). beds(10, 2, -6). beds(10, 2, -5). beds(10, 2, -4). beds(10, 2, -3). beds(10, 2, -2). beds(10, 2, -1). beds(10, 2, 1). beds(10, 2, 2). beds(10, 2, 3). beds(10, 2, 4). beds(10, 2, 5). beds(10, 2, 6). beds(10, 2, 7). beds(25, 3, -7). beds(46, 3, -6). beds(46, 3, -5). beds(46, 3, -4). beds(46, 3, -3). beds(46, 3, -2). beds(46, 3, -1). beds(46, 3, 1). beds(46, 3, 2). beds(46, 3, 3). beds(46, 3, 4). beds(46, 3, 5). beds(46, 3, 6). beds(46, 3, 7). beds(13, 1, -7). beds(32, 1, -6). beds(32, 1, -5). beds(32, 1, -4). beds(32, 1, -3). beds(32, 1, -2). beds(32, 1, -1). beds(32, 1, 1). beds(32, 1, 2). beds(32, 1, 3). beds(32, 1, 4). beds(32, 1, 5). beds(32, 1, 6). beds(32, 1, 7). beds(15, 4, -7). beds(25, 4, -6). beds(25, 4, -5). beds(25, 4, -4). beds(25, 4, -3). beds(25, 4, -2). beds(25, 4, -1). beds(25, 4, 1). beds(25, 4, 2). beds(25, 4, 3). beds(25, 4, 4). beds(25, 4, 5). beds(25, 4, 6). beds(25, 4, 7). 
+beds(5, 2, -7). beds(5, 2, -6). beds(0, 2, -5). beds(0, 2, -4). beds(0, 2, -3). beds(5, 2, -2). beds(5, 2, -1). 
+beds(5, 2, 1). beds(5, 2, 2). beds(5, 2, 3). beds(5, 2, 4). beds(5, 2, 5). beds(5, 2, 6). beds(5, 2, 7). 
+beds(25, 3, -7). beds(21, 3, -6). beds(14, 3, -5). beds(12, 3, -4). beds(12, 3, -3). beds(10, 3, -2). beds(7, 3, -1). 
+beds(7, 3, 1). beds(9, 3, 2). beds(9, 3, 3). beds(12, 3, 4). beds(13, 3, 5). beds(14, 3, 6). beds(15, 3, 7). 
+beds(13, 1, -7). beds(7, 1, -6). beds(7, 1, -5). beds(4, 1, -4). beds(2, 1, -3). beds(6, 1, -2). beds(5, 1, -1). 
+beds(6, 1, 1). beds(7, 1, 2). beds(9, 1, 3). beds(10, 1, 4). beds(11, 1, 5). beds(12, 1, 6). beds(12, 1, 7). 
+beds(15, 4, -7). beds(14, 4, -6). beds(11, 4, -5). beds(11, 4, -4). beds(11, 4, -3). beds(14, 4, -2). beds(14, 4, -1).
+beds(15, 4, 1). beds(15, 4, 2). beds(16, 4, 3). beds(18, 4, 4). beds(18, 4, 5). beds(19, 4, 6). beds(19, 4, 7). 
 mss("SALA-1-(ORTOPEDIA)", 3, 1). mss("SALA-1-(ORTOPEDIA)", 3, 2). mss("SALA-1-(ORTOPEDIA)", 3, 3). mss("SALA-1-(ORTOPEDIA)", 3, 4). mss("SALA-1-(ORTOPEDIA)", 3, 5). 
 mss("SALA-2-(O.R.L.)", 2, 2). mss("SALA-2-(O.R.L.)", 2, 3). 
 mss("SALA-3-(CHIRURGIA)", 1, 1). mss("SALA-3-(CHIRURGIA)", 1, 2). mss("SALA-3-(CHIRURGIA)", 1, 5). 
@@ -101,60 +108,60 @@ registration(2019154521, 3, 3, "Ordinario", 85, 0, 3, 7).
 registration(2019141403, 3, 3, "Ordinario", 40, 0, 3, 7).
 registration(2019147675, 3, 3, "Ordinario", 80, 0, 3, 7).
 registration(2019151899, 3, 2, "DaySurgery", 149, 0, 0, 0).
-registration(2019307993, 4, 1, "Ordinario", 66, 0, 1, 7).
-registration(2019412827, 4, 2, "DaySurgery", 24, 0, 0, 0).
-registration(2019303634, 4, 3, "Ordinario", 80, 0, 3, 7).
-registration(2019249814, 4, 2, "Ordinario", 195, 0, 2, 7).
-registration(2019505022, 4, 3, "Ordinario", 57, 0, 3, 7).
-registration(2019272196, 4, 4, "Ordinario", 151, 0, 6, 7).
-registration(2019154526, 4, 2, "Ordinario", 82, 0, 2, 7).
-registration(2019476173, 4, 3, "Ordinario", 67, 0, 3, 7).
-registration(2019205766, 4, 4, "Ordinario", 150, 0, 6, 7).
-registration(2019275854, 4, 3, "Ordinario", 105, 0, 3, 7).
-registration(2019344048, 4, 3, "Ordinario", 65, 0, 3, 7).
-registration(2019259478, 4, 4, "Ambulatoriale", 53, 0, 0, 0).
-registration(2019042568, 4, 2, "Ordinario", 65, 0, 2, 7).
-registration(2019458055, 4, 4, "Ordinario", 77, 0, 6, 7).
-registration(2019486334, 4, 3, "Ordinario", 55, 0, 3, 7).
-registration(2019187926, 4, 4, "Ordinario", 36, 0, 6, 7).
-registration(2019269648, 4, 4, "Ordinario", 125, 0, 6, 7).
-registration(2019196565, 4, 2, "Ordinario", 115, 0, 2, 7).
-registration(2019309448, 4, 4, "Ordinario", 117, 0, 6, 7).
-registration(2019143582, 4, 2, "Ordinario", 67, 0, 2, 7).
-registration(2019237797, 4, 1, "Ordinario", 36, 0, 1, 7).
-registration(2019339341, 4, 3, "Ordinario", 125, 0, 3, 7).
-registration(2019479894, 4, 1, "Ordinario", 47, 0, 1, 7).
-registration(2019281848, 4, 2, "DaySurgery", 30, 0, 0, 0).
-registration(2014202559, 4, 3, "Ordinario", 67, 0, 3, 7).
-registration(2019437060, 4, 1, "Ordinario", 72, 0, 1, 7).
-registration(2019328402, 4, 1, "DaySurgery", 59, 0, 0, 0).
-registration(2019308058, 4, 3, "Ordinario", 127, 0, 3, 7).
-registration(2019274016, 4, 2, "Ordinario", 105, 0, 2, 7).
-registration(2019257394, 4, 3, "Ordinario", 137, 0, 3, 7).
-registration(2019252935, 4, 4, "Ordinario", 80, 0, 6, 7).
-registration(2019313598, 4, 4, "Ordinario", 105, 0, 6, 7).
-registration(2019255206, 4, 3, "Ordinario", 77, 0, 3, 7).
-registration(2019476845, 4, 4, "Ordinario", 90, 0, 6, 7).
-registration(2019289954, 4, 3, "Ordinario", 70, 0, 3, 7).
-registration(2019288107, 4, 1, "Ordinario", 104, 0, 1, 7).
-registration(2019488637, 4, 4, "Ordinario", 157, 0, 6, 7).
-registration(2019378755, 4, 1, "Ordinario", 120, 0, 1, 7).
-registration(2019319295, 4, 3, "Ordinario", 105, 0, 3, 7).
-registration(2019487177, 4, 1, "DaySurgery", 70, 0, 0, 0).
-registration(2019158199, 4, 4, "Ordinario", 195, 0, 6, 7).
-registration(2019417065, 4, 3, "Ordinario", 110, 0, 3, 7).
-registration(2019062115, 4, 2, "Ordinario", 45, 0, 2, 7).
-registration(2019189859, 4, 3, "Ordinario", 120, 0, 3, 7).
-registration(2019350106, 4, 4, "Ordinario", 92, 0, 6, 7).
-registration(2019252047, 4, 3, "Ordinario", 55, 0, 3, 7).
+registration(2019363774, 4, 4, "DaySurgery", 60, 0, 0, 0).
+registration(2018490104, 4, 2, "DaySurgery", 30, 0, 0, 0).
+registration(2019399408, 4, 3, "Ordinario", 56, 0, 3, 7).
+registration(2019103496, 4, 1, "Ordinario", 46, 0, 1, 7).
+registration(2019278248, 4, 2, "Ordinario", 62, 0, 2, 7).
+registration(2019367900, 4, 3, "Ordinario", 26, 0, 3, 7).
+registration(2019046879, 4, 2, "Ordinario", 94, 0, 2, 7).
+registration(2019304630, 4, 3, "Ordinario", 67, 0, 3, 7).
+registration(2019292788, 4, 3, "Ordinario", 45, 0, 3, 7).
+registration(2019206214, 4, 3, "Ordinario", 44, 0, 3, 7).
+registration(2019447567, 4, 4, "Ordinario", 28, 0, 6, 7).
+registration(2019177163, 4, 3, "Ordinario", 120, 0, 3, 7).
+registration(2019408331, 4, 4, "DaySurgery", 47, 0, 0, 0).
+registration(2019172184, 4, 4, "Ordinario", 73, 0, 6, 7).
+registration(2018419478, 4, 2, "Ordinario", 90, 0, 2, 7).
+registration(2019499387, 4, 3, "Ordinario", 130, 0, 3, 7).
+registration(2019469443, 4, 4, "Ordinario", 85, 0, 6, 7).
+registration(2019326385, 4, 4, "Ordinario", 70, 0, 6, 7).
+registration(2019168198, 4, 1, "Ordinario", 105, 0, 1, 7).
+registration(2018388754, 4, 2, "Ordinario", 90, 0, 2, 7).
+registration(2019251610, 4, 1, "Ordinario", 46, 0, 1, 7).
+registration(2019479888, 4, 1, "Ordinario", 50, 0, 1, 7).
+registration(2019440682, 4, 4, "Ordinario", 153, 0, 6, 7).
+registration(2019073394, 4, 2, "Ordinario", 193, 0, 2, 7).
+registration(2019099020, 4, 4, "Ordinario", 117, 0, 6, 7).
+registration(2019376963, 4, 3, "Ordinario", 70, 0, 3, 7).
+registration(2019429072, 4, 1, "Ordinario", 85, 0, 1, 7).
+registration(2019418453, 4, 3, "Ordinario", 79, 0, 3, 7).
+registration(2019247556, 4, 3, "Ordinario", 200, 0, 3, 7).
+registration(2018462032, 4, 1, "Ordinario", 80, 0, 1, 7).
+registration(2019339007, 4, 1, "Ordinario", 95, 0, 1, 7).
+registration(2019492274, 4, 4, "Ordinario", 160, 0, 6, 7).
+registration(2019240006, 4, 3, "Ordinario", 148, 0, 3, 7).
+registration(2019271281, 4, 3, "Ordinario", 99, 0, 3, 7).
+registration(2019389870, 4, 4, "Ordinario", 120, 0, 6, 7).
+registration(2019174842, 4, 4, "Ordinario", 45, 0, 6, 7).
 registration(2019198099, 4, 1, "Ordinario", 80, 0, 1, 7).
-registration(2019418468, 4, 3, "Ordinario", 63, 0, 3, 7).
-registration(2019293247, 4, 3, "Ordinario", 145, 0, 3, 7).
-registration(2019468382, 4, 4, "DaySurgery", 55, 0, 0, 0).
-registration(2019356311, 4, 3, "Ordinario", 108, 0, 3, 7).
-registration(2019303406, 4, 3, "Ordinario", 76, 0, 3, 7).
-registration(2019062288, 4, 2, "Ordinario", 180, 0, 2, 7).
-registration(2018204854, 4, 2, "Ordinario", 82, 0, 2, 7).
+registration(2019460449, 4, 4, "DaySurgery", 52, 0, 0, 0).
+registration(2019211886, 4, 1, "Ordinario", 230, 0, 1, 7).
+registration(2019386402, 4, 2, "Ordinario", 59, 0, 2, 7).
+registration(2019308058, 4, 3, "Ordinario", 127, 0, 3, 7).
+registration(2019284924, 4, 2, "DaySurgery", 37, 0, 0, 0).
+registration(2019465318, 4, 3, "Ordinario", 118, 0, 3, 7).
+registration(2019418498, 4, 4, "Ordinario", 125, 0, 6, 7).
+registration(2019161191, 4, 3, "Ordinario", 80, 0, 3, 7).
+registration(2019356613, 4, 3, "Ordinario", 75, 0, 3, 7).
+registration(2019114259, 4, 4, "Ordinario", 180, 0, 6, 7).
+registration(2019276044, 4, 4, "Ordinario", 175, 0, 6, 7).
+registration(2019237797, 4, 1, "Ordinario", 36, 0, 1, 7).
+registration(2019344048, 4, 3, "Ordinario", 65, 0, 3, 7).
+registration(2019072757, 4, 2, "Ordinario", 110, 0, 2, 7).
+registration(2019320951, 4, 3, "Ordinario", 70, 0, 3, 7).
+registration(2019367932, 4, 3, "Ordinario", 95, 0, 3, 7).
+registration(2019334495, 4, 4, "Ordinario", 59, 0, 6, 7).
 #const week_days = 5.
 #const timeDisp = 750.
 #const totRegsP1 = 43.
