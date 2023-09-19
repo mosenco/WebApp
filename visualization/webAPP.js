@@ -66,7 +66,7 @@ async function runWebAPP() {
 					//input = "..\\encodingASP\\newAssignments\\input\\inBordighera.db";
 					output += "bordighera.txt";
 					bordighera = false;
-					runClingo(encoding, input, output, res, "").then((result) => {
+					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
 						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encodingNW,output, res,["null"])
@@ -94,7 +94,7 @@ async function runWebAPP() {
 						input += "inputSanremo.db";
 					output += "sanremo.txt";
 					sanremo = false;
-					runClingo(encoding, input, output, res, "").then((result) => {
+					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
 						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encodingNW, output, res, data[13])
@@ -120,7 +120,7 @@ async function runWebAPP() {
 					output += "imperia.txt";
 					imperia = false;
 					console.log("FIRST INTOPU: ",input)
-					runClingo(encoding, input, output, res, "").then((result) => {
+					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
 						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encodingNW,output, res,data[12])
@@ -154,38 +154,50 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
 	(fs.existsSync(".\\dati\\2ImperiaOPT.csv") && location=="inImperia.db") ||
 	(fs.existsSync(".\\dati\\2SanremoOPT.csv") && location=="inSanremo.db")){
+		let countFilesOPT=0
 		let countFiles=0
-		
 		
 
 		if(location=="inBordighera.db"){
 			let files = await fsp.readdir(".\\dati\\")
 			files.forEach((file) => {
 				if(file.includes("bordigheraOPT.csv")){
-					countFiles++
+					countFilesOPT++
+				}
+				if(file.includes("bordighera.csv")){
+					countFiles++;
 				}
 			})
-			bpagesOPT=countFiles
+			bpagesOPT=countFilesOPT;
+			bpages = countFiles;
 		}else if(location=="inImperia.db"){
 			let files = await fsp.readdir(".\\dati\\")
 			files.forEach((file) => {
 				if(file.includes("imperiaOPT.csv")){
-					countFiles++
+					countFilesOPT++
+				}
+				if(file.includes("imperia.csv")){
+					countFiles++;
 				}
 			})
-			ipagesOPT=countFiles
+			ipagesOPT=countFilesOPT;
+			ipages=countFiles;
 		}else if(location=="inSanremo.db"){
 			let files = await fsp.readdir(".\\dati\\")
 			files.forEach((file) => {
 				if(file.includes("sanremoOPT.csv")){
-					countFiles++
+					countFilesOPT++
+				}
+				if(file.includes("sanremo.csv")){
+					countFiles++;
 				}
 			})
-			spagesOPT=countFiles
+			spagesOPT=countFilesOPT;
+			spages=countFiles
 		}
 
 		res.writeHead(200, {"Content-type": "text/html"});
-		res.end(JSON.stringify([{type:"classic",place:location,num:countFiles.toString()},{type:"optimized",place:location,num:countFiles.toString()}]));
+		res.end(JSON.stringify([{type:"classic",place:location,num:countFiles.toString()},{type:"optimized",place:location,num:countFilesOPT.toString()}]));
 		console.log("already computed for: ",location)
 		return;
 	}
@@ -204,7 +216,10 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	let remain = clingoIn
 
 	let currentWeek = 2 //week counter
-
+	//BUG
+	//imperia inizia le ultime cose a definirne solo 3 per volta
+	//ho u ndubbio riguardo i letti per imperia dove non ho tenuto conto delle cosniderzioni su sanremo 
+	
 	//while rawIn=patients not scheduled still present, keep looping
 	while(rawIn.length>0 || remain.length>0){
 	//while(currentWeek<3){
@@ -233,7 +248,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				spagesOPT=currentWeek-1
 			}
 			res.writeHead(200, {"Content-type": "text/html"});
-			res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
+			res.end(JSON.stringify([{type:"classic",place:location,num:GetPages().toString()},{type:"optimized",place:location,num:GetPagesOPT.toString()}]));
 			return
 		}
 		//console.log(currentOut," ",remain.length)
@@ -334,7 +349,9 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 						if(checkBeds<(el.Day-(7*(currentWeek-1)))){
 							checkBeds=(el.Day-(7*(currentWeek-1)))
 						}
-					}
+						//18-> 1
+					}//19 -> 2
+					//20 ->3
 					
 					
 				})	
@@ -521,6 +538,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		
 	}
 	console.log("exit loop: ",remain.length)
+
 	if(location=="inBordighera.db"){
 		bpagesOPT=currentWeek
 	}else if(location=="inImperia.db"){
@@ -529,7 +547,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		spagesOPT=currentWeek
 	}
 	res.writeHead(200, {"Content-type": "text/html"});
-	res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
+	res.end(JSON.stringify([{type:"classic",place:location,num:GetPages().toString()},{type:"optimized",place:location,num:GetPagesOPT.toString()}]));
 }
 
 
@@ -582,4 +600,30 @@ function runClingo(encoding, input, output, res, currentWeek) {
 	});
 	
 	})
+}
+
+function GetPagesOPT(location){
+	if(location=="inBordighera.db"){
+		return bpagesOPT
+	}else if(location == "inImperia.db"){	
+		return ipagesOPT
+	}else if(location=="inSanremo.db"){
+		return spagesOPT
+	}else{
+		console.log("ERROR GET PAGESOPT:",location)
+		return "-1"
+	}
+}
+
+function GetPages(location){
+	if(location=="inBordighera.db"){
+		return bpages
+	}else if(location == "inImperia.db"){	
+		return ipages
+	}else if(location=="inSanremo.db"){
+		return spages
+	}else{
+		console.log("ERROR GET PAGES:",location)
+		return "-1"
+	}
 }

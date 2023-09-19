@@ -84,24 +84,24 @@ xmlhttp.onreadystatechange = () => {
 			let fileB = "";
 			switch(xmlResponse) {
 				case "1" :
-					file = "dati/bordighera.csv";
-					fileB = "dati/bordigheraLetti.csv"
-					fileOPT = "dati/bordigheraOPT.csv";
-					fileB_OPT = "dati/bordigheraLettiOPT.csv"
+					file = "dati/"+bpages+"bordighera.csv";
+					fileB = "dati/"+bpages+"bordigheraLetti.csv"
+					fileOPT = "dati/"+bpagesOPT+"bordigheraOPT.csv";
+					fileB_OPT = "dati/"+bpagesOPT+"bordigheraLettiOPT.csv"
 					break;
 
 				case "2" :
-					file = "dati/sanremo.csv";
-					fileB = "dati/sanremoLetti.csv"
-					fileOPT = "dati/sanremoOPT.csv";
-					fileB_OPT = "dati/sanremoLettiOPT.csv"
+					file = "dati/"+spages+"sanremo.csv";
+					fileB = "dati/"+spages+"sanremoLetti.csv"
+					fileOPT = "dati/"+spagesOPT+"sanremoOPT.csv";
+					fileB_OPT = "dati/"+spagesOPT+"sanremoLettiOPT.csv"
 					break;
 				
 				case "4" :
-					file = "dati/imperia.csv";
-					fileB = "dati/imperiaLetti.csv";
-					fileOPT = "dati/imperiaOPT.csv";
-					fileB_OPT = "dati/imperiaLettiOPT.csv";
+					file = "dati/"+ipages+"imperia.csv";
+					fileB = "dati/"+ipages+"imperiaLetti.csv";
+					fileOPT = "dati/"+ipagesOPT+"imperiaOPT.csv";
+					fileB_OPT = "dati/"+ipagesOPT+"imperiaLettiOPT.csv";
 					break;
 
 				default : 
@@ -125,8 +125,15 @@ xmlhttp.onreadystatechange = () => {
 				optionEl.value = 1
 				optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
 				selectElement.appendChild(optionEl)
-
-				for(let i=2; i<bpagesOPT+1;i++){
+				let selectPages=1 // default
+				if(xmlResponse==1){
+					selectPages=bpagesOPT
+				}else if(xmlResponse == 2){
+					selectPages=spagesOPT
+				}else if(xmlResponse == 4){
+					selectPages=ipagesOPT
+				}
+				for(let i=2; i<selectPages+1;i++){
 
 					startDay.setDate(startDay.getDate()+7)
 					lastDay=new Date(startDay)
@@ -151,8 +158,15 @@ xmlhttp.onreadystatechange = () => {
 				optionEl.value = 1
 				optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
 				selectElement.appendChild(optionEl)
-
-				for(let i=2; i<bpages+1;i++){
+				let selectPages=1 // default
+				if(xmlResponse==1){
+					selectPages=bpages
+				}else if(xmlResponse == 2){
+					selectPages=spages
+				}else if(xmlResponse == 4){
+					selectPages=ipages
+				}
+				for(let i=2; i<selectPages+1;i++){
 
 					startDay.setDate(startDay.getDate()+7)
 					lastDay=new Date(startDay)
@@ -1009,3 +1023,17 @@ function optimization() {
 	xmlhttp.open("GET", value);
 	xmlhttp.send();
 }
+
+function selectWeek(value){
+	console.log("selectweek: ",value)
+	if(xmlResponse==1){
+		currentPagebOPT=value
+	}else if(xmlResponse==2){
+		currentPagesOPT=value
+	}else if(xmlResponse==4){
+		currentPageiOPT=value
+	}
+	xmlhttp.open("GET", xmlResponse);
+	xmlhttp.send();
+}
+
