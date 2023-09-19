@@ -153,7 +153,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	//if next weeks already computed, dont execute it again
 	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
 	(fs.existsSync(".\\dati\\2ImperiaOPT.db") && location=="inImperia.db") ||
-	(fs.existsSync(".\\dati\\2pSanremoOPT.db") && location=="inSanremo.db")){
+	(fs.existsSync(".\\dati\\2SanremoOPT.db") && location=="inSanremo.db")){
 		let countFiles=0
 		
 		let files = await fsp.readdir(".\\dati\\")
@@ -193,23 +193,33 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	let currentWeek = 2 //week counter
 
 	//while rawIn=patients not scheduled still present, keep looping
-	//while(rawIn.length>0){
-	while(currentWeek<6){
+	while(rawIn.length>0 || remain.length>0){
+	//while(currentWeek<3){
 //..\encodingASP\newAssignments\input\inBordighera.db
 //..\encodingASP\newAssignments\input\2inBordighera.db
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, "", {"flag": "w"});
 		// remaining person from .db files not in the output of ASP encoding
+		console.log("rawin:",rawIn.length," remain:",remain.length);
+		console.log("re: ",remain)
 		remain = remain.filter(el=>{
 			
 			return !currentOut.includes(el.Nosologico)
 			}
 		)
+		
+		console.log("re2: ",remain)
+		console.log("cu: ",currentOut)
+		console.log("raw: ",rawIn)
+		if(remain.length == 0 && rawIn.length == 0){
+			console.log("END week count:",currentWeek)
+			return
+		}
 		//console.log(currentOut," ",remain.length)
 		//fill the remain with new person till i reach the length of the original .db length
 		while(remain.length <= clingoIn.length && rawIn.length > 0){
 			remain=[...remain,rawIn.shift()]
 		}
-
+		console.log("re3: ",remain)
 		//encoding ASP works if only if priority1 exists.
 		//after we finished all prioirty 1, only priority 2 or higher remains
 		//we need to scale down to 1 the remaining prioirty
@@ -243,7 +253,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 						pri4++;
 						break;
 					default:
-						console.log("ERROR COUNTING TIME");
+						console.log("ERROR COUNTING TIME: ",el.Priority);
 						break;
 				}
 			}
@@ -263,9 +273,6 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 			content, {'flag': 'a'}, err => {console.error(err)});
 		}
-		//BUG ON BEDS
-		// quando finisce i letti, per esempio ce ne sono 6, invece di andare a scrivere il 7, si interrompe
-		// bisogna fare il collegamento tra i pastweek beds con i posti totali
 
 		// altro bug, per i giorni positivi lo riscrive due volte
 		console.log("INIZIO LETTI. week: ",currentWeek)
@@ -302,8 +309,12 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
 						console.log("writing beds 1 to 7: ",content," ",el.Day," ",el.Day-(7*(currentWeek-1)))
+						if(checkBeds<(el.Day-(7*(currentWeek-1)))){
+							checkBeds=(el.Day-(7*(currentWeek-1)))
+						}
 					}
-					checkBeds=idx
+					
+					
 				})	
 				console.log("check beds after computing: ",location.substring(2,location.length-3).toUpperCase()," chenkbeds: ",checkBeds)
 				if(checkBeds<7){
@@ -316,7 +327,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 												+ 2 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("xwriting beds 1 to 7: ",5," ",2," ",checkBeds)
+							console.log("xwriting beds 1 to 7: ",content," ",5," ",2," ",checkBeds)
 		
 							//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
 							
@@ -324,7 +335,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 												+ 3 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("xwriting beds 1 to 7: ",28," ",3," ",checkBeds)
+							console.log("xwriting beds 1 to 7: ",content," ",28," ",3," ",checkBeds)
 		
 							//SANREMO CHIRURGIA GENERALE;15
 							
@@ -332,7 +343,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 												+ 1 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("xwriting beds 1 to 7: ",15," ",1," ",checkBeds)
+							console.log("xwriting beds 1 to 7: ",content,15," ",1," ",checkBeds)
 		
 							//SANREMO OSTETRICIA GINECOLOGIA;20
 							
@@ -340,7 +351,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 													+ 4 + ", " + checkBeds + "). ";
 								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 								content, {'flag': 'a'}, err => {console.error(err)});
-								console.log("xwriting beds 1 to 7: ",20," ",4," ",checkBeds)
+								console.log("xwriting beds 1 to 7: ",content," ",20," ",4," ",checkBeds)
 						}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
 							//IMPERIA UROLOGIA;15
 							
@@ -392,6 +403,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 2 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
+						console.log("XXwriting beds 1 to 7: ",content," ",5," ",2," ",i)
 					}
 
 					//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
@@ -400,6 +412,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 3 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
+						console.log("XXwriting beds 1 to 7: ",content," ",28," ",3," ",i)
 					}
 
 					//SANREMO CHIRURGIA GENERALE;15
@@ -408,6 +421,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 1 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
+						console.log("XXwriting beds 1 to 7: ",content," ",15," ",1," ",i)
 					}
 
 					//SANREMO OSTETRICIA GINECOLOGIA;20
@@ -416,6 +430,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 4 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
+						console.log("XXwriting beds 1 to 7: ",content," ",20," ",4," ",i)
 					}
 				}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
 					//IMPERIA UROLOGIA;15
@@ -515,7 +530,7 @@ function runClingo(encoding, input, output, res, currentWeek) {
 
 	fs.writeFileSync(output, "", { flag: 'w' }, err => {console.error(err)});
 	shell.stdout.on("data", (data) => {
-		console.log(data.toString());
+		//console.log(data.toString());
 		fs.writeFileSync(output, data.toString(), 
 				{ flag: 'a' }, err => {console.error(err)});
 	});
