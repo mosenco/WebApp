@@ -11,7 +11,7 @@ const parser = require(".\\scripts\\libs\\parser.js");
 const { count } = require("console");
 const clingo = "..\\encodingASP\\clingo.exe";
 const clingoArgs = " --time-limit=10 --quiet=1 ";
-
+const encodingNW ="..\\encodingASP\\newAssignments\\encodingNextWeeks.asp"
 let pathIN = "..\\dataset\\output\\";
 //let pathClingoFiles = "..\\encodingASP\\sameAssignments\\";
 let pathClingoFilesOPT = "..\\encodingASP\\newAssignments\\";
@@ -69,7 +69,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "").then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encoding,output, res,["null"])
+						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encodingNW,output, res,["null"])
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -97,7 +97,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "").then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encoding, output, res, data[13])
+						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encodingNW, output, res, data[13])
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -123,7 +123,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, "").then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encoding,output, res,data[12])
+						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encodingNW,output, res,data[12])
 						
 					})
 					  .catch((error) => {
@@ -193,8 +193,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	let currentWeek = 2 //week counter
 
 	//while rawIn=patients not scheduled still present, keep looping
-	while(rawIn.length>0){
-	//while(currentWeek<4){
+	//while(rawIn.length>0){
+	while(currentWeek<6){
 //..\encodingASP\newAssignments\input\inBordighera.db
 //..\encodingASP\newAssignments\input\2inBordighera.db
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, "", {"flag": "w"});
@@ -305,7 +305,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 					checkBeds=idx
 				})	
-
+				console.log("check beds after computing: ",location.substring(2,location.length-3).toUpperCase()," chenkbeds: ",checkBeds)
 				if(checkBeds<7){
 					while(checkBeds<7){
 						
@@ -316,7 +316,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 												+ 2 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("writing beds 1 to 7: ",5," ",2," ",checkBeds)
+							console.log("xwriting beds 1 to 7: ",5," ",2," ",checkBeds)
 		
 							//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
 							
@@ -324,7 +324,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 												+ 3 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("writing beds 1 to 7: ",28," ",3," ",checkBeds)
+							console.log("xwriting beds 1 to 7: ",28," ",3," ",checkBeds)
 		
 							//SANREMO CHIRURGIA GENERALE;15
 							
@@ -332,7 +332,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 												+ 1 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("writing beds 1 to 7: ",15," ",1," ",checkBeds)
+							console.log("xwriting beds 1 to 7: ",15," ",1," ",checkBeds)
 		
 							//SANREMO OSTETRICIA GINECOLOGIA;20
 							
@@ -340,7 +340,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 													+ 4 + ", " + checkBeds + "). ";
 								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 								content, {'flag': 'a'}, err => {console.error(err)});
-								console.log("writing beds 1 to 7: ",20," ",4," ",checkBeds)
+								console.log("xwriting beds 1 to 7: ",20," ",4," ",checkBeds)
 						}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
 							//IMPERIA UROLOGIA;15
 							
@@ -384,6 +384,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				})
 				console.log("pastweek beds after: ",beds)
 			}else{
+				console.log("ENTERING ELSE BED")
 				if(location.substring(2,location.length-3).toUpperCase()=="SANREMO"){
 					//SANREMO O.R.L.;5
 					for(let i=1;i<8;i++){
@@ -451,16 +452,6 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				}
 			}
 
-
-
-			currentBeds.forEach(el=>{
-				let content = "beds(" + el.BedsAvailable + ", " 
-										+ el.Specialty + ", " + el.Day + "). ";
-								
-				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
-					content, {'flag': 'a'}, err => {console.error(err)});
-			})
-
 		}
 
 		
@@ -524,7 +515,7 @@ function runClingo(encoding, input, output, res, currentWeek) {
 
 	fs.writeFileSync(output, "", { flag: 'w' }, err => {console.error(err)});
 	shell.stdout.on("data", (data) => {
-		//console.log(data.toString());
+		console.log(data.toString());
 		fs.writeFileSync(output, data.toString(), 
 				{ flag: 'a' }, err => {console.error(err)});
 	});

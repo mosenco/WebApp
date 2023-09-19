@@ -33,8 +33,8 @@ stay(NOSOLOGICAL, SPECIALTY, DAY..OUT + DAY)
 %it counts if there are registrations with priority 1 unassigned
 unassignedRegsP1(N) :- N = totRegsP1 - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGICAL, 1, _, _, _, _)}.
 
-%it must not be true that there are registrations with priority 1 unassigned
-:- unassignedRegsP1(N), N > 0.
+%differently from the original, here it's possible to not assign all P1
+:~ unassignedRegsP1(N). [N@5]
 
 %it counts the number of unassigned registrations with priority 2
 unassignedRegsP2(N) :- N = totRegsP2 - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGICAL, 2, _, _, _, _)}.
@@ -53,6 +53,6 @@ unassignedRegsP4(N) :- N = totRegsP4 - M, M = #count {NOSOLOGICAL: assigned(NOSO
 :~ unassignedRegsP4(N). [N@2]
 
 %These rules show just the atoms of our interest
-#show assigned/6.
-#show beds/3.
-#show stay/3.
+%#show assigned/6.
+%#show beds/3.
+%#show stay/3.
