@@ -152,27 +152,40 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	
 	//if next weeks already computed, dont execute it again
 	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
-	(fs.existsSync(".\\dati\\2ImperiaOPT.db") && location=="inImperia.db") ||
-	(fs.existsSync(".\\dati\\2SanremoOPT.db") && location=="inSanremo.db")){
+	(fs.existsSync(".\\dati\\2ImperiaOPT.csv") && location=="inImperia.db") ||
+	(fs.existsSync(".\\dati\\2SanremoOPT.csv") && location=="inSanremo.db")){
 		let countFiles=0
 		
-		let files = await fsp.readdir(".\\dati\\")
-		files.forEach((file) => {
-			if(file.includes("bordigheraOPT.csv")){
-				countFiles++
-			}
-		})
+		
 
 		if(location=="inBordighera.db"){
+			let files = await fsp.readdir(".\\dati\\")
+			files.forEach((file) => {
+				if(file.includes("bordigheraOPT.csv")){
+					countFiles++
+				}
+			})
 			bpagesOPT=countFiles
 		}else if(location=="inImperia.db"){
+			let files = await fsp.readdir(".\\dati\\")
+			files.forEach((file) => {
+				if(file.includes("imperiaOPT.csv")){
+					countFiles++
+				}
+			})
 			ipagesOPT=countFiles
 		}else if(location=="inSanremo.db"){
+			let files = await fsp.readdir(".\\dati\\")
+			files.forEach((file) => {
+				if(file.includes("sanremoOPT.csv")){
+					countFiles++
+				}
+			})
 			spagesOPT=countFiles
 		}
 
 		res.writeHead(200, {"Content-type": "text/html"});
-		res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
+		res.end(JSON.stringify([{type:"classic",place:location,num:countFiles.toString()},{type:"optimized",place:location,num:countFiles.toString()}]));
 		console.log("already computed for: ",location)
 		return;
 	}
@@ -212,6 +225,15 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		console.log("raw: ",rawIn)
 		if(remain.length == 0 && rawIn.length == 0){
 			console.log("END week count:",currentWeek)
+			if(location=="inBordighera.db"){
+				bpagesOPT=currentWeek-1
+			}else if(location=="inImperia.db"){
+				ipagesOPT=currentWeek-1
+			}else if(location=="inSanremo.db"){
+				spagesOPT=currentWeek-1
+			}
+			res.writeHead(200, {"Content-type": "text/html"});
+			res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
 			return
 		}
 		//console.log(currentOut," ",remain.length)

@@ -57,8 +57,8 @@ xmlhttp.onreadystatechange = () => {
 		//console.log(xmlhttp.status);
 
 		if (xmlhttp.status == 200) {
-			//console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
-			/*
+			console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
+			
 			let myobj = JSON.parse(xmlhttp.responseText);
 			switch(myobj[0].place){
 				case "inBordighera.db":
@@ -71,12 +71,12 @@ xmlhttp.onreadystatechange = () => {
 					break;
 				case "inSanremo.db":
 					spages = parseInt(myobj[0].num)
-					spagesOPT = parseint(myobj[1].num)
+					spagesOPT = parseInt(myobj[1].num)
 					break;
 				default:
 					console.log("ISSUE IN READING RESPONSE TYPE: ",myobj.place)
 					break;
-			}	*/
+			}	
 
 		
 			xmlResponse = xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
