@@ -82,32 +82,34 @@ xmlhttp.onreadystatechange = () => {
 			xmlResponse = xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
 			let file = "";
 			let fileB = "";
+			console.log("xmlresponse: ",xmlResponse," ",bpages,bpagesOPT,ipages,ipagesOPT,spages,spagesOPT)
+			console.log("curretpage: ",currentPageb," ",currentPagebOPT," ",currentPagei," ",currentPageiOPT," ",currentPages," ",currentPagesOPT)
 			switch(xmlResponse) {
 				case "1" :
-					file = "dati/"+bpages+"bordighera.csv";
-					fileB = "dati/"+bpages+"bordigheraLetti.csv"
-					fileOPT = "dati/"+bpagesOPT+"bordigheraOPT.csv";
-					fileB_OPT = "dati/"+bpagesOPT+"bordigheraLettiOPT.csv"
+					file = "dati/"+currentPageb+"bordighera.csv";
+					fileB = "dati/"+currentPageb+"bordigheraLetti.csv"
+					fileOPT = "dati/"+currentPagebOPT+"bordigheraOPT.csv";
+					fileB_OPT = "dati/"+currentPagebOPT+"bordigheraLettiOPT.csv"
 					break;
 
 				case "2" :
-					file = "dati/"+spages+"sanremo.csv";
-					fileB = "dati/"+spages+"sanremoLetti.csv"
-					fileOPT = "dati/"+spagesOPT+"sanremoOPT.csv";
-					fileB_OPT = "dati/"+spagesOPT+"sanremoLettiOPT.csv"
+					file = "dati/"+currentPages+"sanremo.csv";
+					fileB = "dati/"+currentPages+"sanremoLetti.csv"
+					fileOPT = "dati/"+currentPagesOPT+"sanremoOPT.csv";
+					fileB_OPT = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
 					break;
 				
 				case "4" :
-					file = "dati/"+ipages+"imperia.csv";
-					fileB = "dati/"+ipages+"imperiaLetti.csv";
-					fileOPT = "dati/"+ipagesOPT+"imperiaOPT.csv";
-					fileB_OPT = "dati/"+ipagesOPT+"imperiaLettiOPT.csv";
+					file = "dati/"+currentPagei+"imperia.csv";
+					fileB = "dati/"+currentPagei+"imperiaLetti.csv";
+					fileOPT = "dati/"+currentPageiOPT+"imperiaOPT.csv";
+					fileB_OPT = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
 					break;
 
 				default : 
 					break;
 			}
-
+			
 			if (document.getElementById("optim").checked) {
 				file = fileOPT;
 				fileB = fileB_OPT;
@@ -126,13 +128,18 @@ xmlhttp.onreadystatechange = () => {
 				optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
 				selectElement.appendChild(optionEl)
 				let selectPages=1 // default
+				let choosenpage = 1
 				if(xmlResponse==1){
 					selectPages=bpagesOPT
+					choosenpage = currentPagebOPT
 				}else if(xmlResponse == 2){
 					selectPages=spagesOPT
+					choosenpage = currentPagesOPT
 				}else if(xmlResponse == 4){
 					selectPages=ipagesOPT
+					choosenpage = currentPageiOPT
 				}
+				
 				for(let i=2; i<selectPages+1;i++){
 
 					startDay.setDate(startDay.getDate()+7)
@@ -143,6 +150,8 @@ xmlhttp.onreadystatechange = () => {
 					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
 					selectElement.appendChild(optionEl)
 				}
+				selectElement.value = choosenpage
+				
 				
 			}else{
 				let selectElement = document.getElementById("selectedWeek");
@@ -177,7 +186,7 @@ xmlhttp.onreadystatechange = () => {
 					selectElement.appendChild(optionEl)
 				}
 			}
-
+			
 			d3.csv(file)
 				.then(csv => {
 					d3.csv(fileB)
@@ -198,6 +207,7 @@ xmlhttp.onreadystatechange = () => {
 						.catch(error => console.error(error));
 				})
 				.catch(error => console.error(error));	
+			
 		} else {
 			console.error("Unexpected Error. HTTP Status: " + xmlhttp.status);	
 		}
