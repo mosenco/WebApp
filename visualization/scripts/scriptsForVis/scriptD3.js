@@ -109,7 +109,7 @@ xmlhttp.onreadystatechange = () => {
 				default : 
 					break;
 			}
-			
+			console.log("file: ",file," ",fileB," ",fileOPT," ",fileB_OPT)
 			if (document.getElementById("optim").checked) {
 				file = fileOPT;
 				fileB = fileB_OPT;

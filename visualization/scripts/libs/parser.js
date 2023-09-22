@@ -37,7 +37,7 @@ function parseClingoSolution(input, output,currentWeek) {
 			subStr = subStr.replaceAll(")", "");
 			let temp = subStr.split(",");
 			let string = "";
-			console.log("assigned: ",assigned[i])
+			//console.log("assigned: ",assigned[i])
 			for (let j = 0; j < temp.length; j++) {
 				if (temp.length > 5)
 					if (j == 1)
@@ -49,7 +49,7 @@ function parseClingoSolution(input, output,currentWeek) {
 				}
 				string += temp[j] + ",";
 			}
-			console.log("---> ",string)
+			//console.log("---> ",string)
 			obj.clingoOUT=[...obj.clingoOUT,string]
 			fs.writeFileSync(output, string + "\n", 
 						{ flag: 'a' }, err => {console.error(err)});
@@ -69,6 +69,9 @@ function parseClingoSolution(input, output,currentWeek) {
 			if (atomo.includes("stay"))
 				stay.push(atomo);
 		});
+
+	
+
 
 		for (let i = 0; i < beds.length; i++) {
 			let count = 0;

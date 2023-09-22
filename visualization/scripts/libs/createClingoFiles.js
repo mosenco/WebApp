@@ -290,16 +290,14 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 								countPriorities(value.Priority, 2);
 							}
 						});
-						for(let k=0;k<10;k++){
-							console.log(regs[0][k])
-						}
+						
 						
 						console.log("priority: ",pr);
 
 						myobj[0]=[...regs[0]]
 						myobj[1]=[...regs[1]]
 						myobj[2]=[...regs[2]]
-
+			
 						//ora iniziamo a dividere le additionalregs, dentro regs, in subarray per tipo
 						//ovvero per priorita 2,3,4
 						for (let index = 0; index < regs.length; index++) {
@@ -406,7 +404,7 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 							}
 							
 							
-
+						
 						}
 
 						/*for (let index = 0; index < regs.length; index++) {
@@ -515,7 +513,7 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 								//console.log("higher: ",value)
 								if(value.Sede == "SANREMO"){
 									myobj[13]=[...myobj[13],value]
-									console.log(myobj[13])
+									
 								}else if(value.Sede == "IMPERIA"){
 									myobj[12]=[...myobj[12],value]
 								}else{
@@ -549,6 +547,7 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 									content += 'mss("' + temp[i].Sala + '", ' + spec + ", " + temp[i].Friday + "). ";
 								}
 								myobj[6][0]+=content
+								
 							}
 
 							if (temp[i].Sede == "SANREMO") {

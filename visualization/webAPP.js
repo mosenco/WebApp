@@ -28,7 +28,12 @@ let ipagesOPT=1
 let ipages=1
 let spagesOPT=1
 let spages=1
+/*
 
+2019488500,42,BORDIGHERA,1,DaySurgery,344,0,0,0
+in additional reg this one goes over 330 for bordighera. i fixed it to 330
+
+*/
 runWebAPP();
 
 /**
@@ -37,7 +42,8 @@ runWebAPP();
 async function runWebAPP() {
 
 	const files = await clingoFiles.getFiles(pathIN, pathClingoFilesOPT, true);
-	const encoding = files.Encoding;
+	//const encoding = files.Encoding;
+	const encoding = "..\\encodingASP\\newAssignments\\encodingBedsOPT.asp"
 	const db = files.DB;
 	// data sarebbe myobj
 	//let myobj=[bordigheraOP,sanremoOP,imperiaOP,bordigheraDB,sanremoDB,imperiaDB,bmss,imss,smss,btime,itime,stime,ibed,sbed]
@@ -103,6 +109,7 @@ async function runWebAPP() {
 						console.error("Errore:", error);
 						// Gestisci eventuali errori qui
 					  });
+					
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
 					res.end(JSON.stringify([{type:"classic",place:"inSanremo.db",num:spages.toString()},{type:"optimized",place:"inSanremo.db",num:spagesOPT.toString()}]));
@@ -227,17 +234,13 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 //..\encodingASP\newAssignments\input\2inBordighera.db
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, "", {"flag": "w"});
 		// remaining person from .db files not in the output of ASP encoding
-		console.log("rawin:",rawIn.length," remain:",remain.length);
-		console.log("re: ",remain)
+		console.log("CONTROLLA: ",remain.length," ",currentOut.length)
 		remain = remain.filter(el=>{
 			
 			return !currentOut.includes(el.Nosologico)
 			}
 		)
-		
-		console.log("re2: ",remain)
-		console.log("cu: ",currentOut)
-		console.log("raw: ",rawIn)
+		console.log("CONTROLLA DPOO: ",remain.length," ",remain[0])
 		if(remain.length == 0 && rawIn.length == 0){
 			console.log("END week count:",currentWeek)
 			if(location=="inBordighera.db"){
@@ -248,15 +251,19 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				spagesOPT=currentWeek-1
 			}
 			res.writeHead(200, {"Content-type": "text/html"});
-			res.end(JSON.stringify([{type:"classic",place:location,num:GetPages().toString()},{type:"optimized",place:location,num:GetPagesOPT.toString()}]));
+			res.end(JSON.stringify([
+				{type:"classic",place:location,num:GetPages(location).toString()}, //myobj[0]
+				{type:"optimized",place:location,num:GetPagesOPT(location).toString()}])); //myobj[1]
 			return
 		}
+	
 		//console.log(currentOut," ",remain.length)
 		//fill the remain with new person till i reach the length of the original .db length
+	
 		while(remain.length <= clingoIn.length && rawIn.length > 0){
 			remain=[...remain,rawIn.shift()]
 		}
-		console.log("re3: ",remain)
+
 		//encoding ASP works if only if priority1 exists.
 		//after we finished all prioirty 1, only priority 2 or higher remains
 		//we need to scale down to 1 the remaining prioirty
@@ -269,8 +276,10 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		let pri3=0
 		let pri4=0
 		let diffP = remain[0].Priority-1
-		//console.log("prima di shift: ",remain[0].Priority)
+	
 		remain.forEach(el=>{
+	
+			
 			if(el.Priority-diffP > 4){
 				el.Priority=4
 				pri4++
@@ -290,8 +299,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 						pri4++;
 						break;
 					default:
-						console.log("ERROR COUNTING TIME: ",el.Priority);
-						break;
+						console.log("ERROR COUNTING TIME: ",el.Priority," ",remain.length);
+						return;
 				}
 			}
 			
@@ -311,23 +320,47 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			content, {'flag': 'a'}, err => {console.error(err)});
 		}
 
-		// altro bug, per i giorni positivi lo riscrive due volte
-		console.log("INIZIO LETTI. week: ",currentWeek)
-		console.log("currentbeds: ",currentBeds)
+
 		//write beds if present
 		if (currentBeds.length > 0){
+			
+			/*
+			for(let i=-7;i<=7;i++){
+				let content = "beds(" + 500 + ", " 
+										+1+ ", " + i + "). ";
+				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+				content, {'flag': 'a'}, err => {console.error(err)});
+			}
+			for(let i=-7;i<=7;i++){
+				let content = "beds(" + 500 + ", " 
+										+3+ ", " + i + "). ";
+				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+				content, {'flag': 'a'}, err => {console.error(err)});
+			}
+			for(let i=-7;i<=7;i++){
+				let content = "beds(" + 500 + ", " 
+										+5+ ", " + i + "). ";
+				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+				content, {'flag': 'a'}, err => {console.error(err)});
+			}
+			for(let i=-7;i<=7;i++){
+				let content = "beds(" + 500 + ", " 
+										+7+ ", " + i + "). ";
+				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
+				content, {'flag': 'a'}, err => {console.error(err)});
+			}*/
+			
 			//i consider only the previous week so from 1 to 7 that will become my new -7 to -1
 			currentBeds = currentBeds.filter(el=>el.Day > -1)
-			//console.log("currentbeds solo positivo:",currentBeds)
 			currentBeds.forEach(el=>{
 				//i subtract -8 ti set the day 1 to 7 --> -7 to -1
 				//because the current week computed is the previous week for the next week
 				let content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
 										+ el.Specialty + ", " + (parseInt(el.Day)-8) + "). ";
-				console.log("writing beds -7 to -1: ",content," original:",el)
 				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 				content, {'flag': 'a'}, err => {console.error(err)});
 			})
+			
 			if(beds.length>0){
 
 			
@@ -345,17 +378,13 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ el.Specialty + ", " + (el.Day-(7*(currentWeek-1))) + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
-						console.log("writing beds 1 to 7: ",content," ",el.Day," ",el.Day-(7*(currentWeek-1)))
 						if(checkBeds<(el.Day-(7*(currentWeek-1)))){
 							checkBeds=(el.Day-(7*(currentWeek-1)))
 						}
-						//18-> 1
-					}//19 -> 2
-					//20 ->3
+					}
 					
 					
 				})	
-				console.log("check beds after computing: ",location.substring(2,location.length-3).toUpperCase()," chenkbeds: ",checkBeds)
 				if(checkBeds<7){
 					while(checkBeds<7){
 						
@@ -366,34 +395,26 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 												+ 2 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("xwriting beds 1 to 7: ",content," ",5," ",2," ",checkBeds)
 		
 							//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
-							
 							content = "beds(" + 28 + ", " 
 												+ 3 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("xwriting beds 1 to 7: ",content," ",28," ",3," ",checkBeds)
 		
 							//SANREMO CHIRURGIA GENERALE;15
-							
 								content = "beds(" + 15 + ", " 
 												+ 1 + ", " + checkBeds + "). ";
 							fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 							content, {'flag': 'a'}, err => {console.error(err)});
-							console.log("xwriting beds 1 to 7: ",content,15," ",1," ",checkBeds)
 		
 							//SANREMO OSTETRICIA GINECOLOGIA;20
-							
 								 content = "beds(" + 20 + ", " 
 													+ 4 + ", " + checkBeds + "). ";
 								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 								content, {'flag': 'a'}, err => {console.error(err)});
-								console.log("xwriting beds 1 to 7: ",content," ",20," ",4," ",checkBeds)
 						}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
 							//IMPERIA UROLOGIA;15
-							
 								 content = "beds(" + 15 + ", " 
 													+ 1 + ", " + checkBeds + "). ";
 								fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -428,13 +449,10 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 						checkBeds++;
 					}
 				}
-				console.log("pastweek beds before: ",beds)
 				beds = beds.filter(el=>{
 					return !selectedBed.includes(el)
 				})
-				console.log("pastweek beds after: ",beds)
 			}else{
-				console.log("ENTERING ELSE BED")
 				if(location.substring(2,location.length-3).toUpperCase()=="SANREMO"){
 					//SANREMO O.R.L.;5
 					for(let i=1;i<8;i++){
@@ -442,7 +460,6 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 2 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
-						console.log("XXwriting beds 1 to 7: ",content," ",5," ",2," ",i)
 					}
 
 					//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
@@ -451,7 +468,6 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 3 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
-						console.log("XXwriting beds 1 to 7: ",content," ",28," ",3," ",i)
 					}
 
 					//SANREMO CHIRURGIA GENERALE;15
@@ -460,7 +476,6 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 1 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
-						console.log("XXwriting beds 1 to 7: ",content," ",15," ",1," ",i)
 					}
 
 					//SANREMO OSTETRICIA GINECOLOGIA;20
@@ -469,7 +484,6 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 											+ 4 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 						content, {'flag': 'a'}, err => {console.error(err)});
-						console.log("XXwriting beds 1 to 7: ",content," ",20," ",4," ",i)
 					}
 				}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
 					//IMPERIA UROLOGIA;15
@@ -513,14 +527,13 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 					mss[0], {'flag': 'a'}, err => {console.error(err)});
 		
-				
+		//write time
 		let currentTime = "\n#const week_days = " + time.Days + ".";
 		currentTime += "\n#const timeDisp = " + time.Timing + ".";
 		currentTime += "\n#const totRegsP1 = " + pri1 + ".";
 		currentTime += "\n#const totRegsP2 = " + pri2 + ".";
 		currentTime += "\n#const totRegsP3 = " + pri3 + ".";
 		currentTime += "\n#const totRegsP4 = " + pri4 + ".";
-		//write time
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 					currentTime, {'flag': 'a'}, err => {console.error(err)});
 		
@@ -547,7 +560,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		spagesOPT=currentWeek
 	}
 	res.writeHead(200, {"Content-type": "text/html"});
-	res.end(JSON.stringify([{type:"classic",place:location,num:GetPages().toString()},{type:"optimized",place:location,num:GetPagesOPT.toString()}]));
+	res.end(JSON.stringify([{type:"classic",place:location,num:GetPages(location).toString()},{type:"optimized",place:location,num:GetPagesOPT(location).toString()}]));
 }
 
 
@@ -570,7 +583,7 @@ function runClingo(encoding, input, output, res, currentWeek) {
 
 	fs.writeFileSync(output, "", { flag: 'w' }, err => {console.error(err)});
 	shell.stdout.on("data", (data) => {
-		//console.log(data.toString());
+		console.log(data.toString());
 		fs.writeFileSync(output, data.toString(), 
 				{ flag: 'a' }, err => {console.error(err)});
 	});
