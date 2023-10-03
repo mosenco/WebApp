@@ -1,15 +1,15 @@
 clingo version 5.4.0
 Reading from ...ASP\newAssignments\encodingBedsOPT.asp ...
 Solving...
-Answer: 12
-assigned(2018452616,1,"SALA_B",1,5,27) assigned(2019116080,1,"SALA_B",2,4,37) assigned(2019073015,1,"SALA_B",2,5,33) assigned(2018296297,1,"SALA_B",1,1,23) assigned(2019055548,1,"SALA_B",1,2,27) assigned(2019116115,1,"SALA_B",2,3,41) assigned(2018402496,1,"SALA_B",1,3,34) assigned(2019099479,1,"SALA_B",3,2,55) assigned(2019085926,1,"SALA_B",3,2,57) assigned(2019061836,1,"SALA_B",3,4,70) assigned(2019099463,1,"SALA_B",3,3,48) assigned(2019118358,1,"SALA_B",4,2,45) assigned(2019118362,1,"SALA_B",4,2,40) assigned(2019099169,1,"SALA_B",4,3,45) assigned(2019112116,1,"SALA_B",4,5,69) assigned(2019092487,1,"SALA_B",4,5,32) assigned(2019122535,1,"SALA_B",1,4,34) assigned(2019079729,1,"SALA_B",1,4,37) assigned(2019116199,1,"SALA_B",1,3,48) assigned(2019124750,1,"SALA_B",1,3,30) assigned(2018448000,1,"SALA_B",1,5,42) assigned(2019098815,1,"SALA_B",1,1,54) assigned(2019114385,1,"SALA_B",4,4,65) assigned(2019098861,1,"SALA_B",4,2,32) assigned(2019098867,1,"SALA_B",4,4,65) assigned(2019103598,1,"SALA_B",4,4,22) assigned(2019118348,1,"SALA_B",4,1,20) assigned(2018493795,1,"SALA_B",4,1,60) assigned(2018454115,2,"SALA_B",1,1,28) assigned(2019059969,2,"SALA_B",1,1,52) assigned(2019099121,2,"SALA_B",1,5,30) assigned(2019082146,2,"SALA_B",1,1,20) assigned(2019096570,2,"SALA_B",3,5,64) assigned(2019128405,2,"SALA_B",4,1,35) assigned(2019114204,2,"SALA_B",4,5,30) assigned(2019103584,2,"SALA_B",4,2,50) assigned(2018452816,2,"SALA_B",1,2,23) assigned(2019112028,2,"SALA_B",4,1,35) assigned(2019114402,2,"SALA_B",4,3,36) assigned(2019130760,2,"SALA_B",1,3,28) assigned(2019141164,2,"SALA_B",1,3,20)
+Answer: 11
+assigned(2018452616,1,"SALA_B",1,2,27) assigned(2019116080,1,"SALA_B",2,3,37) assigned(2019073015,1,"SALA_B",2,2,33) assigned(2018296297,1,"SALA_B",1,4,23) assigned(2019055548,1,"SALA_B",1,4,27) assigned(2019116115,1,"SALA_B",2,4,41) assigned(2018402496,1,"SALA_B",1,1,34) assigned(2019099479,1,"SALA_B",3,5,55) assigned(2019085926,1,"SALA_B",3,3,57) assigned(2019061836,1,"SALA_B",3,4,70) assigned(2019099463,1,"SALA_B",3,5,48) assigned(2019118358,1,"SALA_B",4,2,45) assigned(2019118362,1,"SALA_B",4,2,40) assigned(2019099169,1,"SALA_B",4,3,45) assigned(2019112116,1,"SALA_B",4,4,69) assigned(2019092487,1,"SALA_B",4,2,32) assigned(2019122535,1,"SALA_B",1,1,34) assigned(2019079729,1,"SALA_B",1,4,37) assigned(2019116199,1,"SALA_B",1,3,48) assigned(2019124750,1,"SALA_B",1,5,30) assigned(2018448000,1,"SALA_B",1,5,42) assigned(2019098815,1,"SALA_B",1,4,54) assigned(2019114385,1,"SALA_B",4,2,65) assigned(2019098861,1,"SALA_B",4,2,32) assigned(2019098867,1,"SALA_B",4,5,65) assigned(2019103598,1,"SALA_B",4,2,22) assigned(2019118348,1,"SALA_B",4,1,20) assigned(2018493795,1,"SALA_B",4,5,60) assigned(2018454115,2,"SALA_B",1,1,28) assigned(2019059969,2,"SALA_B",1,1,52) assigned(2019099121,2,"SALA_B",1,5,30) assigned(2019082146,2,"SALA_B",1,1,20) assigned(2019068767,2,"SALA_B",3,3,59) assigned(2019118340,2,"SALA_B",4,2,34) assigned(2019114175,2,"SALA_B",4,3,35) assigned(2019114204,2,"SALA_B",4,1,30) assigned(2019114150,2,"SALA_B",4,1,45) assigned(2019099500,2,"SALA_B",4,1,30) assigned(2018452816,2,"SALA_B",1,3,23) assigned(2019130760,2,"SALA_B",1,1,28) assigned(2019141164,2,"SALA_B",1,3,20)
 Optimization: 16 28 13
 SATISFIABLE
 
 TIME LIMIT   : 1
-Models       : 12+
+Models       : 11+
   Optimum    : unknown
 Optimization : 16 28 13
 Calls        : 1
-Time         : 10.011s (Solving: 9.98s 1st Model: 0.00s Unsat: 0.00s)
-CPU Time     : 9.703s
+Time         : 10.011s (Solving: 9.96s 1st Model: 0.00s Unsat: 0.00s)
+CPU Time     : 9.906s
