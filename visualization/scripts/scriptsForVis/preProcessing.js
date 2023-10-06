@@ -10,7 +10,7 @@ const colors = [
 	"#5FD2B8", "#06A786", "#07BE8D", "#6FC494", "#82D7A1", "#5FBC56", "#A5D36A", 
 	"#54917F", "#015C41", "#014C25", "#3A7D3A", "#015243", "#3DB379", "#01A968"];*/
 
-function preProcessing(csvOR, csvBeds, num, fileOR, fileBeds) {
+function preProcessing(csvOR, csvBeds, num, islastweek){ // fileOR, fileBeds) {
 	csvOR.forEach(d => {
 		d.Day = +d.Day;
 		d.Timing = +d.Timing;
@@ -89,7 +89,7 @@ function preProcessing(csvOR, csvBeds, num, fileOR, fileBeds) {
 
 	let timeORs = dataForORsBars(csvOR);
 	let groups = dataForORsStackBars(csvOR);
-	let beds = dataForBedsCharts(csvBeds);
+	let beds = dataForBedsCharts(csvBeds,islastweek);
 
 	if (num == "1") {
 		if (timeORs.findIndex(d => d.Sala == "SALA A") == -1)
@@ -108,8 +108,8 @@ function preProcessing(csvOR, csvBeds, num, fileOR, fileBeds) {
 			});
 	}
 
-	efficiencyORs(timeORs, num, fileOR);
-	efficiencyBeds(beds, num, fileBeds);
+	//efficiencyORs(timeORs, num, fileOR);
+	//efficiencyBeds(beds, num, fileBeds);
 
 	return [timeORs, groups, beds];
 }
@@ -268,7 +268,7 @@ function dataForORsStackBars(csv) {
 	return groups;
 }
 
-function dataForBedsCharts(csv) {
+function dataForBedsCharts(csv,islastweek) {
 	let wards = [];
 
 	for (let i = 0; i < csv.length; i++) {
@@ -290,31 +290,62 @@ function dataForBedsCharts(csv) {
 
 			index = wards.findIndex(d => d.Specialty == csv[i].Specialty);
 		}
-
-		if (csv[i].Day == 1) {
-			wards[index].FreeBedsM = csv[i].BedsAvailable;
-			wards[index].UsedBedsM = csv[i].BedsUsed;
+		//the true occupation of beds of week X is made by week X+1 considering the past week
+		//if we are in the last week, there is no X+1 pastweek and we consider the current one
+		if(islastweek==1){
+			console.log("compute last week beds")
+			if (csv[i].Day == 1) {
+				wards[index].FreeBedsM = csv[i].BedsAvailable;
+				wards[index].UsedBedsM = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == 2) {
+				wards[index].FreeBedsT = csv[i].BedsAvailable;
+				wards[index].UsedBedsT = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == 3) {
+				wards[index].FreeBedsW = csv[i].BedsAvailable;
+				wards[index].UsedBedsW = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == 4) {
+				wards[index].FreeBedsTh = csv[i].BedsAvailable;
+				wards[index].UsedBedsTh = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == 5) {
+				wards[index].FreeBedsF = csv[i].BedsAvailable;
+				wards[index].UsedBedsF = csv[i].BedsUsed;
+			}
+		}else{
+			console.log("compute shifted week beds")
+			if (csv[i].Day == -7) {
+				wards[index].FreeBedsM = csv[i].BedsAvailable;
+				wards[index].UsedBedsM = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -6) {
+				wards[index].FreeBedsT = csv[i].BedsAvailable;
+				wards[index].UsedBedsT = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -5) {
+				wards[index].FreeBedsW = csv[i].BedsAvailable;
+				wards[index].UsedBedsW = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -4) {
+				wards[index].FreeBedsTh = csv[i].BedsAvailable;
+				wards[index].UsedBedsTh = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -3) {
+				wards[index].FreeBedsF = csv[i].BedsAvailable;
+				wards[index].UsedBedsF = csv[i].BedsUsed;
+			}
 		}
-
-		if (csv[i].Day == 2) {
-			wards[index].FreeBedsT = csv[i].BedsAvailable;
-			wards[index].UsedBedsT = csv[i].BedsUsed;
-		}
-
-		if (csv[i].Day == 3) {
-			wards[index].FreeBedsW = csv[i].BedsAvailable;
-			wards[index].UsedBedsW = csv[i].BedsUsed;
-		}
-
-		if (csv[i].Day == 4) {
-			wards[index].FreeBedsTh = csv[i].BedsAvailable;
-			wards[index].UsedBedsTh = csv[i].BedsUsed;
-		}
-
-		if (csv[i].Day == 5) {
-			wards[index].FreeBedsF = csv[i].BedsAvailable;
-			wards[index].UsedBedsF = csv[i].BedsUsed;
-		}
+		
 	}
 
 	return wards;

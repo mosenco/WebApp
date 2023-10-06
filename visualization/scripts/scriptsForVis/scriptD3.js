@@ -44,6 +44,10 @@ let currentPageiOPT=1
 let currentPages=1
 let currentPagesOPT=1
 
+//to show in the graph the correct occupation of the week X, we need to read the previous week of week X+1
+//because only the next week X+1 will occupy free beds in the week X.
+//but obviously the last week doesnt have any future computation for the current week so we need to use this variable
+let checklastweek=1; 
 let xmlResponse;
 let xmlhttp = new XMLHttpRequest();
 xmlhttp.open("GET", "1");
@@ -86,34 +90,59 @@ xmlhttp.onreadystatechange = () => {
 			console.log("curretpage: ",currentPageb," ",currentPagebOPT," ",currentPagei," ",currentPageiOPT," ",currentPages," ",currentPagesOPT)
 			switch(xmlResponse) {
 				case "1" :
-					file = "dati/"+currentPageb+"bordighera.csv";
-					fileB = "dati/"+currentPageb+"bordigheraLetti.csv"
-					fileOPT = "dati/"+currentPagebOPT+"bordigheraOPT.csv";
-					fileB_OPT = "dati/"+currentPagebOPT+"bordigheraLettiOPT.csv"
+					//file = "dati/"+currentPageb+"bordighera.csv";
+					//fileB = "dati/"+currentPageb+"bordigheraLetti.csv"
+					//fileOPT = "dati/"+currentPagebOPT+"bordigheraOPT.csv";
+					//fileB_OPT = "dati/"+currentPagebOPT+"bordigheraLettiOPT.csv"
+					file = "dati/"+currentPagebOPT+"bordigheraOPT.csv";
+					fileB = "dati/"+currentPagebOPT+"bordigheraLettiOPT.csv"
+					checklastweek=1
 					break;
 
 				case "2" :
-					file = "dati/"+currentPages+"sanremo.csv";
-					fileB = "dati/"+currentPages+"sanremoLetti.csv"
-					fileOPT = "dati/"+currentPagesOPT+"sanremoOPT.csv";
-					fileB_OPT = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
+					//file = "dati/"+currentPages+"sanremo.csv";
+					//fileB = "dati/"+currentPages+"sanremoLetti.csv"
+					//fileOPT = "dati/"+currentPagesOPT+"sanremoOPT.csv";
+					//fileB_OPT = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
+					if(currentPagesOPT +1<= spagesOPT){
+						file = "dati/"+currentPagesOPT+"sanremoOPT.csv";
+						fileB = "dati/"+(parseInt(currentPagesOPT)+1)+"sanremoLettiOPT.csv"
+						checklastweek=0
+					}else{
+						file = "dati/"+currentPagesOPT+"sanremoOPT.csv";
+						fileB = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
+						checklastweek=1
+					}
+					
 					break;
 				
 				case "4" :
-					file = "dati/"+currentPagei+"imperia.csv";
-					fileB = "dati/"+currentPagei+"imperiaLetti.csv";
-					fileOPT = "dati/"+currentPageiOPT+"imperiaOPT.csv";
-					fileB_OPT = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
+					//file = "dati/"+currentPagei+"imperia.csv";
+					//fileB = "dati/"+currentPagei+"imperiaLetti.csv";
+					//fileOPT = "dati/"+currentPageiOPT+"imperiaOPT.csv";
+					//fileB_OPT = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
+					if(currentPageiOPT+1 <= ipagesOPT){
+						file = "dati/"+currentPageiOPT+"imperiaOPT.csv";
+						fileB = "dati/"+(parseInt(currentPageiOPT)+1)+"imperiaLettiOPT.csv";
+						checklastweek=0
+					}else{
+						file = "dati/"+currentPageiOPT+"imperiaOPT.csv";
+						fileB = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
+						checklastweek=1
+					}
+					
 					break;
 
 				default : 
 					break;
 			}
-			console.log("file: ",file," ",fileB," ",fileOPT," ",fileB_OPT)
+		
 			if (document.getElementById("optim").checked) {
-				file = fileOPT;
-				fileB = fileB_OPT;
-
+				//file = fileOPT;
+				//fileB = fileB_OPT;
+				console.log("file scelti: ",file," ",fileB)
+				console.log("currentpage: ",currentPagebOPT," ",currentPageiOPT," ",currentPagesOPT)
+				console.log("maxpage: ",bpagesOPT," ",ipagesOPT," ",spagesOPT)
 				let selectElement = document.getElementById("selectedWeek");
 				while (selectElement.firstChild) {
 					selectElement.removeChild(selectElement.firstChild);
@@ -141,7 +170,7 @@ xmlhttp.onreadystatechange = () => {
 				}
 				
 				for(let i=2; i<selectPages+1;i++){
-					console.log("ASD: ",i)
+					
 					startDay.setDate(startDay.getDate()+7)
 					lastDay=new Date(startDay)
 					lastDay.setDate(lastDay.getDate()+6)
@@ -192,8 +221,8 @@ xmlhttp.onreadystatechange = () => {
 					d3.csv(fileB)
 						.then(csvB => {
 
-							let dati = preProcessing(csv, csvB, xmlResponse);
-
+							let dati = preProcessing(csv, csvB, xmlResponse,checklastweek);
+							
 							timeORs = dati[0];
 							groups = dati[1];
 							beds = dati[2];

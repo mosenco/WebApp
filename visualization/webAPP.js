@@ -10,7 +10,7 @@ const clingoFiles = require(".\\scripts\\libs\\createClingoFiles.js");
 const parser = require(".\\scripts\\libs\\parser.js");
 const { count } = require("console");
 const clingo = "..\\encodingASP\\clingo.exe";
-const clingoArgs = " --time-limit=20 --quiet=1 ";
+const clingoArgs = " --time-limit=10 --quiet=1 ";
 const encodingNW ="..\\encodingASP\\newAssignments\\encodingNextWeeks.asp"
 let pathIN = "..\\dataset\\output\\";
 //let pathClingoFiles = "..\\encodingASP\\sameAssignments\\";
@@ -358,8 +358,15 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			currentBeds.forEach(el=>{
 				//i subtract -8 ti set the day 1 to 7 --> -7 to -1
 				//because the current week computed is the previous week for the next week
-				let content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
+				let content ="beds(ERROR)"
+				if(parseInt(el.Day)-8 >= 0){
+					content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
+										+ el.Specialty + ", " + (parseInt(el.Day)-7) + "). ";
+				}else{
+					content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
 										+ el.Specialty + ", " + (parseInt(el.Day)-8) + "). ";
+				}
+				
 				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 				content, {'flag': 'a'}, err => {console.error(err)});
 			})
