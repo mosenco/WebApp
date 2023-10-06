@@ -141,13 +141,13 @@ xmlhttp.onreadystatechange = () => {
 				}
 				
 				for(let i=2; i<selectPages+1;i++){
-
+					console.log("ASD: ",i)
 					startDay.setDate(startDay.getDate()+7)
 					lastDay=new Date(startDay)
 					lastDay.setDate(lastDay.getDate()+6)
 					let optionEl = document.createElement("option");
 					optionEl.value = i.toString();
-					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
+					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]+" "+i+"_weeks"
 					selectElement.appendChild(optionEl)
 				}
 				selectElement.value = choosenpage

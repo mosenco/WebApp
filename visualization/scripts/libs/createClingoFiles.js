@@ -502,7 +502,9 @@ function createOptimClingoDB(pathIN, pathDB, myobj) {
 					read.on("end", () => {
 						temp.forEach(value => {
 							//break doesnt exist in foreach so i just run through it..
-							if(value.Day < 8){
+							//we consider also the next week because the encoding will have
+							//patients holding beds even for the next week
+							if(value.Day < 15){
 								//console.log("lower: ",value)
 								let content = "beds(" + value.Posti + ", " 
 										+ value.Specialty + ", " + value.Day + "). ";

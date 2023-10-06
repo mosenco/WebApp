@@ -441,7 +441,7 @@ function writeBeds() {
 	let date = [new Date(2019,1,25)];
 	let currentDate = new Date(2019,1,25)
 
-	while(currentDate < new Date(2019,2,23)){
+	while(currentDate < new Date(2019,2,29)){
 		currentDate.setDate(currentDate.getDate()+1)
 		date.push(new Date(currentDate))
 	}

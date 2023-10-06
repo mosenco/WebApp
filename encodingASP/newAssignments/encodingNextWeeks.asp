@@ -30,29 +30,17 @@ stay(NOSOLOGICAL, SPECIALTY, DAY..OUT + DAY)
 %it checks that the number of busy beds do not exceed the number of available beds for each specialty and day
 :- beds(N, SPECIALTY, DAY), #count {NOSOLOGICAL : stay(NOSOLOGICAL, SPECIALTY, DAY)} > N.
 
-%it counts if there are registrations with priority 1 unassigned
-unassignedRegsP1(N) :- N = totRegsP1 - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGICAL, 1, _, _, _, _)}.
+%it counts if there are unassigned registrations
+unassignedRegs(N) :- N = totRegs - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGICAL, _, _, _, _,_)}.
 
-%it must not be true that there are registrations with priority 1 unassigned
-:~ unassignedRegsP1(N), N > 0. [N@5]
+%it must not be true that there are registrations unassigned
+:~ unassignedRegs(N).[N]
 
-%it counts the number of unassigned registrations with priority 2
-unassignedRegsP2(N) :- N = totRegsP2 - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGICAL, 2, _, _, _, _)}.
 
-%it counts the number of unassigned registrations with priority 3
-unassignedRegsP3(N) :- N = totRegsP3 - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGICAL, 3, _, _, _, _)}.
 
-%it counts the number of unassigned registrations with priority 4
-unassignedRegsP4(N) :- N = totRegsP4 - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGICAL, 4, _, _, _, _)}.
-
-%They minimize the number N of unassigned registrations with priority 2-3-4
-:~ unassignedRegsP2(N). [N@4]
-
-:~ unassignedRegsP3(N). [N@3]
-
-:~ unassignedRegsP4(N). [N@2]
 
 %These rules show just the atoms of our interest
 #show assigned/6.
 #show beds/3.
 #show stay/3.
+

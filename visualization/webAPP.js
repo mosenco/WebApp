@@ -10,7 +10,7 @@ const clingoFiles = require(".\\scripts\\libs\\createClingoFiles.js");
 const parser = require(".\\scripts\\libs\\parser.js");
 const { count } = require("console");
 const clingo = "..\\encodingASP\\clingo.exe";
-const clingoArgs = " --time-limit=10 --quiet=1 ";
+const clingoArgs = " --time-limit=20 --quiet=1 ";
 const encodingNW ="..\\encodingASP\\newAssignments\\encodingNextWeeks.asp"
 let pathIN = "..\\dataset\\output\\";
 //let pathClingoFiles = "..\\encodingASP\\sameAssignments\\";
@@ -276,10 +276,13 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		let pri3=0
 		let pri4=0
 		let diffP = remain[0].Priority-1
+
+		let totreg=0
 	
 		remain.forEach(el=>{
 	
-			
+			totreg++;
+			/*
 			if(el.Priority-diffP > 4){
 				el.Priority=4
 				pri4++
@@ -304,7 +307,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				}
 			}
 			
-		
+		*/
 		})
 		
 		//console.log("dopo di shift: ",remain[0].Priority)
@@ -361,6 +364,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				content, {'flag': 'a'}, err => {console.error(err)});
 			})
 			
+			//beds = pastweek beds
 			if(beds.length>0){
 
 			
@@ -372,7 +376,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					//the second week goes from 8 to 14
 					//the third week goes from 15 to 21
 					//so i just substract 7 multiply per number of weeks passed from the first week
-					if(el.Day-(7*(currentWeek-1))>0 && el.Day-(7*(currentWeek-1))<8 && el.Sede == location.substring(2,location.length-3).toUpperCase()){
+					if(el.Day-(7*(currentWeek-1))>7 && el.Day-(7*(currentWeek-1))<15 && el.Sede == location.substring(2,location.length-3).toUpperCase()){
 						selectedBed=[...selectedBed, el]
 						let content = "beds(" + el.Posti + ", " 
 											+ el.Specialty + ", " + (el.Day-(7*(currentWeek-1))) + "). ";
@@ -385,8 +389,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					
 					
 				})	
-				if(checkBeds<7){
-					while(checkBeds<7){
+				if(checkBeds<15){
+					while(checkBeds<15){
 						
 						if(location.substring(2,location.length-3).toUpperCase()=="SANREMO"){
 							//SANREMO O.R.L.;5
@@ -455,7 +459,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			}else{
 				if(location.substring(2,location.length-3).toUpperCase()=="SANREMO"){
 					//SANREMO O.R.L.;5
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 5 + ", " 
 											+ 2 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -463,7 +467,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 
 					//SANREMO ORTOPEDIA TRAUMATOLOGIA;28
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 28 + ", " 
 											+ 3 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -471,7 +475,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 
 					//SANREMO CHIRURGIA GENERALE;15
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 15 + ", " 
 											+ 1 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -479,7 +483,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 
 					//SANREMO OSTETRICIA GINECOLOGIA;20
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 20 + ", " 
 											+ 4 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -487,7 +491,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 				}else if (location.substring(2,location.length-3).toUpperCase()=="IMPERIA"){
 					//IMPERIA UROLOGIA;15
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 15 + ", " 
 											+ 1 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -495,7 +499,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 
 					//IMPERIA CHIRURGIA GENERALE;13
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 13 + ", " 
 											+ 3 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -503,7 +507,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 
 					//IMPERIA CHIRURGIA VASCOLARE;12
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 12 + ", " 
 											+ 5 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -511,7 +515,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 					}
 
 					//IMPERIA OSTETRICIA GINECOLOGIA;18
-					for(let i=1;i<8;i++){
+					for(let i=8;i<15;i++){
 						let content = "beds(" + 18 + ", " 
 											+ 7 + ", " + i + "). ";
 						fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
@@ -530,10 +534,11 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		//write time
 		let currentTime = "\n#const week_days = " + time.Days + ".";
 		currentTime += "\n#const timeDisp = " + time.Timing + ".";
-		currentTime += "\n#const totRegsP1 = " + pri1 + ".";
-		currentTime += "\n#const totRegsP2 = " + pri2 + ".";
-		currentTime += "\n#const totRegsP3 = " + pri3 + ".";
-		currentTime += "\n#const totRegsP4 = " + pri4 + ".";
+		currentTime += "\n#const totRegs = " + totreg + ".";
+		//currentTime += "\n#const totRegsP1 = " + pri1 + ".";
+		//currentTime += "\n#const totRegsP2 = " + pri2 + ".";
+		//currentTime += "\n#const totRegsP3 = " + pri3 + ".";
+		//currentTime += "\n#const totRegsP4 = " + pri4 + ".";
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 					currentTime, {'flag': 'a'}, err => {console.error(err)});
 		
