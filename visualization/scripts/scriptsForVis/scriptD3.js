@@ -188,7 +188,7 @@ xmlhttp.onreadystatechange = () => {
 					lastDay.setDate(lastDay.getDate()+6)
 					let optionEl = document.createElement("option");
 					optionEl.value = i.toString();
-					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]+" "+i+"_weeks"
+					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]+" / "+i+" weeks"
 					selectElement.appendChild(optionEl)
 				}
 				selectElement.value = choosenpage
