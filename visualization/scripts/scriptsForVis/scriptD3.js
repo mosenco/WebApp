@@ -98,7 +98,19 @@ xmlhttp.onreadystatechange = () => {
 			console.log("xmlresponse: ",xmlResponse," ",bpages,bpagesOPT,ipages,ipagesOPT,spages,spagesOPT)
 			console.log("curretpage: ",currentPageb," ",currentPagebOPT," ",currentPagei," ",currentPageiOPT," ",currentPages," ",currentPagesOPT)
 			
-			
+			document.getElementById("selection").value = xmlResponse
+			if (xmlResponse != "1") {
+				
+				document.getElementById("nav-letti-tab").classList.remove("disabled");
+			} else {
+				var id = document.getElementById("nav-letti-tab");
+				id.classList.add("disabled");
+				id.classList.remove("active");
+				document.getElementById("nav-sale-tab").classList.add("active");
+				document.getElementById("moreDetails").classList.remove("hide");
+				document.getElementById("ors").classList.remove("hide");
+				document.getElementById("beds").classList.add("hide");
+			}
 			
 			switch(xmlResponse) {
 				case "1" :

@@ -295,7 +295,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			return !currentOut.includes(el.Nosologico)
 			}
 		)
-		console.log("CONTROLLA DPOO: ",remain.length," ",remain[0])
+		console.log("CONTROLLA DPOO: ",remain.length)//," ",remain[0])
 		if(remain.length == 0 && rawIn.length == 0){
 			console.log("END week count:",currentWeek)
 			if(location=="inBordighera.db"){
@@ -332,12 +332,12 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		let pri4=0
 		let diffP = remain[0].Priority-1
 
-		let totreg=0
+		//let totreg=0
 	
 		remain.forEach(el=>{
 	
-			totreg++;
-			/*
+			//totreg++;
+			
 			if(el.Priority-diffP > 4){
 				el.Priority=4
 				pri4++
@@ -362,7 +362,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 				}
 			}
 			
-		*/
+		
 		})
 		
 		//console.log("dopo di shift: ",remain[0].Priority)
@@ -596,11 +596,11 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		//write time
 		let currentTime = "\n#const week_days = " + time.Days + ".";
 		currentTime += "\n#const timeDisp = " + time.Timing + ".";
-		currentTime += "\n#const totRegs = " + totreg + ".";
-		//currentTime += "\n#const totRegsP1 = " + pri1 + ".";
-		//currentTime += "\n#const totRegsP2 = " + pri2 + ".";
-		//currentTime += "\n#const totRegsP3 = " + pri3 + ".";
-		//currentTime += "\n#const totRegsP4 = " + pri4 + ".";
+		//currentTime += "\n#const totRegs = " + totreg + ".";
+		currentTime += "\n#const totRegsP1 = " + pri1 + ".";
+		currentTime += "\n#const totRegsP2 = " + pri2 + ".";
+		currentTime += "\n#const totRegsP3 = " + pri3 + ".";
+		currentTime += "\n#const totRegsP4 = " + pri4 + ".";
 		fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 					currentTime, {'flag': 'a'}, err => {console.error(err)});
 		
