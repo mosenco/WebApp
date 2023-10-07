@@ -11,7 +11,7 @@
 		<div id = "titolo" class = "padding">
 			<img id = "logo" src="immagini/logoASL1.png" alt = "ASL 1 Liguria">
 		</div>
-		<div class="container">
+		<div class="container" id="formcontainer">
 			<div class="row">
 				<div class="col-md">
 				 
@@ -32,6 +32,10 @@
 						  <label for="exampleInputPassword1" class="form-label">Scegli il numero di settimane da calcolare</label>
 						  <input type="number" class="form-control" id="formweeks" min="1" value="1">
 						</div>
+						<div class="mb-3">
+							<label for="exampleInputPassword1" class="form-label">Scegli quanti secondi vuoi dedicare al calcolo di ogni settimana</label>
+							<input type="number" class="form-control" id="formasp" min="10" value="10">
+						  </div>
 				
 						<button type="submit" class="btn btn-primary ">Calcola</button>
 					  </form>
@@ -58,7 +62,7 @@
 					</select>
 				</div>
 				<div id = "places" class = "col-2">
-					<select id = "selection" onchange = "selectPlace(this.options[this.selectedIndex].value)" class = "form-select" aria-label = "Default select example">
+					<select disabled id = "selection" onchange = "selectPlace(this.options[this.selectedIndex].value)" class = "form-select" aria-label = "Default select example">
 						<option value = "1">Bordighera</option>
 						<option value = "2">Sanremo</option>
 						<option value = "4">Imperia</option>
@@ -85,12 +89,7 @@
 					</div>
 					<div id = "info" class = "col-2">
 						<h6>INFO</h6>
-						<div id = "optimization" class = "form-check">
-							<input class = "form-check-input" type = "checkbox" onclick = "optimization()" id = "optim">
-							<label class = "form-check-label" for = "flexCheckDefault">
-								Optimization
-							</label>
-						</div>
+						
 						<div id = "moreDetails" class = "form-check">
 							<input class = "form-check-input" type = "checkbox" onclick = "drawORsCharts()" id = "details">
 							<label class = "form-check-label" for = "flexCheckDefault">
@@ -112,6 +111,7 @@
 								<text id = "legend" x = "25" y = "43">Beds occupied</text>
 							</g>
 						</svg>
+						<button type="button" class="btn btn-danger btn-sm" onclick="DeleteAll()">Delete all</button>
 					</div>
 				</div>
 				<br>

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const csv = require("csv-parser");
-
+const fsp =require('fs/promises');
+const path=require('path');
 /**
  * This function generates the ASP encoding files and input files for all the ASL1 locations.
  * 
@@ -9,7 +10,8 @@ const csv = require("csv-parser");
  * @param {boolean} OPT True if you want generate the files for the optimization, false otherwise.
  * @return {*} An object containing both the path for the encoding and for the db files.
  */
-function getFiles(pathIN, pathClingoFiles, OPT) {
+async function getFiles(pathIN, pathClingoFiles, OPT) {
+	
 	return new Promise((resolve) => {
 		//save the value of regs here to return it to webApp.js
 		//values from additionalreg. the one not taken for the computation
@@ -43,7 +45,7 @@ function getFiles(pathIN, pathClingoFiles, OPT) {
 			if (err) {
 				return console.error("Unable to scan directory: " + err);
 			}
-
+			/*
 			if (!OPT) {
 				content.forEach(element => {
 					if (element.includes(".asp"))
@@ -51,16 +53,23 @@ function getFiles(pathIN, pathClingoFiles, OPT) {
 					else
 						obj.DB = createClingoDB(pathIN, pathClingoFiles + element + "\\");
 				});
-			} else {
-				content.forEach(element => {
-					if (element.includes(".asp"))
-						obj.Encoding = pathClingoFiles + element;
-					else
-						obj.DB = createOptimClingoDB(pathIN, pathClingoFiles + element + "\\",myobj);
-				});
-			}
-
+			} else {}
+				*/
+			content.forEach(element => {
+				if (element.includes(".asp"))
+					obj.Encoding = pathClingoFiles + element;
+				else{
+				
+					obj.DB = createOptimClingoDB(pathIN, pathClingoFiles + element + "\\",myobj);
+					console.log("end createclingofiles")
+					
+						
+				}
+			});
+						
 			return resolve(obj);
+
+			
 		});
 	});
 }
@@ -679,5 +688,22 @@ function readCSV(obj, file) {
 
 	return stream;
 }
+
+async function deleteAllFilesInDir(dirPath) {
+
+	try {
+		console.log("dirpath: ",__dirname+dirPath)
+	  const files = await fsp.readdir(__dirname+dirPath);
+  
+	  const deleteFilePromises = files.map(file =>
+		fsp.unlink(path.join(__dirname+dirPath, file)),
+	  );
+  
+	  await Promise.all(deleteFilePromises);
+	} catch (err) {
+	  console.log(err);
+	}
+  }
+
 
 module.exports = { getFiles, createOptimClingoDB, readCSV};

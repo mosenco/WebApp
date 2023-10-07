@@ -10,7 +10,7 @@ const clingoFiles = require(".\\scripts\\libs\\createClingoFiles.js");
 const parser = require(".\\scripts\\libs\\parser.js");
 const { count } = require("console");
 const clingo = "..\\encodingASP\\clingo.exe";
-const clingoArgs = " --time-limit=60 --quiet=1 ";
+let clingoArgs = " --time-limit=10 --quiet=1 ";
 const encodingNW ="..\\encodingASP\\newAssignments\\encodingNextWeeks.asp"
 let pathIN = "..\\dataset\\output\\";
 //let pathClingoFiles = "..\\encodingASP\\sameAssignments\\";
@@ -19,7 +19,7 @@ let pathClingoFilesOPT = "..\\encodingASP\\newAssignments\\";
 let bordighera = true;
 let sanremo = true;
 let imperia = true;
-
+let alreadyComputed = false;
 const RICOV = true;
 
 let bpagesOPT=1
@@ -41,6 +41,7 @@ runWebAPP();
  */
 async function runWebAPP() {
 
+	
 	const files = await clingoFiles.getFiles(pathIN, pathClingoFilesOPT, true);
 	//const encoding = files.Encoding;
 	const encoding = "..\\encodingASP\\newAssignments\\encodingBedsOPT.asp"
@@ -60,15 +61,64 @@ async function runWebAPP() {
 	app.use(bodyParser.json())
 	app.use(express.static(path.join(__dirname, "..\\visualization")));
 	app.post('/',(req, res) => {
-		const value = url.parse(req.url).pathname;
-		console.log("my express: ",req.query.sede," ",req.query.weeks," ",req.query," ",req.body," end")
-		console.log(value);
-
+		//const value = url.parse(req.url).pathname;
+		
+		//console.log(value);
+		const value = req.body["sede"]
+		const reqWeek = req.body["weeks"]
+		const timeAsp = req.body["timeasp"]
+		clingoArgs = " --time-limit="+timeAsp+" --quiet=1 ";
+		console.log("value: ",value," reqWeek: ",reqWeek," timeAsp: ",timeAsp)
 		let output = ".\\dati\\";
-
+		console.log("alreadycomputed: ",alreadyComputed)
 		switch(value) {
-			case "/1" :
-				if (bordighera) {
+			case "delete":
+				DeleteAll();
+				res.writeHead(200, {"Content-type": "text/html"});
+				res.end(JSON.stringify([{type:"empty"}]));
+				break;
+			case "0":
+					console.log("case 0")
+					fs.readdir(__dirname+"\\dati", function(err, files) {
+						if (err) {
+						// some sort of error
+						} else {
+							
+							if (!files.length) {
+								// directory appears to be empty
+								res.writeHead(200, {"Content-type": "text/html"});
+								res.end(JSON.stringify([{type:"empty"}]));
+								alreadyComputed = false
+								console.log("case 0: ",alreadyComputed)
+							}else{
+								alreadyComputed = true
+								console.log("case 0: ",alreadyComputed)
+								let countator=0;
+								let locat=""
+								files.forEach((file) => {
+									if(file.includes("OPT.csv")){
+										countator++
+									}
+									if(file.includes("bordighera")){
+										locat="1"
+									}else if(file.includes("imperia")){
+										locat="4"
+									}else if(file.includes("sanremo")){
+										locat="2"
+									}
+									
+								})
+								countator = countator/2
+								console.log("files.length: ",countator)
+								res.writeHead(200, {"Content-type": "text/html"});
+								res.end(JSON.stringify([{type:"classic",place:"Asd",num:countator.toString(),xmlres:locat},{type:"optimized",place:"asd",num:countator.toString(),xmlres:locat}]));
+							}
+						}
+					});
+
+				break;
+			case "1" :
+				if (!alreadyComputed) {
 					input = db.Bordighera;
 					console.log("input: ",input)
 					//input = "..\\encodingASP\\newAssignments\\input\\inBordighera.db";
@@ -77,7 +127,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encodingNW,output, res,["null"])
+						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encodingNW,output, res,["null"],reqWeek,"1")
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -88,12 +138,12 @@ async function runWebAPP() {
 					
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
-					res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString()},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString()}]));
+					res.end(JSON.stringify([{type:"classic",place:"inBordighera.db",num:bpages.toString(),xmlres:"1"},{type:"optimized",place:"inBordighera.db",num:bpagesOPT.toString(),xmlres:"1"}]));
 				}
 				break;
 
-			case "/2" :
-				if (sanremo) {
+			case "2" :
+				if (!alreadyComputed) {
 					if (RICOV) {
 						input = db.Sanremo;
 						//input = "..\\encodingASP\\newAssignments\\input\\inSanremo.db";
@@ -105,7 +155,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encodingNW, output, res, data[13])
+						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encodingNW, output, res, data[13],reqWeek,"2")
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -114,12 +164,12 @@ async function runWebAPP() {
 					
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
-					res.end(JSON.stringify([{type:"classic",place:"inSanremo.db",num:spages.toString()},{type:"optimized",place:"inSanremo.db",num:spagesOPT.toString()}]));
+					res.end(JSON.stringify([{type:"classic",place:"inSanremo.db",num:spages.toString(),xmlres:"2"},{type:"optimized",place:"inSanremo.db",num:spagesOPT.toString(),xmlres:"2"}]));
 				}
 				break;
 
-			case "/4" :
-				if (imperia) {
+			case "4" :
+				if (!alreadyComputed) {
 					if (RICOV) {
 						input = db.Imperia;
 						//input = "..\\encodingASP\\newAssignments\\input\\inImperia.db";
@@ -132,7 +182,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encodingNW,output, res,data[12])
+						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encodingNW,output, res,data[12],reqWeek,"4")
 						
 					})
 					  .catch((error) => {
@@ -141,7 +191,7 @@ async function runWebAPP() {
 					  });
 				} else {
 					res.writeHead(200, {"Content-type": "text/html"});
-					res.end(JSON.stringify([{type:"classic",place:"inImperia.db",num:ipages.toString()},{type:"optimized",place:"inImperia.db",num:ipagesOPT.toString()}]));
+					res.end(JSON.stringify([{type:"classic",place:"inImperia.db",num:ipages.toString(),xmlres:"4"},{type:"optimized",place:"inImperia.db",num:ipagesOPT.toString(),xmlres:"4"}]));
 				}
 				break;
 
@@ -157,8 +207,8 @@ async function runWebAPP() {
 
 	http.createServer(app).listen(3000);
 }
-async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res, beds){
-	
+async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res, beds, reqWeek,xmlreq){
+	/*
 	//if next weeks already computed, dont execute it again
 	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
 	(fs.existsSync(".\\dati\\2ImperiaOPT.csv") && location=="inImperia.db") ||
@@ -209,7 +259,9 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 		res.end(JSON.stringify([{type:"classic",place:location,num:countFiles.toString()},{type:"optimized",place:location,num:countFilesOPT.toString()}]));
 		console.log("already computed for: ",location)
 		return;
-	}
+	}*/
+
+	
 
 	console.log("/// start computing loop for next weeks ///")
 
@@ -230,7 +282,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	//ho u ndubbio riguardo i letti per imperia dove non ho tenuto conto delle cosniderzioni su sanremo 
 	
 	//while rawIn=patients not scheduled still present, keep looping
-	while(rawIn.length>0 || remain.length>0){
+	while((rawIn.length>0 || remain.length>0 )&&parseInt(currentWeek) <= parseInt(reqWeek)){
+		console.log("currentweek: ",currentWeek," reqweek: ",reqWeek," ",parseInt(currentWeek) < parseInt(reqWeek))
 	//while(currentWeek<3){
 //..\encodingASP\newAssignments\input\inBordighera.db
 //..\encodingASP\newAssignments\input\2inBordighera.db
@@ -567,14 +620,14 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	console.log("exit loop: ",remain.length)
 
 	if(location=="inBordighera.db"){
-		bpagesOPT=currentWeek
+		bpagesOPT=currentWeek-1
 	}else if(location=="inImperia.db"){
-		ipagesOPT=currentWeek
+		ipagesOPT=currentWeek-1
 	}else if(location=="inSanremo.db"){
-		spagesOPT=currentWeek
+		spagesOPT=currentWeek-1
 	}
 	res.writeHead(200, {"Content-type": "text/html"});
-	res.end(JSON.stringify([{type:"classic",place:location,num:GetPages(location).toString()},{type:"optimized",place:location,num:GetPagesOPT(location).toString()}]));
+	res.end(JSON.stringify([{type:"classic",place:location,num:GetPages(location).toString(),xmlres:xmlreq},{type:"optimized",place:location,num:GetPagesOPT(location).toString(),xmlres:xmlreq}]));
 }
 
 
@@ -654,3 +707,37 @@ function GetPages(location){
 		return "-1"
 	}
 }
+
+function DeleteAll(){
+	deleteAllFilesInDir('\\dati').then(() => {
+		deleteAllFilesInDir('\\..\\encodingASP\\newAssignments\\input').then(() => {
+			alreadyComputed = false
+			bpagesOPT=1
+			bpages=1
+			ipagesOPT=1
+			ipages=1
+			spagesOPT=1
+			spages=1
+		});
+	});
+}
+async function deleteAllFilesInDir(dirPath) {
+
+	try {
+		console.log("dirpath: ",__dirname+dirPath)
+	  const files = await fsp.readdir(__dirname+dirPath);
+  
+	  const deleteFilePromises = files.map(file =>{
+		console.log("deleting: ",file," ",typeof file)
+		if(file != "inBordighera.db" && file != "inImperia.db" && file != "inSanremo.db"){
+			fsp.unlink(path.join(__dirname+dirPath, file))
+		}
+		}
+	  );
+  
+	  await Promise.all(deleteFilePromises);
+	} catch (err) {
+	  console.log(err);
+	}
+  }
+

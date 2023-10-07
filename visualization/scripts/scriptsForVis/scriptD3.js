@@ -1,3 +1,5 @@
+
+
 const width = 350;
 const height = 250;
 
@@ -53,7 +55,15 @@ let xmlhttp = new XMLHttpRequest();
 //xmlhttp.open("GET", "1");
 //xmlhttp.send();
 
-document.getElementById("corpo").style.display = "none";
+let packfirst={
+	sede:"0",
+	weeks:"1",
+	timeasp:"10"
+}
+xmlhttp.open("POST","/")
+xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+xmlhttp.send(JSON.stringify(packfirst))
+
 
 xmlhttp.onreadystatechange = () => {
 	if (xmlhttp.readyState == 4) {
@@ -63,34 +73,33 @@ xmlhttp.onreadystatechange = () => {
 		//console.log(xmlhttp.status);
 
 		if (xmlhttp.status == 200) {
-			return
+		
 			console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
 			
 			let myobj = JSON.parse(xmlhttp.responseText);
-			switch(myobj[0].place){
-				case "inBordighera.db":
-					bpages = parseInt(myobj[0].num)
-					bpagesOPT = parseInt(myobj[1].num)
-					break;
-				case "inImperia.db":
-					ipages = parseInt(myobj[0].num)
-					ipagesOPT = parseInt(myobj[1].num)
-					break;
-				case "inSanremo.db":
-					spages = parseInt(myobj[0].num)
-					spagesOPT = parseInt(myobj[1].num)
-					break;
-				default:
-					console.log("ISSUE IN READING RESPONSE TYPE: ",myobj.place)
-					break;
-			}	
+			if(myobj[0].type == "empty"){
+				console.log("empty")
+				document.getElementById("corpo").style.display = "none";
+				document.getElementById("formcontainer").style.display = "block";
+				return
+			}else{
+				console.log("present")
+				document.getElementById("corpo").style.display = "block";
+				document.getElementById("formcontainer").style.display = "none";
+			}
+			bpagesOPT = parseInt(myobj[1].num)
+			ipagesOPT = parseInt(myobj[1].num)
+			spagesOPT = parseInt(myobj[1].num)
 
 		
-			xmlResponse = xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
+			xmlResponse = myobj[0].xmlres//xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
 			let file = "";
 			let fileB = "";
 			console.log("xmlresponse: ",xmlResponse," ",bpages,bpagesOPT,ipages,ipagesOPT,spages,spagesOPT)
 			console.log("curretpage: ",currentPageb," ",currentPagebOPT," ",currentPagei," ",currentPageiOPT," ",currentPages," ",currentPagesOPT)
+			
+			
+			
 			switch(xmlResponse) {
 				case "1" :
 					//file = "dati/"+currentPageb+"bordighera.csv";
@@ -140,7 +149,7 @@ xmlhttp.onreadystatechange = () => {
 					break;
 			}
 		
-			if (document.getElementById("optim").checked) {
+			
 				//file = fileOPT;
 				//fileB = fileB_OPT;
 				console.log("file scelti: ",file," ",fileB)
@@ -185,39 +194,7 @@ xmlhttp.onreadystatechange = () => {
 				selectElement.value = choosenpage
 				
 				
-			}else{
-				let selectElement = document.getElementById("selectedWeek");
-				while (selectElement.firstChild) {
-					selectElement.removeChild(selectElement.firstChild);
-				}
-				//i set the hours otherwise when i get the UTC time, it's 1 hour behind so it return me
-				//the day before
-				let startDay = new Date("2019,3,4 06:06:00") 
-				lastDay=new Date(startDay)
-				lastDay.setDate(lastDay.getDate()+6)
-				let optionEl = document.createElement("option");
-				optionEl.value = 1
-				optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
-				selectElement.appendChild(optionEl)
-				let selectPages=1 // default
-				if(xmlResponse==1){
-					selectPages=bpages
-				}else if(xmlResponse == 2){
-					selectPages=spages
-				}else if(xmlResponse == 4){
-					selectPages=ipages
-				}
-				for(let i=2; i<selectPages+1;i++){
-
-					startDay.setDate(startDay.getDate()+7)
-					lastDay=new Date(startDay)
-					lastDay.setDate(lastDay.getDate()+6)
-					let optionEl = document.createElement("option");
-					optionEl.value = i.toString();
-					optionEl.textContent = startDay.getUTCDate()+"-"+lastDay.getUTCDate()+" "+month[lastDay.getMonth()]
-					selectElement.appendChild(optionEl)
-				}
-			}
+			
 			
 			d3.csv(file)
 				.then(csv => {
@@ -1062,8 +1039,16 @@ function optimization() {
 	const select = document.getElementById("selection");
 	const value = select.options[select.selectedIndex].value;
 	console.log("optimization: ",value)
-	xmlhttp.open("GET", value);
-	xmlhttp.send();
+	//xmlhttp.open("GET", value);
+	//xmlhttp.send();
+	xmlhttp.open("POST","/")
+	xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+	let pack={
+		sede:"0",
+		weeks:1,
+		timeasp:1
+	}
+	xmlhttp.send(JSON.stringify(pack))
 }
 
 function selectWeek(value){
@@ -1075,14 +1060,69 @@ function selectWeek(value){
 	}else if(xmlResponse==4){
 		currentPageiOPT=value
 	}
-	xmlhttp.open("GET", xmlResponse);
-	xmlhttp.send();
+	//xmlhttp.open("GET", xmlResponse);
+	//xmlhttp.send();
+	xmlhttp.open("POST","/")
+	xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+	let pack={
+		sede:"0",
+		weeks:1,
+		timeasp:1
+	}
+	xmlhttp.send(JSON.stringify(pack))
 }
 
 function FormSendData(value){
+	document.getElementById("selection").value = value.querySelector('#formsede').value
+	if (value.querySelector('#formsede').value != "1") {
+		
+		document.getElementById("nav-letti-tab").classList.remove("disabled");
+	} else {
+		var id = document.getElementById("nav-letti-tab");
+		id.classList.add("disabled");
+		id.classList.remove("active");
+		document.getElementById("nav-sale-tab").classList.add("active");
+		document.getElementById("moreDetails").classList.remove("hide");
+		document.getElementById("ors").classList.remove("hide");
+		document.getElementById("beds").classList.add("hide");
+	}
 	console.log("value: ",value.querySelector('#formsede').value," ",value[0].value)
 	xmlhttp.open("POST","/")
 	xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-	//xmlhttp.send( "sede="+value.querySelector('#formsede').value+"&weeks="+value.querySelector('#formweeks').value);
+	let pack={
+		sede:value.querySelector('#formsede').value,
+		weeks:value.querySelector('#formweeks').value,
+		timeasp:value.querySelector('#formasp').value
+	}
+	xmlhttp.send(JSON.stringify(pack))
+	document.getElementById("corpo").style.display = "block";
+	document.getElementById("formcontainer").style.display = "none";
+
+	document.getElementById("spinner").classList.remove("hide");
+	document.getElementById("sale").classList.add("hide");
 }
 //https://hub.packtpub.com/how-use-xmlhttprequests-send-post-server/
+
+
+function DeleteAll(){
+	bpagesOPT=1
+	bpages=1
+	ipagesOPT=1
+	ipages=1
+	spagesOPT=1
+	spages=1
+	currentPageb=1
+	currentPagebOPT=1
+	currentPagei=1
+	currentPageiOPT=1
+	currentPages=1
+	currentPagesOPT=1
+	xmlhttp.open("POST","/")
+	xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+	let pack={
+		sede:"delete",
+		weeks:"1",
+		timeasp:"1"
+	}
+	xmlhttp.send(JSON.stringify(pack))	
+}
