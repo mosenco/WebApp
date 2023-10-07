@@ -11,7 +11,37 @@
 		<div id = "titolo" class = "padding">
 			<img id = "logo" src="immagini/logoASL1.png" alt = "ASL 1 Liguria">
 		</div>
-
+		<div class="container">
+			<div class="row">
+				<div class="col-md">
+				 
+				</div>
+				<div class="col-md-6">
+					<br>
+					<br>
+					<form action="javascript:;" onsubmit="FormSendData(this)">
+						<div class="mb-3">
+						  <label for="exampleInputEmail1" class="form-label">Seleziona Sede</label>
+						  <select id="formsede" class="form-select" aria-label="Default select example">
+							<option value="1">Bordighera</option>
+							<option value="4">Imperia</option>
+							<option value="2">Sanremo</option>
+						  </select>
+						</div>
+						<div class="mb-3">
+						  <label for="exampleInputPassword1" class="form-label">Scegli il numero di settimane da calcolare</label>
+						  <input type="number" class="form-control" id="formweeks" min="1" value="1">
+						</div>
+				
+						<button type="submit" class="btn btn-primary ">Calcola</button>
+					  </form>
+				</div>
+				<div class="col-md">
+				  
+				</div>
+			  </div>
+			
+		</div>
 		<div id = "corpo" class = "padding">
 			<div class = "row padding select">
 				<div id = "schede" class = "col-2">

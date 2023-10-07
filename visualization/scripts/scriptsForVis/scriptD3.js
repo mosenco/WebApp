@@ -50,8 +50,10 @@ let currentPagesOPT=1
 let checklastweek=1; 
 let xmlResponse;
 let xmlhttp = new XMLHttpRequest();
-xmlhttp.open("GET", "1");
-xmlhttp.send();
+//xmlhttp.open("GET", "1");
+//xmlhttp.send();
+
+document.getElementById("corpo").style.display = "none";
 
 xmlhttp.onreadystatechange = () => {
 	if (xmlhttp.readyState == 4) {
@@ -61,6 +63,7 @@ xmlhttp.onreadystatechange = () => {
 		//console.log(xmlhttp.status);
 
 		if (xmlhttp.status == 200) {
+			return
 			console.log("RESPOSTA XML: ",xmlhttp.responseText," ",JSON.parse(xmlhttp.responseText))
 			
 			let myobj = JSON.parse(xmlhttp.responseText);
@@ -1076,3 +1079,10 @@ function selectWeek(value){
 	xmlhttp.send();
 }
 
+function FormSendData(value){
+	console.log("value: ",value.querySelector('#formsede').value," ",value[0].value)
+	xmlhttp.open("POST","/")
+	xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+	//xmlhttp.send( "sede="+value.querySelector('#formsede').value+"&weeks="+value.querySelector('#formweeks').value);
+}
+//https://hub.packtpub.com/how-use-xmlhttprequests-send-post-server/

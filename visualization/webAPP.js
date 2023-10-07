@@ -2,7 +2,7 @@ const http = require("http");
 const path = require("path");
 const url = require("url");
 const express = require("express");
-
+const bodyParser = require('body-parser')
 const fs = require("fs");
 const fsp = fs.promises;
 
@@ -10,7 +10,7 @@ const clingoFiles = require(".\\scripts\\libs\\createClingoFiles.js");
 const parser = require(".\\scripts\\libs\\parser.js");
 const { count } = require("console");
 const clingo = "..\\encodingASP\\clingo.exe";
-const clingoArgs = " --time-limit=10 --quiet=1 ";
+const clingoArgs = " --time-limit=60 --quiet=1 ";
 const encodingNW ="..\\encodingASP\\newAssignments\\encodingNextWeeks.asp"
 let pathIN = "..\\dataset\\output\\";
 //let pathClingoFiles = "..\\encodingASP\\sameAssignments\\";
@@ -56,10 +56,12 @@ async function runWebAPP() {
 
 
 	const app = express();
+	app.use(bodyParser.urlencoded({extended: false}))
+	app.use(bodyParser.json())
 	app.use(express.static(path.join(__dirname, "..\\visualization")));
-	app.use((req, res) => {
+	app.post('/',(req, res) => {
 		const value = url.parse(req.url).pathname;
-
+		console.log("my express: ",req.query.sede," ",req.query.weeks," ",req.query," ",req.body," end")
 		console.log(value);
 
 		let output = ".\\dati\\";
