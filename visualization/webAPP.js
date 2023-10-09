@@ -307,8 +307,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			}
 			res.writeHead(200, {"Content-type": "text/html"});
 			res.end(JSON.stringify([
-				{type:"classic",place:location,num:GetPages(location).toString()}, //myobj[0]
-				{type:"optimized",place:location,num:GetPagesOPT(location).toString()}])); //myobj[1]
+				{type:"classic",place:location,num:GetPages(location).toString(),xmlres:xmlreq}, //myobj[0]
+				{type:"optimized",place:location,num:GetPagesOPT(location).toString(),xmlres:xmlreq}])); //myobj[1]
 			return
 		}
 	
@@ -339,8 +339,8 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			//totreg++;
 			
 			if(el.Priority-diffP > 4){
-				el.Priority=4
-				pri4++
+				//el.Priority=4
+				//pri4++
 			}else{
 				el.Priority = el.Priority-diffP
 				switch(el.Priority){
@@ -409,18 +409,25 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			}*/
 			
 			//i consider only the previous week so from 1 to 7 that will become my new -7 to -1
-			currentBeds = currentBeds.filter(el=>el.Day > -1)
+			currentBeds = currentBeds.filter(el=>(el.Day-7) > -22)
 			currentBeds.forEach(el=>{
 				//i subtract -8 ti set the day 1 to 7 --> -7 to -1
 				//because the current week computed is the previous week for the next week
 				let content ="beds(ERROR)"
-				if(parseInt(el.Day)-8 >= 0){
+				if(parseInt(el.Day)>=1 && parseInt(el.Day) <=7){
+					content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
+										+ el.Specialty + ", " + (parseInt(el.Day)-8) + "). ";
+				}else{
+					content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
+										+ el.Specialty + ", " + (parseInt(el.Day)-7) + "). ";
+				}
+				/*if(parseInt(el.Day)-8 >= 0){
 					content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
 										+ el.Specialty + ", " + (parseInt(el.Day)-7) + "). ";
 				}else{
 					content = "beds(" + (el.BedsAvailable-el.BedsUsed) + ", " 
 										+ el.Specialty + ", " + (parseInt(el.Day)-8) + "). ";
-				}
+				}*/
 				
 				fs.writeFileSync("..\\encodingASP\\newAssignments\\input\\" +currentWeek+ location, 
 				content, {'flag': 'a'}, err => {console.error(err)});

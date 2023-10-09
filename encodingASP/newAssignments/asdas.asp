@@ -178,3 +178,5 @@ unassignedRegs(N) :- N = totRegs - M, M = #count {NOSOLOGICAL: assigned(NOSOLOGI
 #show assigned/5.
 #show stay/3.
 #show beds/3.
+countass(N):-N=#count{NOSOLOGICAL:assigned(NOSOLOGICAL, P, OR, SPECIALTY, DAY, TIMING)}.
+#maximize{N:countass(N)}.

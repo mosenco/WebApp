@@ -292,7 +292,7 @@ function dataForBedsCharts(csv,islastweek) {
 		}
 		//the true occupation of beds of week X is made by week X+1 considering the past week
 		//if we are in the last week, there is no X+1 pastweek and we consider the current one
-		if(islastweek==1){
+		if(islastweek==0){
 			console.log("compute last week beds")
 			if (csv[i].Day == 1) {
 				wards[index].FreeBedsM = csv[i].BedsAvailable;
@@ -318,7 +318,7 @@ function dataForBedsCharts(csv,islastweek) {
 				wards[index].FreeBedsF = csv[i].BedsAvailable;
 				wards[index].UsedBedsF = csv[i].BedsUsed;
 			}
-		}else{
+		}else if(islastweek==1){
 			console.log("compute shifted week beds")
 			if (csv[i].Day == -7) {
 				wards[index].FreeBedsM = csv[i].BedsAvailable;
@@ -341,6 +341,56 @@ function dataForBedsCharts(csv,islastweek) {
 			}
 	
 			if (csv[i].Day == -3) {
+				wards[index].FreeBedsF = csv[i].BedsAvailable;
+				wards[index].UsedBedsF = csv[i].BedsUsed;
+			}
+		}else if(islastweek==2){
+			if (csv[i].Day == -14) {
+				wards[index].FreeBedsM = csv[i].BedsAvailable;
+				wards[index].UsedBedsM = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -13) {
+				wards[index].FreeBedsT = csv[i].BedsAvailable;
+				wards[index].UsedBedsT = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -12) {
+				wards[index].FreeBedsW = csv[i].BedsAvailable;
+				wards[index].UsedBedsW = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -11) {
+				wards[index].FreeBedsTh = csv[i].BedsAvailable;
+				wards[index].UsedBedsTh = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -10) {
+				wards[index].FreeBedsF = csv[i].BedsAvailable;
+				wards[index].UsedBedsF = csv[i].BedsUsed;
+			}
+		}else{
+			if (csv[i].Day == -21) {
+				wards[index].FreeBedsM = csv[i].BedsAvailable;
+				wards[index].UsedBedsM = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -20) {
+				wards[index].FreeBedsT = csv[i].BedsAvailable;
+				wards[index].UsedBedsT = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -19) {
+				wards[index].FreeBedsW = csv[i].BedsAvailable;
+				wards[index].UsedBedsW = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -18) {
+				wards[index].FreeBedsTh = csv[i].BedsAvailable;
+				wards[index].UsedBedsTh = csv[i].BedsUsed;
+			}
+	
+			if (csv[i].Day == -17) {
 				wards[index].FreeBedsF = csv[i].BedsAvailable;
 				wards[index].UsedBedsF = csv[i].BedsUsed;
 			}

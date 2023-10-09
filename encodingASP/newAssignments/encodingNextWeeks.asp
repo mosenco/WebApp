@@ -56,4 +56,3 @@ unassignedRegsP4(N) :- N = totRegsP4 - M, M = #count {NOSOLOGICAL: assigned(NOSO
 #show assigned/6.
 #show beds/3.
 #show stay/3.
-

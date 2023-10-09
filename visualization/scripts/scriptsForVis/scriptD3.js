@@ -128,14 +128,14 @@ xmlhttp.onreadystatechange = () => {
 					//fileB = "dati/"+currentPages+"sanremoLetti.csv"
 					//fileOPT = "dati/"+currentPagesOPT+"sanremoOPT.csv";
 					//fileB_OPT = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
-					if(currentPagesOPT +1<= spagesOPT){
+					if(parseInt(currentPagesOPT) +1<= parseInt(spagesOPT)){
 						file = "dati/"+currentPagesOPT+"sanremoOPT.csv";
 						fileB = "dati/"+(parseInt(currentPagesOPT)+1)+"sanremoLettiOPT.csv"
-						checklastweek=0
+						checklastweek=parseInt(spagesOPT)-parseInt(currentPagesOPT)
 					}else{
 						file = "dati/"+currentPagesOPT+"sanremoOPT.csv";
 						fileB = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
-						checklastweek=1
+						checklastweek=0
 					}
 					
 					break;
@@ -145,14 +145,14 @@ xmlhttp.onreadystatechange = () => {
 					//fileB = "dati/"+currentPagei+"imperiaLetti.csv";
 					//fileOPT = "dati/"+currentPageiOPT+"imperiaOPT.csv";
 					//fileB_OPT = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
-					if(currentPageiOPT+1 <= ipagesOPT){
+					if(parseInt(currentPageiOPT)+1 <= parseInt(ipagesOPT)){
 						file = "dati/"+currentPageiOPT+"imperiaOPT.csv";
 						fileB = "dati/"+(parseInt(currentPageiOPT)+1)+"imperiaLettiOPT.csv";
-						checklastweek=0
+						checklastweek=parseInt(ipagesOPT)-parseInt(currentPageiOPT)
 					}else{
 						file = "dati/"+currentPageiOPT+"imperiaOPT.csv";
 						fileB = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
-						checklastweek=1
+						checklastweek=0
 					}
 					
 					break;
