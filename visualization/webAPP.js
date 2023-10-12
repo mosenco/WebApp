@@ -67,7 +67,9 @@ async function runWebAPP() {
 		const value = req.body["sede"]
 		const reqWeek = req.body["weeks"]
 		const timeAsp = req.body["timeasp"]
-		clingoArgs = " --time-limit="+timeAsp+" --quiet=1,1,2 -t=2";
+		const allweeks = req.body["allweeks"]
+		console.log("allweeks: ",allweeks)
+		clingoArgs = " --time-limit="+timeAsp+" --quiet=1 -t 3 ";
 		//--opt-strategy=usc -t 6
 		console.log("value: ",value," reqWeek: ",reqWeek," timeAsp: ",timeAsp)
 		let output = ".\\dati\\";
@@ -128,7 +130,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encodingNW,output, res,["null"],reqWeek,"1")
+						ComputeAllWeeks(data[0], data[3], result.clingoOUT, result.beds, data[6], data[9],"inBordighera.db",encodingNW,output, res,["null"],reqWeek,"1",allweeks)
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -156,7 +158,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encodingNW, output, res, data[13],reqWeek,"2")
+						ComputeAllWeeks(data[1], data[4], result.clingoOUT, result.beds, data[8], data[11],"inSanremo.db",encodingNW, output, res, data[13],reqWeek,"2",allweeks)
 					  })
 					  .catch((error) => {
 						console.error("Errore:", error);
@@ -183,7 +185,7 @@ async function runWebAPP() {
 					runClingo(encoding, input, output, res, 1).then((result) => {
 						console.log("Valore ritornato:", result.clingoOUT.length," ",result.beds.length);
 						//ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss)
-						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encodingNW,output, res,data[12],reqWeek,"4")
+						ComputeAllWeeks(data[2], data[5], result.clingoOUT, result.beds, data[7], data[10],"inImperia.db",encodingNW,output, res,data[12],reqWeek,"4",allweeks)
 						
 					})
 					  .catch((error) => {
@@ -208,7 +210,7 @@ async function runWebAPP() {
 
 	http.createServer(app).listen(3000);
 }
-async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res, beds, reqWeek,xmlreq){
+async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, location, encoding, output, res, beds, reqWeek,xmlreq,allweeks){
 	/*
 	//if next weeks already computed, dont execute it again
 	if((fs.existsSync(".\\dati\\2BordigheraOPT.csv") && location=="inBordighera.db") ||
@@ -283,7 +285,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 	//ho u ndubbio riguardo i letti per imperia dove non ho tenuto conto delle cosniderzioni su sanremo 
 	
 	//while rawIn=patients not scheduled still present, keep looping
-	while((rawIn.length>0 || remain.length>0 )&&parseInt(currentWeek) <= parseInt(reqWeek)){
+	while((rawIn.length>0 || remain.length>0 )&&(parseInt(currentWeek) <= parseInt(reqWeek) || allweeks)){
 		console.log("currentweek: ",currentWeek," reqweek: ",reqWeek," ",parseInt(currentWeek) < parseInt(reqWeek))
 	//while(currentWeek<3){
 //..\encodingASP\newAssignments\input\inBordighera.db
@@ -410,7 +412,7 @@ async function ComputeAllWeeks(rawIn, clingoIn, clingoOut, bedsOut, mss, time, l
 			}*/
 			
 			//i consider only the previous week so from 1 to 7 that will become my new -7 to -1
-			currentBeds = currentBeds.filter(el=>(el.Day-7) > -22)
+			currentBeds = currentBeds.filter(el=>(el.Day-7) > -8)
 			currentBeds.forEach(el=>{
 				//i subtract -8 ti set the day 1 to 7 --> -7 to -1
 				//because the current week computed is the previous week for the next week
@@ -657,8 +659,9 @@ function runClingo(encoding, input, output, res, currentWeek) {
 			[clingo + clingoArgs + encoding + " " + input]);
 
 	fs.writeFileSync(output, "", { flag: 'w' }, err => {console.error(err)});
+
 	shell.stdout.on("data", (data) => {
-		console.log(data.toString());
+		console.log("OUTPUTSHELL: ",data.toString());
 		fs.writeFileSync(output, data.toString(), 
 				{ flag: 'a' }, err => {console.error(err)});
 	});

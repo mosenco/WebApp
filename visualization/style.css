@@ -20,9 +20,11 @@
 
 body {
 	background-color: rgb(247, 247, 247);
+	
+}
+.aligntxtcnt{
 	text-align: center;
 }
-
 .padding {
 	padding : 1%;
 }

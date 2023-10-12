@@ -48,20 +48,20 @@ read.on("end", () => {
 });
 
 function removingDuplicates() {
-	console.log("REMOVING")
+	
 	for (let i = 0; i < listaOP.length - 1; i++) {
 		let j = i + 1;
 		while (j < listaOP.length) {
 			if (listaOP[i].Nosologico 
 					== listaOP[j].Nosologico) {
-				console.log(listaOP[i].Nosologico)
+			
 				listaOP.splice(j, 1);
 				continue;
 			}
 			j++;
 		}
 	}
-	console.log("interventi length: ",interventi.length)
+
 	let removed=0;
 	for (let i = 0; i < interventi.length - 1; i++) {
 		let j = i + 1
@@ -71,14 +71,14 @@ function removingDuplicates() {
 				interventi[i].IngressoBloccoOP == interventi[j].IngressoBloccoOP &&
 				interventi[i].UscitaBloccoOP == interventi [j].UscitaBloccoOP) {
 				interventi.splice(j, 1);
-				console.log("interventi: ",interventi[i].Nosologico)
+				
 				removed++;
 				continue;
 			}
 			j++;
 		}
 	}
-	console.log("after removed: ",removed)
+
 
 	for (let i = 0; i < hospitalized.length - 1; i++) {
 		hospitalized[i].Flag = 0;
@@ -261,7 +261,7 @@ function writeAdditionalRegs() {
 				something(tempI, element);
 		}
 	});
-
+	
 	tempB.forEach(element => {
 		element.DayIN = Math.round(element.DayIN / element.Count);
 	});
@@ -271,7 +271,9 @@ function writeAdditionalRegs() {
 	});
 
 	tempI.forEach(element => {
+		
 		element.DayIN = Math.round(element.DayIN / element.Count);
+		
 	});
 
 	let i = 0;
@@ -299,7 +301,7 @@ function writeAdditionalRegs() {
 	//Creating registrations file
 	let content = "Nosologico,Priority,Sede,Specialty,RegRicov,Time,Ricov,In,Out\n";
 	fs.writeFileSync(pathOUT + "additionalRegs.csv", content, {'flag': 'w'});
-
+	
 	for (let i = 0; i < interventi.length; i++) {
 		const id = (el) => el.Nosologico == interventi[i].Nosologico
 		if (listaOP.findIndex(id) != -1)
@@ -322,8 +324,8 @@ function writeAdditionalRegs() {
 		if (getSede(interventi[i].Sede) == "SANREMO")
 			dayIN = getDayIN(tempS, interventi[i].Specialty);
 
-		if (getSede(interventi[i].Sede) == "IMPERIA")
-			dayIN = getDayIN(tempI, interventi[i].Specialty);
+		
+			
 
 		if (dayIN == -1)
 			continue;
@@ -337,6 +339,16 @@ function writeAdditionalRegs() {
 		let array = mapSpecialties(getSede(interventi[i].Sede), interventi[i].Specialty);
 		let time = Math.floor((interventi[i].UscitaSala - interventi[i].IngressoSala) / (1000 * 60));
 
+		if (getSede(interventi[i].Sede) == "IMPERIA"){
+			if(array[1] == 1){
+				dayIN = Math.floor(Math.random() * 7) + 1;
+			}else{
+				dayIN = getDayIN(tempI, interventi[i].Specialty);
+			
+			}
+			
+		}
+		
 		if (isNaN(time))
 			continue;
 
@@ -363,6 +375,10 @@ function writeAdditionalRegs() {
 			priority= Math.max(4, 4 + weeksPassed); // La priorità sarà almeno 4 e aumenta con il passare delle settimane.
 		  }
 		  //this code check that the priority is defined for the whole week perfectly.
+		//console.log(dayIN," ",dayOUT)
+		if(dayIN == -1){
+			//console.log("-1 ",interventi[i].Nosologico," ",array[1])
+		}
 		
 		content = interventi[i].Nosologico + "," + priority + "," + array[0] + "," + array[1] 
 					+ "," + reg + "," + time + "," + ricov + "," + dayIN + "," + dayOUT + "\n";
@@ -445,7 +461,7 @@ function writeBeds() {
 		currentDate.setDate(currentDate.getDate()+1)
 		date.push(new Date(currentDate))
 	}
-	console.log("all dates: ",date)
+	
 
 	for (let i = 0; i < beds.length; i++) {
 		let posti = beds[i].PostiLetto;
@@ -474,7 +490,7 @@ function writeBeds() {
 			posti = (posti - count1 + count2);
 			
 			content = array[0] + "," + array[1] + "," + posti + "," + day + "\n";
-			console.log(array[0]," ",array[1]," tot post:",beds[i].PostiLetto," ",count1," ",count2)
+		
 			fs.writeFileSync(pathOUT + "beds.csv", content, {'flag': 'a'}, err => {console.error(err)});
 		}
 	}
@@ -633,7 +649,7 @@ function replaceZero(data) {
 }
 
 function readCSV(obj, file) {
-	console.log(file)
+	
 	let test = fs.createReadStream(file);
 	test.pipe(csv({separator: ';'}))
 		.on("data", (row) => {

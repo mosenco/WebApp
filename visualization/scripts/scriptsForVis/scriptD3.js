@@ -133,7 +133,7 @@ xmlhttp.onreadystatechange = () => {
 					if(parseInt(currentPagesOPT) +1<= parseInt(spagesOPT)){
 						file = "dati/"+currentPagesOPT+"sanremoOPT.csv";
 						fileB = "dati/"+(parseInt(currentPagesOPT)+1)+"sanremoLettiOPT.csv"
-						checklastweek=parseInt(spagesOPT)-parseInt(currentPagesOPT)
+						checklastweek=1//parseInt(spagesOPT)-parseInt(currentPagesOPT)
 					}else{
 						file = "dati/"+currentPagesOPT+"sanremoOPT.csv";
 						fileB = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
@@ -151,7 +151,7 @@ xmlhttp.onreadystatechange = () => {
 					if(parseInt(currentPageiOPT)+1 <= parseInt(ipagesOPT)){
 						file = "dati/"+currentPageiOPT+"imperiaOPT.csv";
 						fileB = "dati/"+(parseInt(currentPageiOPT)+1)+"imperiaLettiOPT.csv";
-						checklastweek=parseInt(ipagesOPT)-parseInt(currentPageiOPT)
+						checklastweek=1//parseInt(ipagesOPT)-parseInt(currentPageiOPT)
 					}else{
 						file = "dati/"+currentPageiOPT+"imperiaOPT.csv";
 						fileB = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
@@ -1109,7 +1109,8 @@ function FormSendData(value){
 	let pack={
 		sede:value.querySelector('#formsede').value,
 		weeks:value.querySelector('#formweeks').value,
-		timeasp:value.querySelector('#formasp').value
+		timeasp:value.querySelector('#formasp').value,
+		allweeks:value.querySelector('#formcheckbox').checked
 	}
 	xmlhttp.send(JSON.stringify(pack))
 	document.getElementById("corpo").style.display = "block";
@@ -1142,4 +1143,13 @@ function DeleteAll(){
 		timeasp:"1"
 	}
 	xmlhttp.send(JSON.stringify(pack))	
+}
+
+function CheckBoxWeeks(value){
+	if(value){
+		document.getElementById("formweeks").setAttribute('disabled', '');
+	}else{
+		document.getElementById("formweeks").removeAttribute('disabled');
+	}
+	
 }
