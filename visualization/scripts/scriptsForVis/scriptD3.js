@@ -95,6 +95,7 @@ xmlhttp.onreadystatechange = () => {
 			xmlResponse = myobj[0].xmlres//xmlhttp.responseURL.charAt(xmlhttp.responseURL.length - 1);
 			let file = "";
 			let fileB = "";
+			let fileBN = "";
 			console.log("xmlresponse: ",xmlResponse," ",bpages,bpagesOPT,ipages,ipagesOPT,spages,spagesOPT)
 			console.log("curretpage: ",currentPageb," ",currentPagebOPT," ",currentPagei," ",currentPageiOPT," ",currentPages," ",currentPagesOPT)
 			
@@ -128,6 +129,7 @@ xmlhttp.onreadystatechange = () => {
 					//fileB = "dati/"+currentPages+"sanremoLetti.csv"
 					//fileOPT = "dati/"+currentPagesOPT+"sanremoOPT.csv";
 					//fileB_OPT = "dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
+					fileBN="dati/"+currentPagesOPT+"sanremoLettiOPT.csv"
 					if(parseInt(currentPagesOPT) +1<= parseInt(spagesOPT)){
 						file = "dati/"+currentPagesOPT+"sanremoOPT.csv";
 						fileB = "dati/"+(parseInt(currentPagesOPT)+1)+"sanremoLettiOPT.csv"
@@ -145,6 +147,7 @@ xmlhttp.onreadystatechange = () => {
 					//fileB = "dati/"+currentPagei+"imperiaLetti.csv";
 					//fileOPT = "dati/"+currentPageiOPT+"imperiaOPT.csv";
 					//fileB_OPT = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
+					fileBN = "dati/"+currentPageiOPT+"imperiaLettiOPT.csv";
 					if(parseInt(currentPageiOPT)+1 <= parseInt(ipagesOPT)){
 						file = "dati/"+currentPageiOPT+"imperiaOPT.csv";
 						fileB = "dati/"+(parseInt(currentPageiOPT)+1)+"imperiaLettiOPT.csv";
@@ -212,18 +215,20 @@ xmlhttp.onreadystatechange = () => {
 				.then(csv => {
 					d3.csv(fileB)
 						.then(csvB => {
-
-							let dati = preProcessing(csv, csvB, xmlResponse,checklastweek);
+							d3.csv(fileBN)
+								.then(csvBN =>{
+									let dati = preProcessing(csv, csvB, csvBN, xmlResponse,checklastweek);
 							
-							timeORs = dati[0];
-							groups = dati[1];
-							beds = dati[2];
+									timeORs = dati[0];
+									groups = dati[1];
+									beds = dati[2];
 
-							if(document.getElementById("nav-sale-tab").classList.contains("active"))
-								drawORsCharts();
-							else 
-								drawBedsCharts();
-
+									if(document.getElementById("nav-sale-tab").classList.contains("active"))
+										drawORsCharts();
+									else 
+										drawBedsCharts();
+								})
+								.catch(error => console.error(error));
 						})
 						.catch(error => console.error(error));
 				})
