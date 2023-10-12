@@ -10,7 +10,7 @@ const clingoFiles = require(".\\scripts\\libs\\createClingoFiles.js");
 const parser = require(".\\scripts\\libs\\parser.js");
 const { count } = require("console");
 const clingo = "..\\encodingASP\\clingo.exe";
-let clingoArgs = " --time-limit=10 --quiet=1 -t 6";
+let clingoArgs = " --time-limit=10 --quiet=1 ";
 const encodingNW ="..\\encodingASP\\newAssignments\\encodingNextWeeks.asp"
 let pathIN = "..\\dataset\\output\\";
 //let pathClingoFiles = "..\\encodingASP\\sameAssignments\\";
@@ -69,7 +69,7 @@ async function runWebAPP() {
 		const timeAsp = req.body["timeasp"]
 		const allweeks = req.body["allweeks"]
 		console.log("allweeks: ",allweeks)
-		clingoArgs = " --time-limit="+timeAsp+" --quiet=1 -t 3 ";
+		clingoArgs = " --time-limit="+timeAsp+" --quiet=1 ";
 		//--opt-strategy=usc -t 6
 		console.log("value: ",value," reqWeek: ",reqWeek," timeAsp: ",timeAsp)
 		let output = ".\\dati\\";
