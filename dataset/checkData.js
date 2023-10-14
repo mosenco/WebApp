@@ -308,7 +308,7 @@ function writeAdditionalRegs() {
 			continue;
 
 		let dayIN = 0;
-		let dayOUT = 7;
+		let dayOUT = Math.floor(Math.random() * 7) + 1;//7;
 
 		let reg = interventi[i].RegRicovero.replaceAll(" ", "");
 
@@ -324,6 +324,12 @@ function writeAdditionalRegs() {
 		if (getSede(interventi[i].Sede) == "SANREMO")
 			dayIN = getDayIN(tempS, interventi[i].Specialty);
 
+		if (getSede(interventi[i].Sede) == "IMPERIA"){
+			dayIN = getDayIN(tempI, interventi[i].Specialty);
+		}
+		if(dayIN > 0){
+			dayIN = Math.floor(Math.random() * dayIN) + 1;
+		}
 		
 			
 
@@ -339,15 +345,7 @@ function writeAdditionalRegs() {
 		let array = mapSpecialties(getSede(interventi[i].Sede), interventi[i].Specialty);
 		let time = Math.floor((interventi[i].UscitaSala - interventi[i].IngressoSala) / (1000 * 60));
 
-		if (getSede(interventi[i].Sede) == "IMPERIA"){
-			if(array[1] == 1){
-				dayIN = Math.floor(Math.random() * 7) + 1;
-			}else{
-				dayIN = getDayIN(tempI, interventi[i].Specialty);
-			
-			}
-			
-		}
+		
 		
 		if (isNaN(time))
 			continue;
