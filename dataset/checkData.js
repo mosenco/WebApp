@@ -325,7 +325,13 @@ function writeAdditionalRegs() {
 			dayIN = getDayIN(tempS, interventi[i].Specialty);
 
 		if (getSede(interventi[i].Sede) == "IMPERIA"){
-			dayIN = getDayIN(tempI, interventi[i].Specialty);
+	
+			if(interventi[i].Specialty == "IMPERIA UROLOGIA"){
+				dayIN=7
+			}else{
+				dayIN = getDayIN(tempI, interventi[i].Specialty);
+			}
+			
 		}
 		if(dayIN > 0){
 			dayIN = Math.floor(Math.random() * dayIN) + 1;
